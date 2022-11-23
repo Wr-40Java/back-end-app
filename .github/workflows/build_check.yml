@@ -2,11 +2,11 @@ name: Build check
 
 on:
   pull_request:
-    branches-ignore:    
-      - 'main'
+    branches:    
+      - development
   push:
     branches-ignore:
-      - 'main'
+      - development
 
 jobs:
   build:
