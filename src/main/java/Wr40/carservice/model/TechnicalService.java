@@ -2,7 +2,7 @@ package Wr40.carservice.model;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -21,5 +21,6 @@ public class TechnicalService {
     @CreationTimestamp
     private LocalDateTime timestamp;
     @PrimaryKeyJoinColumn
+    @OneToOne
     private MaintenanceHistory maintenanceHistory;
 }

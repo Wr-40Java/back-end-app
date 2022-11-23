@@ -1,6 +1,6 @@
 package Wr40.carservice.model;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.Year;
 import java.util.List;
 import java.util.Set;
