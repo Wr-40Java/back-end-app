@@ -1,6 +1,5 @@
-package Wr40.carservice;
+package Wr40.cardiary;
 
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.testcontainers.containers.PostgreSQLContainer;

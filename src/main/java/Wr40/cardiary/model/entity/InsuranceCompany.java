@@ -1,9 +1,12 @@
-package Wr40.carservice.model;
+package Wr40.cardiary.model.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+
 import java.util.Set;
 
 @Entity
+@Getter
 public class InsuranceCompany {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

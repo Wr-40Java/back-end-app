@@ -1,4 +1,4 @@
-package Wr40.carservice.model;
+package Wr40.cardiary.model.entity;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;

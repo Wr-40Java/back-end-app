@@ -462,4 +462,3 @@ databaseChangeLog:
             constraintName: fk_carcom_on_insurance_company
             referencedColumnNames: id
             referencedTableName: insurance_company
-

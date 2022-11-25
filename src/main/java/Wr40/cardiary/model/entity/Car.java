@@ -1,14 +1,23 @@
-package Wr40.carservice.model;
+package Wr40.cardiary.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.Year;
 import java.util.List;
 import java.util.Set;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
     @Column(length = 45)
     private String brand;

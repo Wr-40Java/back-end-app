@@ -1,9 +1,12 @@
-package Wr40.carservice.model;
+package Wr40.cardiary.model.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+
 import java.math.BigDecimal;
 
 @Entity
+@Getter
 public class Tax {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

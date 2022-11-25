@@ -1,5 +1,6 @@
-package Wr40.carservice.model;
+package Wr40.cardiary.model.entity;
 
+import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.*;
@@ -7,6 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
 public class MaintenanceHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

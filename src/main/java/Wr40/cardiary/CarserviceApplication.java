@@ -1,4 +1,4 @@
-package Wr40.carservice;
+package Wr40.cardiary;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
