@@ -30,4 +30,10 @@ public class CarService {
     public List<Car> getAllCars() {
         return carRepository.findAll();
     }
+
+    public void deleteCar(String vin) {
+        Car car = carRepository.findByVINnumber(vin).orElseThrow(NoSuchCarFoundException::new);
+        carRepository.delete(car);
+
+    }
 }
