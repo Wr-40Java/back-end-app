@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 
 
 @Service
@@ -25,5 +26,8 @@ public class CarService {
     }
     public Car getCar(String vin) {
         return carRepository.findByVINnumber(vin).orElseThrow(NoSuchCarFoundException::new);
+    }
+    public List<Car> getAllCars() {
+        return carRepository.findAll();
     }
 }

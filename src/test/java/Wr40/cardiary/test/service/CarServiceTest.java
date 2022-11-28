@@ -16,6 +16,8 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -59,6 +61,21 @@ public class CarServiceTest {
         Mockito.when(carRepository.findByVINnumber(car.getVINnumber())).thenThrow(new NoSuchCarFoundException());
         Assertions.assertThrows(NoSuchCarFoundException.class, () -> carService.getCar(car.getVINnumber()));
         Mockito.verify(carRepository).findByVINnumber(car.getVINnumber());
+    }
+
+    @Test
+    public void shouldGetListOfCarsOfSizeOne(){
+        List<Car> list = new ArrayList<>();
+        list.add(new Car());
+        Mockito.when(carRepository.findAll()).thenReturn(list);
+        Assertions.assertEquals(1,list.size());
+    }
+
+    @Test
+    public void shouldGetListOfCarsOfSizeZero(){
+        List<Car> list = new ArrayList<>();
+        Mockito.when(carRepository.findAll()).thenReturn(list);
+        Assertions.assertEquals(0,list.size());
     }
 
 }
