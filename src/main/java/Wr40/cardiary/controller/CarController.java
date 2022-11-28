@@ -39,11 +39,18 @@ public class CarController {
         return carService.getAllCars();
     }
 
-    @PostMapping("/delete/{vin}")
+    @DeleteMapping("/delete/{vin}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteCar(@PathVariable String vin){
         carService.deleteCar(vin);
     }
+
+    @DeleteMapping("/delete/all")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteAllCars(){
+        carService.deleteAllCars();
+    }
+
 
 
 
