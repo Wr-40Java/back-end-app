@@ -51,6 +51,12 @@ public class CarController {
         carService.deleteAllCars();
     }
 
+    @PutMapping("/update")
+    @ResponseStatus(HttpStatus.OK)
+    public Car updateCar(@Valid @RequestBody CarDTO carDTO){
+        Car mappedCar = modelMapper.map(carDTO, Car.class);
+        return carService.updateCar(mappedCar);
+    }
 
 
 
