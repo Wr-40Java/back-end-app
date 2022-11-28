@@ -9,6 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>Wr-40</groupId>
+	<packaging>jar</packaging>
 	<artifactId>carservice</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>carservice</name>

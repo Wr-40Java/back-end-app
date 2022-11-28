@@ -1,8 +1,10 @@
-package Wr40.cardiary.service;
+package Wr40.cardiary.test.service;
 
 import Wr40.cardiary.exception.CarAlreadyExistException;
 import Wr40.cardiary.model.entity.Car;
 import Wr40.cardiary.repo.CarRepository;
+import Wr40.cardiary.service.CarService;
+import Wr40.cardiary.DatabaseConfig;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -13,7 +15,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @RunWith(MockitoJUnitRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = DatabaseConfig.class)
 public class CarServiceTest {
 
     @Mock
