@@ -4,6 +4,7 @@ import Wr40.cardiary.exception.NoSuchCarFoundException;
 import Wr40.cardiary.model.entity.Car;
 import Wr40.cardiary.repo.CarRepository;
 import Wr40.cardiary.exception.CarAlreadyExistException;
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,8 @@ import java.util.List;
 public class CarService {
 
     CarRepository carRepository;
+
+    EntityManager entityManager;
 
     public Car saveCar(Car car) {
         if (carRepository.findByVINnumber(car.getVINnumber()).isPresent()) {
@@ -42,4 +45,17 @@ public class CarService {
     public void deleteAllCars() {
         carRepository.deleteAll();
     }
+
+    public Car updateCar(Car car) {
+        Car carToUpdate = carRepository.findByVINnumber(car.getVINnumber()).orElseThrow(NoSuchCarFoundException::new);
+        carToUpdate.setModel(car.getModel());
+        carToUpdate.setBrand(car.getBrand());
+        carToUpdate.setEngineType(car.getEngineType());
+        carToUpdate.setBodyType(car.getBodyType());
+        carToUpdate.setColor(car.getColor());
+        carToUpdate.setProductionYear(car.getProductionYear());
+        carToUpdate.setHorsePower(car.getHorsePower());
+        return carRepository.save(carToUpdate);
+    }
+
 }
