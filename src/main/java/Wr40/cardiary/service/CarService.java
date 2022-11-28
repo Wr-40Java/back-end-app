@@ -1,5 +1,6 @@
 package Wr40.cardiary.service;
 
+import Wr40.cardiary.exception.NoSuchCarFoundException;
 import Wr40.cardiary.model.entity.Car;
 import Wr40.cardiary.repo.CarRepository;
 import Wr40.cardiary.exception.CarAlreadyExistException;
@@ -22,5 +23,7 @@ public class CarService {
         }
         return carRepository.save(car);
     }
-
+    public Car getCar(String vin) {
+        return carRepository.findByVINnumber(vin).orElseThrow(NoSuchCarFoundException::new);
+    }
 }
