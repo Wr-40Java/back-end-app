@@ -24,9 +24,11 @@ public class CarService {
         }
         return carRepository.save(car);
     }
+
     public Car getCar(String vin) {
         return carRepository.findByVINnumber(vin).orElseThrow(NoSuchCarFoundException::new);
     }
+
     public List<Car> getAllCars() {
         return carRepository.findAll();
     }
@@ -35,5 +37,9 @@ public class CarService {
         Car car = carRepository.findByVINnumber(vin).orElseThrow(NoSuchCarFoundException::new);
         carRepository.delete(car);
 
+    }
+
+    public void deleteAllCars() {
+        carRepository.deleteAll();
     }
 }

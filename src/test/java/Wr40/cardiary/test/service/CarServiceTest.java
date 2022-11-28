@@ -95,4 +95,10 @@ public class CarServiceTest {
         Assertions.assertThrows(NoSuchCarFoundException.class, () -> carService.deleteCar(car.getVINnumber()));
     }
 
+    @Test
+    public void whenDeleteAll_shouldDeleteAllCars(){
+        carService.deleteAllCars();
+        verify(carRepository).deleteAll();
+    }
+
 }
