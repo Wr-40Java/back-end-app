@@ -27,10 +27,16 @@ public class CarController {
         return carService.saveCar(mappedCar);
     }
 
-    @GetMapping("/get/{vin}")
+    @PostMapping("/get/{vin}")
     @ResponseStatus(HttpStatus.OK)
     public Car getCar(@PathVariable String vin){
         return carService.getCar(vin);
+    }
+
+    @GetMapping("/get")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Car> getAllCars(){
+        return carService.getAllCars();
     }
 
 
