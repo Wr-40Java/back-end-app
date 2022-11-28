@@ -6,7 +6,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import Wr40.cardiary.DatabaseConfig;
-import Wr40.cardiary.model.TestCarDTO;
 import Wr40.cardiary.model.dto.CarDTO;
 import Wr40.cardiary.service.CarService;
 import org.junit.Before;
@@ -27,7 +26,6 @@ import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {DatabaseConfig.class})
 @AutoConfigureMockMvc
 class CarControllerTest {
     @Autowired
