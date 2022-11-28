@@ -7,7 +7,7 @@
 
 # Car Diary - backend 
 
-A brief description of what this project does and who it's for
+Car Diary is a graduate project for the Java Project Lab - SoftServe IT Academy.
 
 ## Tech Stack
 
@@ -21,7 +21,7 @@ A brief description of what this project does and who it's for
 ![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=plastic&logo=githubactions&logoColor=white)
 ## Getting Started
 
-sth here
+sth here 
 
 ### Required software
 - Java 17
@@ -29,10 +29,10 @@ sth here
 
 ## Installation
 
-installation here
+Clone the repositroy via link:
 
 ```bash
-  installation here
+  git clone https://github.com/Wr-40Java/back-end-app
 ```
     
 ## Running Tests
@@ -42,4 +42,16 @@ running tests
 ```bash
   running tests
 ```
+
+## Authors
+
+- [@tomeee121](https://github.com/tomeee121)
+- [@DamianGrudzien](https://github.com/DamianGrudzien)
+- [@mmackowiak98](https://github.com/mmackowiak98)
+- [@TheSuperiorMatusz](https://github.com/TheSuperiorMatusz)
+- [@AlexanderPanchyshyn](https://github.com/AlexanderPanchyshyn)
+- [@hokka1do](https://github.com/hokka1do)
+- [@tamtejszystan](https://github.com/tamtejszystan)
+
+
 
