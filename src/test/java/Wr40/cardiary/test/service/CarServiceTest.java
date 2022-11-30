@@ -70,14 +70,16 @@ public class CarServiceTest {
         List<Car> list = new ArrayList<>();
         list.add(new Car());
         Mockito.when(carRepository.findAll()).thenReturn(list);
-        Assertions.assertEquals(1,list.size());
+        List<Car> allCars = carService.getAllCars();
+        Assertions.assertEquals(1,allCars.size());
     }
 
     @Test
     public void whenFindAll_shouldReturnListOfSizeZero_IfNoCarsAdded(){
         List<Car> list = new ArrayList<>();
         Mockito.when(carRepository.findAll()).thenReturn(list);
-        Assertions.assertEquals(0,list.size());
+        List<Car> allCars = carService.getAllCars();
+        Assertions.assertEquals(0,allCars.size());
     }
 
     @Test
@@ -99,6 +101,17 @@ public class CarServiceTest {
     public void whenDeleteAll_shouldDeleteAllCars(){
         carService.deleteAllCars();
         verify(carRepository).deleteAll();
+    }
+
+    @Test
+    public void whenUpdateCar_ShouldUpdateGivenCar(){
+        Car car = new Car();
+        Car car2 = new Car();
+        car2.setHorsePower((short) 100);
+        Mockito.when(carRepository.findByVINnumber(car.getVINnumber())).thenReturn(Optional.of(car));
+        Mockito.when(carRepository.save(car)).thenReturn(car2);
+        Car updatedCar = carService.updateCar(car);
+        Assertions.assertEquals(100,updatedCar.getHorsePower());
     }
 
 }

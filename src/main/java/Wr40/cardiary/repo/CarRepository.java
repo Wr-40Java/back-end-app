@@ -11,6 +11,4 @@ public interface CarRepository extends JpaRepository<Car,Long> {
     Optional<Car> findByVINnumber(String VINnumber);
 
 
-
-
 }
