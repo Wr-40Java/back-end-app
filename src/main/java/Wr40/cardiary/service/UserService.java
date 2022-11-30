@@ -1,7 +1,5 @@
 package Wr40.cardiary.service;
 
-import Wr40.cardiary.exception.UserNotFoundException;
-import Wr40.cardiary.exception.WrongEmailAddressException;
 import Wr40.cardiary.model.entity.User;
 import Wr40.cardiary.repo.UserRepository;
 import jakarta.transaction.Transactional;
