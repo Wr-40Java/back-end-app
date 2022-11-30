@@ -2,6 +2,7 @@ package Wr40.cardiary.controller;
 
 import Wr40.cardiary.service.UserService;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,4 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     UserService userService;
+
+    ModelMapper modelMapper;
 }
