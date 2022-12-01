@@ -27,5 +27,5 @@ jobs:
         with:
           generate-branches-badge: true
           jacoco-csv-file: >
-            ${{ github.workspace }}/target/site/jacoco/jacoco.csv
+            build/target/site/jacoco/jacoco.csv
 
