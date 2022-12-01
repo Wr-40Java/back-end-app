@@ -1,5 +1,6 @@
 package Wr40.cardiary.model.dto;
 
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -17,6 +18,6 @@ public class UserDTO {
     private String password;
     @NotEmpty
     private String email;
-    @NotEmpty
+    @Digits(integer = 15, fraction = 0)
     private short phoneNumber;
 }
