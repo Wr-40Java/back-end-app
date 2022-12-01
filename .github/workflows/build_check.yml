@@ -27,3 +27,4 @@ jobs:
         with:
           paths: ${{ github.workspace }}/target/site/jacoco/jacoco.xml
           generate-coverage-badge: true
+
