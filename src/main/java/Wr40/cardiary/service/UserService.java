@@ -6,12 +6,14 @@ import Wr40.cardiary.model.entity.User;
 import Wr40.cardiary.repo.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
 @Service
 @AllArgsConstructor
+@NoArgsConstructor
 @Transactional
 public class UserService {
 
@@ -21,7 +23,7 @@ public class UserService {
             + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
 
     public User saveUser(User user) {
-        if (userRepository.findByUserName(user.getUsername()).isPresent()) {
+        if (userRepository.findUserByUsername(user.getUsername()).isPresent()) {
             throw new UserAlreadyExistedException();
         }
         if (!Objects.equals(user.getEmail(), emailValidationRegexPattern)) {
