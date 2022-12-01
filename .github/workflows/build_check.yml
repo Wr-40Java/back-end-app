@@ -27,5 +27,5 @@ jobs:
         with:
           generate-branches-badge: true
           jacoco-csv-file: >
-            build/target/site/jacoco/jacoco.csv
+            target/site/jacoco/jacoco.csv
 
