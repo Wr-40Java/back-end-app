@@ -462,3 +462,5 @@ databaseChangeLog:
             constraintName: fk_carcom_on_insurance_company
             referencedColumnNames: id
             referencedTableName: insurance_company
+  - include:
+      file: db/changelog/changesets/001-change-phone-nr-datatype.yaml

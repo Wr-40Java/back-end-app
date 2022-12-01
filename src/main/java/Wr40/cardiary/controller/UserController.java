@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
-@NoArgsConstructor
 @RequestMapping("/api/cardiary/user")
 public class UserController {
 

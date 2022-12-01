@@ -7,26 +7,35 @@ import Wr40.cardiary.repo.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
-@AllArgsConstructor
-@NoArgsConstructor
 @Transactional
 public class UserService {
 
     UserRepository userRepository;
 
-    String emailValidationRegexPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
+    @Autowired
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    private final String EMAIL_VALIDATION_REGEX = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
             + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
 
     public User saveUser(User user) {
         if (userRepository.findUserByUsername(user.getUsername()).isPresent()) {
             throw new UserAlreadyExistedException();
         }
-        if (!Objects.equals(user.getEmail(), emailValidationRegexPattern)) {
+        Pattern pattern = Pattern.compile(EMAIL_VALIDATION_REGEX);
+        Matcher matcher = pattern.matcher(user.getEmail());
+        if (!matcher.matches()) {
             throw new WrongEmailAddressException();
         }
         return userRepository.save(user);

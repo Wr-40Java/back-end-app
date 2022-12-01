@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: Tomasz Borowski
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropColumn:
+            columnName: phone_number
+            tableName: user_table
+  - changeSet:
+      id: 3
+      author: Tomasz Borowski
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  name: phone_number
+                  type: BIGINT
+            tableName: user_table
