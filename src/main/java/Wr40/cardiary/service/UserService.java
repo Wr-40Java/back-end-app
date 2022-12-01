@@ -8,7 +8,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
+import java.util.regex.Pattern;
 
 @Service
 @AllArgsConstructor
@@ -17,14 +17,14 @@ public class UserService {
 
     UserRepository userRepository;
 
-    String emailValidationRegexPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
-            + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
-
     public User saveUser(User user) {
-        if (userRepository.findByUserName(user.getUsername()).isPresent()) {
+        String emailValidationRegexPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
+                + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+
+        if (userRepository.findUserByUsername(user.getUsername()).isPresent()) {
             throw new UserAlreadyExistedException();
         }
-        if (!Objects.equals(user.getEmail(), emailValidationRegexPattern)) {
+        if (!Pattern.compile(emailValidationRegexPattern).matcher(user.getEmail()).matches()) {
             throw new WrongEmailAddressException();
         }
         return userRepository.save(user);
