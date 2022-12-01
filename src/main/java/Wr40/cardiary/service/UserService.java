@@ -16,7 +16,7 @@ public class UserService {
     UserRepository userRepository;
 
     public User updateUser(User user) {
-        User userToUpdate = userRepository.findByUserName(user.getUsername()).orElseThrow(UserNotFoundException::new);
+        User userToUpdate = userRepository.findUserByUsername(user.getUsername()).orElseThrow(UserNotFoundException::new);
         userToUpdate.setName(user.getName());
         userToUpdate.setSurname(user.getSurname());
         userToUpdate.setUsername(user.getUsername());
