@@ -26,8 +26,4 @@ jobs:
         uses: cicirello/jacoco-badge-generator@v2
         with:
           paths: ${{ github.workspace }}/target/site/jacoco/jacoco.xml
-      - name: Generate JaCoCo Badge
-        id: jacoco2
-        uses: cicirello/jacoco-badge-generator@v2
-        with:
           generate-coverage-badge: true
