@@ -6,8 +6,6 @@ import Wr40.cardiary.model.entity.User;
 import Wr40.cardiary.repo.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +16,6 @@ import java.util.regex.Pattern;
 @Service
 @Transactional
 public class UserService {
-
     UserRepository userRepository;
 
     @Autowired
@@ -30,6 +27,7 @@ public class UserService {
             + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
 
     public User saveUser(User user) {
+
         if (userRepository.findUserByUsername(user.getUsername()).isPresent()) {
             throw new UserAlreadyExistedException();
         }
