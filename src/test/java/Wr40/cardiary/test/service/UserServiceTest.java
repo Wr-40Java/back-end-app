@@ -1,6 +1,7 @@
 package Wr40.cardiary.test.service;
 
 import Wr40.cardiary.exception.UserAlreadyExistedException;
+import Wr40.cardiary.exception.UserNotFoundException;
 import Wr40.cardiary.model.entity.User;
 import Wr40.cardiary.repo.UserRepository;
 import Wr40.cardiary.service.UserService;
@@ -11,6 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import java.util.Optional;
 
 import static org.mockito.Mockito.verify;
 
@@ -39,5 +42,26 @@ public class UserServiceTest {
         Mockito.when(userRepository.save(user)).thenThrow(new UserAlreadyExistedException());
         Assertions.assertThrows(UserAlreadyExistedException.class, () -> userService.saveUser(user));
         verify(userRepository).save(user);
+    }
+
+    @Test
+    public void whenDeletingExistingUserShouldDelete(){
+        User user = new User();
+        Mockito.when(userRepository.findUserByUsername(user.getUsername())).thenReturn(Optional.of(user));
+        userService.deleteUser(user.getUsername());
+        verify(userRepository).delete(user);
+    }
+
+    @Test
+    public void whenDeletingNotExistingUserShouldThrowException(){
+        User user = new User();
+        Mockito.when(userRepository.findUserByUsername(user.getUsername())).thenThrow(new UserNotFoundException());
+        Assertions.assertThrows(UserNotFoundException.class, () -> userService.deleteUser(user.getUsername()));
+    }
+
+    @Test
+    public void whenDeleteAllUsersShouldDeleteAll(){
+        userService.deleteAllUsers();
+        verify(userRepository).deleteAll();
     }
 }

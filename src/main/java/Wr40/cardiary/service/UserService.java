@@ -1,6 +1,7 @@
 package Wr40.cardiary.service;
 
 import Wr40.cardiary.exception.UserNotFoundException;
+import Wr40.cardiary.exception.UserNotFoundException;
 import Wr40.cardiary.model.entity.User;
 import Wr40.cardiary.exception.UserAlreadyExistedException;
 import Wr40.cardiary.exception.WrongEmailAddressException;
@@ -49,5 +50,14 @@ public class UserService {
             throw new WrongEmailAddressException();
         }
         return userRepository.save(user);
+    }
+
+    public void deleteUser(String username) {
+        User user = userRepository.findUserByUsername(username).orElseThrow(UserNotFoundException::new);
+        userRepository.delete(user);
+    }
+
+    public void deleteAllUsers() {
+        userRepository.deleteAll();
     }
 }

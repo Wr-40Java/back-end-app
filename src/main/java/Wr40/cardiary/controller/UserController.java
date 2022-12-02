@@ -32,4 +32,16 @@ public class UserController {
         User mappedUser = modelMapper.map(dto, User.class);
         return userService.saveUser(mappedUser);
     }
+
+    @DeleteMapping("/delete/{username}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteUser(@PathVariable String username) {
+        userService.deleteUser(username);
+    }
+
+    @DeleteMapping("/delete/all")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteAllUsers() {
+        userService.deleteAllUsers();
+    }
 }
