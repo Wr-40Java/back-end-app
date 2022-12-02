@@ -41,4 +41,15 @@ public class InsuranceService {
         mappedInsCompanyDTO.setInsuranceTypeDTO(modelMapper.map(savedInsuranceCompany.getInsuranceType(), InsuranceTypeDTO.class));
         return mappedInsCompanyDTO;
     }
+
+    public InsuranceCompanyDTO saveInsurenceCompany(InsuranceCompanyDTO insuranceCompanyDTO) {
+        Optional<InsuranceCompany> insuranceCompanyOptional = insuranceRepository.findByName(insuranceCompanyDTO.getName());
+        if(insuranceCompanyOptional.isPresent()) {
+            throw new InsuranceCompanyAlreadyExistsException();
+        }
+        InsuranceCompany insuranceCompany = modelMapper.map(insuranceCompanyDTO, InsuranceCompany.class);
+        InsuranceCompany savedInsuranceCompany = insuranceRepository.save(insuranceCompany);
+        InsuranceCompanyDTO mappedInCompanyDTO = modelMapper.map(savedInsuranceCompany, InsuranceCompanyDTO.class);
+        return mappedInCompanyDTO;
+    }
 }
