@@ -1,6 +1,7 @@
 package Wr40.cardiary.service;
 
 import Wr40.cardiary.exception.InsuranceCompanyAlreadyExistsException;
+import Wr40.cardiary.exception.NoSuchInsuranceCompanyException;
 import Wr40.cardiary.model.dto.insurance.InsuranceCompanyDTO;
 import Wr40.cardiary.model.dto.insurance.InsuranceCompanyWithTypeDTO;
 import Wr40.cardiary.model.dto.insurance.InsuranceTypeDTO;
@@ -19,7 +20,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -131,17 +134,48 @@ public class InsuranceServiceTest {
     @Test
     public void whenSavingInsuranceCompanyAloneAlreadyExisting_shouldThrowException() {
         //given
-        InsuranceCompanyDTO insuranceCompanyDTO = new InsuranceCompanyDTO();
-        insuranceCompanyDTO.setName("NewSafeLvl").setDescription("For me the best so far").setPhoneNumber(19027883L);
-
+        Integer id = 1;
         InsuranceCompany insuranceCompany = new InsuranceCompany();
         insuranceCompany.setName("NewSafeLvl").setDescription("For me the best so far").setPhoneNumber(19027883L);
 
-        Mockito.when(insuranceRepository.findByName(insuranceCompanyDTO.getName())).thenReturn((Optional.of(insuranceCompany)));
+        Mockito.when(insuranceRepository.findById(Long.valueOf(id))).thenReturn((Optional.of(insuranceCompany)));
 
         //when
         //then
-        Assertions.assertThrows(InsuranceCompanyAlreadyExistsException.class,
-                () -> insuranceService.saveInsurenceCompany(insuranceCompanyDTO));
+        insuranceService.deleteInsuranceCompById(id);
+        Mockito.verify(insuranceRepository).deleteById(insuranceCompany.getId());
+    }
+
+    @Test
+    public void whenDeletingNotExistingInsuranceCompanyAlone_shouldThrowException() {
+        //given
+        Integer id = 1;
+        InsuranceCompany insuranceCompany = new InsuranceCompany();
+
+        Mockito.when(insuranceRepository.findById(Long.valueOf(id))).thenReturn((Optional.empty()));
+
+        //when
+        //then
+        Assertions.assertThrows(NoSuchInsuranceCompanyException.class, () -> insuranceService.deleteInsuranceCompById(id));
+    }
+
+    @Test
+    public void whenGetAllInsuranceCompaniesInvoked_shouldReturnListOfThose() {
+
+        //given
+        List<InsuranceCompany> insuranceCompanyList = new ArrayList<>();
+        InsuranceCompany insuranceCompany = new InsuranceCompany();
+        insuranceCompany.setName("NewSafeLvl").setDescription("For me the best so far").setPhoneNumber(19027883L);
+        InsuranceCompany insuranceCompany2 = new InsuranceCompany();
+        insuranceCompany.setName("BeingSafe").setDescription("Not bad, may be useful").setPhoneNumber(18101132L);
+        insuranceCompanyList.add(insuranceCompany);
+        insuranceCompanyList.add(insuranceCompany2);
+
+        //when
+        Mockito.when(insuranceRepository.getAllInsuranceCompanies()).thenReturn(insuranceCompanyList);
+
+        //then
+        Assertions.assertEquals(insuranceCompanyList, insuranceRepository.getAllInsuranceCompanies());
+        Assertions.assertEquals(insuranceRepository.getAllInsuranceCompanies().size(), 2);
     }
 }

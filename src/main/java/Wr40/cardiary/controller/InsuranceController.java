@@ -10,6 +10,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/cardiary/insurance")
 @AllArgsConstructor
@@ -30,6 +32,19 @@ public class InsuranceController {
     @ResponseStatus(HttpStatus.CREATED)
     public InsuranceCompanyDTO saveInsuranceCompany(@Valid @RequestBody InsuranceCompanyDTO insuranceCompanyDTO) {
         return insuranceService.saveInsurenceCompany(insuranceCompanyDTO);
+    }
+
+    @GetMapping("/list")
+    @ResponseStatus(HttpStatus.OK)
+    public List<InsuranceCompanyDTO> getAllInsuranceCompany(@Valid @RequestBody InsuranceCompanyDTO insuranceCompanyDTO) {
+        return insuranceService.getAllInsuranceCompanies();
+    }
+
+    @DeleteMapping("/delete/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public String deleteInsuranceCompany(@PathVariable Integer id) {
+        insuranceService.deleteInsuranceCompById(id);
+        return String.format("Company by given %d id was successfully deleted!", id);
     }
 
 }
