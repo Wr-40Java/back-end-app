@@ -30,4 +30,11 @@ public class TaxTypeController {
     public TaxType getTaxType(@PathVariable Long id){
         return taxTypeService.getTaxTypeById(id);
     }
+
+    @PutMapping("/update/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public TaxType updateTaxType(@PathVariable Long id, @Valid @RequestBody TaxTypeDTO dto){
+        TaxType mappedTaxType = modelMapper.map(dto, TaxType.class);
+        return taxTypeService.updateTaxType(id, mappedTaxType);
+    }
 }
