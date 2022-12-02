@@ -23,7 +23,6 @@ import java.util.List;
 public class UserController {
 
     UserService userService;
-
     ModelMapper modelMapper;
 
     @GetMapping("/get")
@@ -49,5 +48,10 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public void deleteAllUsers() {
         userService.deleteAllUsers();
+    }
+    @GetMapping("/get/{username}")
+    @ResponseStatus(HttpStatus.OK)
+    public User getUser(@PathVariable String username){
+        return userService.getUser(username);
     }
 }
