@@ -26,11 +26,12 @@ public class UserController {
 
     ModelMapper modelMapper;
 
-    @GetMapping
+    @GetMapping("/get")
     @ResponseStatus(HttpStatus.OK)
     public List<User> getAllUsers(){
         return userService.getAllUsers();
     }
+
     @PostMapping("/save")
     @ResponseStatus(HttpStatus.CREATED)
     public User saveUser(@Valid @RequestBody UserDTO dto) {
