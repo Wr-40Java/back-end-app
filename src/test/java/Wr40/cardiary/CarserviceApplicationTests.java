@@ -12,5 +12,4 @@ public class CarserviceApplicationTests extends DatabaseConfig {
 	@PostConstruct
 	public void contextLoads() {
 	}
-
 }
