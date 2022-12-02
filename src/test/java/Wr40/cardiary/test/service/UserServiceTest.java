@@ -64,4 +64,21 @@ public class UserServiceTest {
         userService.deleteAllUsers();
         verify(userRepository).deleteAll();
     }
+
+    @Test
+    public void whenWeFindingUserByUsername(){
+        User user = new User();
+        Mockito.when(userRepository.findUserByUsername(user.getUsername())).thenReturn(Optional.of(user));
+        User sameUsername = userService.getUser(user.getUsername());
+        Assertions.assertEquals(user,sameUsername);
+        verify(userRepository).findUserByUsername(user.getUsername());
+    }
+
+    @Test
+    public void whenDontFindUserByUsername(){
+        User user = new User();
+        Mockito.when(userRepository.findUserByUsername(user.getUsername())).thenThrow(new UserNotFoundException());
+        Assertions.assertThrows(UserNotFoundException.class, () -> userService.getUser(user.getUsername()));
+        verify(userRepository).findUserByUsername(user.getUsername());
+    }
 }

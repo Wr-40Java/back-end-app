@@ -48,4 +48,7 @@ public class UserService {
     public void deleteAllUsers() {
         userRepository.deleteAll();
     }
+    public User getUser(String username){
+        return userRepository.findUserByUsername(username).orElseThrow(UserNotFoundException::new);
+    }
 }
