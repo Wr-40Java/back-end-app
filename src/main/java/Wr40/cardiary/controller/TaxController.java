@@ -26,7 +26,7 @@ public class TaxController {
         return taxService.saveTax(mappedTax);
     }
 
-    @PostMapping("/get/{id}")
+    @GetMapping("/get/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Tax getTax(@PathVariable Long id) {
         return taxService.getTax(id);
