@@ -13,6 +13,7 @@ import Wr40.cardiary.repo.InsuranceRepository;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
+import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -24,6 +25,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+
+import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
 public class InsuranceServiceTest {
@@ -177,5 +180,43 @@ public class InsuranceServiceTest {
         //then
         Assertions.assertEquals(insuranceCompanyList, insuranceRepository.getAllInsuranceCompanies());
         Assertions.assertEquals(insuranceRepository.getAllInsuranceCompanies().size(), 2);
+    }
+
+    @Test
+    public void whenUpdatingInsuranceCompanyAlone_shouldReturnUpdatedObjectMappedToDTO() {
+        //given
+        InsuranceCompanyDTO insuranceCompanyDTO = new InsuranceCompanyDTO();
+        insuranceCompanyDTO.setName("Changed").setDescription("Changed description").setPhoneNumber(100000000L);
+
+        InsuranceCompany insuranceCompany = new InsuranceCompany();
+        insuranceCompany.setId(1L).setName("NewSafeLvl").setDescription("For me the best so far").setPhoneNumber(19027883L);
+
+        Mockito.when(modelMapper.map(insuranceCompanyDTO, InsuranceCompany.class)).thenReturn(insuranceCompany);
+        Mockito.when(modelMapper.map(insuranceCompany, InsuranceCompanyDTO.class)).thenReturn(insuranceCompanyDTO);
+        Mockito.when(insuranceRepository.save(insuranceCompany)).thenReturn(insuranceCompany);
+
+        //when
+        InsuranceCompanyDTO savedInsuranceCompanyDTO = insuranceService.saveInsurenceCompany(insuranceCompanyDTO);
+
+        //then
+        Assertions.assertEquals(savedInsuranceCompanyDTO.getDescription(), insuranceCompanyDTO.getDescription());
+        org.assertj.core.api.Assertions.assertThat(savedInsuranceCompanyDTO.getDescription()).containsSubsequence("Changed description");
+        org.assertj.core.api.Assertions.assertThat(savedInsuranceCompanyDTO.getName()).containsSubsequence("Changed");
+        Mockito.verify(insuranceRepository).save(insuranceCompany);
+    }
+
+    @Test
+    public void whenUpdatingInsuranceCompanyAloneNotExisting_shouldThrowException() {
+        //given
+        Integer id = 1;
+        InsuranceCompanyDTO insuranceCompanyDTO = new InsuranceCompanyDTO();
+        insuranceCompanyDTO.setName("Changed").setDescription("Changed description").setPhoneNumber(100000000L);
+
+        //when
+        Mockito.when(insuranceRepository.findById(Long.valueOf(id))).thenReturn(Optional.empty());
+
+        //then
+        Assertions.assertThrows(NoSuchInsuranceCompanyException.class, () -> insuranceService.updateInsuranceCompany(insuranceCompanyDTO, id));
+
     }
 }

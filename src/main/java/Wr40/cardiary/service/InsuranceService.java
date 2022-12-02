@@ -64,4 +64,12 @@ public class InsuranceService {
         List<InsuranceCompany> allInsuranceCompanies = insuranceRepository.getAllInsuranceCompanies();
         return allInsuranceCompanies.stream().map(obj -> modelMapper.map(obj, InsuranceCompanyDTO.class)).toList();
     }
+
+    public InsuranceCompanyDTO updateInsuranceCompany(InsuranceCompanyDTO insuranceCompanyDTO, Integer id) {
+        InsuranceCompany insuranceCompany = insuranceRepository.findById(Long.valueOf(id)).orElseThrow(NoSuchInsuranceCompanyException::new);
+        insuranceCompany.setName(insuranceCompanyDTO.getName()).setDescription(insuranceCompanyDTO.getDescription())
+                .setPhoneNumber(insuranceCompanyDTO.getPhoneNumber());
+        InsuranceCompany savedInsuranceCompany = insuranceRepository.save(insuranceCompany);
+        return modelMapper.map(savedInsuranceCompany, InsuranceCompanyDTO.class);
+    }
 }
