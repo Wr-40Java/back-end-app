@@ -1,4 +1,4 @@
-package Wr40.cardiary.model.dto;
+package Wr40.cardiary.test.model;
 
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotEmpty;
@@ -7,7 +7,7 @@ import lombok.experimental.Accessors;
 
 @Data
 @Accessors(chain = true)
-public class UserDTO {
+public class TestUserDTO {
     @NotEmpty
     private String name;
     @NotEmpty
