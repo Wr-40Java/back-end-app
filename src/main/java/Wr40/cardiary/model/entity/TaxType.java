@@ -1,8 +1,10 @@
 package Wr40.cardiary.model.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
+@Getter
 public class TaxType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

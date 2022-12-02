@@ -1,9 +1,6 @@
 package Wr40.cardiary.handler;
 
-import Wr40.cardiary.exception.CarAlreadyExistException;
-import Wr40.cardiary.exception.NoSuchCarFoundException;
-import Wr40.cardiary.exception.WrongEmailAddressException;
-import Wr40.cardiary.exception.YearValidationException;
+import Wr40.cardiary.exception.*;
 import Wr40.cardiary.model.ErrorDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +12,9 @@ import java.time.LocalDateTime;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(CarAlreadyExistException.class)
+    @ExceptionHandler(CarAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public final ResponseEntity<ErrorDetails> handleCarAlreadyExistException(CarAlreadyExistException e){
+    public final ResponseEntity<ErrorDetails> handleCarAlreadyExistException(CarAlreadyExistsException e){
         return ResponseEntity.badRequest().body(new ErrorDetails(LocalDateTime.now(),e.getMessage(),HttpStatus.BAD_REQUEST));
     }
 
@@ -36,6 +33,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(WrongEmailAddressException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public final ResponseEntity<ErrorDetails> handleWrongEmailAddressException(WrongEmailAddressException e){
+        return ResponseEntity.badRequest().body(new ErrorDetails(LocalDateTime.now(),e.getMessage(),HttpStatus.BAD_REQUEST));
+    }
+
+    @ExceptionHandler(TaxTypeAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public final ResponseEntity<ErrorDetails> handleTaxTypeAlreadyExistsException(TaxTypeAlreadyExistsException e){
         return ResponseEntity.badRequest().body(new ErrorDetails(LocalDateTime.now(),e.getMessage(),HttpStatus.BAD_REQUEST));
     }
 }
