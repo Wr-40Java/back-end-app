@@ -1,10 +1,8 @@
-package Wr40.cardiary.model.dto;
+package Wr40.cardiary.model.dto.insurance;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;

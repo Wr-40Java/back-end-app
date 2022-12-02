@@ -1,8 +1,7 @@
 package Wr40.cardiary.controller;
 
-import Wr40.cardiary.model.dto.CarDTO;
-import Wr40.cardiary.model.dto.InsuranceCompanyDTO;
-import Wr40.cardiary.model.entity.Car;
+import Wr40.cardiary.model.dto.insurance.InsuranceCompanyDTO;
+import Wr40.cardiary.model.dto.insurance.InsuranceCompanyWithTypeDTO;
 import Wr40.cardiary.model.entity.InsuranceCompany;
 import Wr40.cardiary.service.InsuranceService;
 import jakarta.validation.Valid;
@@ -21,9 +20,16 @@ public class InsuranceController {
 
     @PostMapping("/save/{vin_number}")
     @ResponseStatus(HttpStatus.CREATED)
-    public InsuranceCompanyDTO saveInsuranceCompany(@PathVariable(name = "vin_number", required = false) String vinNumber, @Valid @RequestBody InsuranceCompanyDTO insuranceCompanyDTO) {
-        InsuranceCompany insuranceCompany = modelMapper.map(insuranceCompanyDTO, InsuranceCompany.class);
-        return insuranceService.saveInsuranceWithTypeToTheCar(insuranceCompanyDTO, vinNumber);
+    public InsuranceCompanyWithTypeDTO saveInsuranceCompanyWithTypeAndCar(@PathVariable(name = "vin_number", required = false) String vinNumber,
+                                                                          @Valid @RequestBody InsuranceCompanyWithTypeDTO insuranceCompanyWithTypeDTO) {
+        InsuranceCompany insuranceCompany = modelMapper.map(insuranceCompanyWithTypeDTO, InsuranceCompany.class);
+        return insuranceService.saveInsuranceWithTypeToTheCar(insuranceCompanyWithTypeDTO, vinNumber);
+    }
+
+    @PostMapping("/save")
+    @ResponseStatus(HttpStatus.CREATED)
+    public InsuranceCompanyDTO saveInsuranceCompany(@Valid @RequestBody InsuranceCompanyDTO insuranceCompanyDTO) {
+        return insuranceService.saveInsurenceCompany(insuranceCompanyDTO);
     }
 
 }

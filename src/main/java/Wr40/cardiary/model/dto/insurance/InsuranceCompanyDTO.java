@@ -1,7 +1,5 @@
-package Wr40.cardiary.model.dto;
+package Wr40.cardiary.model.dto.insurance;
 
-
-import Wr40.cardiary.model.entity.InsuranceType;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -20,5 +18,4 @@ public class InsuranceCompanyDTO {
     private Long phoneNumber;
     @NotEmpty
     private String description;
-    private InsuranceTypeDTO insuranceTypeDTO;
 }
