@@ -1,6 +1,7 @@
-package Wr40.cardiary.validation;
+package Wr40.cardiary.validation.validator;
 
 import Wr40.cardiary.exception.YearValidationException;
+import Wr40.cardiary.validation.constraint.YearConstraint;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

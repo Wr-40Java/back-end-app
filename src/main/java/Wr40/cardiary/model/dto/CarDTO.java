@@ -1,6 +1,6 @@
 package Wr40.cardiary.model.dto;
 
-import Wr40.cardiary.validation.YearConstraint;
+import Wr40.cardiary.validation.constraint.YearConstraint;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
