@@ -1,5 +1,6 @@
 package Wr40.cardiary.model.dto;
 
+import Wr40.cardiary.validation.YearConstraint;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -24,6 +25,7 @@ public class CarDTO {
     @NotEmpty
     private String color;
     @NotNull
+    @YearConstraint
     private Year productionYear;
     @NotNull
     @Min(value = 1)
