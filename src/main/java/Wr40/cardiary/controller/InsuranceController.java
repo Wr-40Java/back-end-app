@@ -47,4 +47,10 @@ public class InsuranceController {
         return String.format("Company by given %d id was successfully deleted!", id);
     }
 
+    @PutMapping("update/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public InsuranceCompanyDTO updateInsuranceCompany(@PathVariable Integer id, @Valid @RequestBody InsuranceCompanyDTO insuranceCompanyDTO) {
+        return insuranceService.updateInsuranceCompany(insuranceCompanyDTO, id);
+    }
+
 }
