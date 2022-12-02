@@ -1,5 +1,6 @@
 package Wr40.cardiary.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.*;

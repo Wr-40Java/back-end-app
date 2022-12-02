@@ -1,9 +1,6 @@
 package Wr40.cardiary.handler;
 
-import Wr40.cardiary.exception.CarAlreadyExistException;
-import Wr40.cardiary.exception.NoSuchCarFoundException;
-import Wr40.cardiary.exception.WrongEmailAddressException;
-import Wr40.cardiary.exception.YearValidationException;
+import Wr40.cardiary.exception.*;
 import Wr40.cardiary.model.ErrorDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,5 +34,11 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public final ResponseEntity<ErrorDetails> handleWrongEmailAddressException(WrongEmailAddressException e){
         return ResponseEntity.badRequest().body(new ErrorDetails(LocalDateTime.now(),e.getMessage(),HttpStatus.BAD_REQUEST));
+    }
+
+    @ExceptionHandler(InsuranceCompanyAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public final ResponseEntity<ErrorDetails> handleExistingInsCompanyNameException(InsuranceCompanyAlreadyExistsException e) {
+        return ResponseEntity.badRequest().body(new ErrorDetails(LocalDateTime.now(), e.getMessage(), HttpStatus.BAD_REQUEST));
     }
 }
