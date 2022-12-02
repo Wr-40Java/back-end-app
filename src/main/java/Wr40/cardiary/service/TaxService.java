@@ -1,0 +1,53 @@
+package Wr40.cardiary.service;
+
+import Wr40.cardiary.exception.TaxAlreadyExistException;
+import Wr40.cardiary.exception.TaxNotFoundException;
+import Wr40.cardiary.model.entity.Tax;
+import Wr40.cardiary.repo.TaxRepository;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@Transactional
+public class TaxService {
+
+    TaxRepository taxRepository;
+
+    @Autowired
+    public TaxService(TaxRepository taxRepository) {
+        this.taxRepository = taxRepository;
+    }
+
+    public Tax saveTax(Tax tax) {
+        if (taxRepository.findById(tax.getId()).isPresent()) {
+            throw new TaxAlreadyExistException();
+        }
+        return taxRepository.save(tax);
+    }
+
+    public Tax getTax(Long id) {
+        return taxRepository.findById(id).orElseThrow(TaxNotFoundException::new);
+    }
+
+    public List<Tax> getAllTaxes() {
+        return taxRepository.findAll();
+    }
+
+    public void deleteTax(Long id) {
+        Tax tax = taxRepository.findById(id).orElseThrow(TaxNotFoundException::new);
+        taxRepository.delete(tax);
+    }
+
+    public void deleteAllTaxes() {
+        taxRepository.deleteAll();
+    }
+
+    public Tax updateTax(Tax tax) {
+        Tax taxToUpdate = taxRepository.findById(tax.getId()).orElseThrow(TaxNotFoundException::new);
+        taxToUpdate.setCostOfTransaction(tax.getCostOfTransaction());
+        return taxRepository.save(taxToUpdate);
+    }
+}
