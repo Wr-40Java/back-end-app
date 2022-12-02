@@ -1,6 +1,8 @@
 package Wr40.cardiary.service;
 
 import Wr40.cardiary.exception.UserNotFoundException;
+import Wr40.cardiary.exception.UserNotFoundException;
+import Wr40.cardiary.model.entity.User;
 import Wr40.cardiary.exception.UserAlreadyExistedException;
 import Wr40.cardiary.exception.WrongEmailAddressException;
 import Wr40.cardiary.model.entity.User;
@@ -10,6 +12,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,6 +22,14 @@ import java.util.regex.Pattern;
 @Transactional
 public class UserService {
     UserRepository userRepository;
+
+    public List<User> getAllUsers(){
+        return userRepository.findAll();
+    }
+
+    public User getUser(String username){
+        return userRepository.findUserByUsername(username).orElseThrow(UserNotFoundException::new);
+    }
 
     @Autowired
     public UserService(UserRepository userRepository) {
@@ -39,7 +51,7 @@ public class UserService {
         }
         return userRepository.save(user);
     }
-    
+
     public void deleteUser(String username) {
         User user = userRepository.findUserByUsername(username).orElseThrow(UserNotFoundException::new);
         userRepository.delete(user);

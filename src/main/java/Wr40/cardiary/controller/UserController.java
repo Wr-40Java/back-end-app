@@ -1,5 +1,6 @@
 package Wr40.cardiary.controller;
 
+import Wr40.cardiary.model.entity.User;
 import Wr40.cardiary.model.dto.UserDTO;
 import Wr40.cardiary.model.entity.User;
 import Wr40.cardiary.service.UserService;
@@ -7,7 +8,14 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -17,6 +25,12 @@ public class UserController {
     UserService userService;
 
     ModelMapper modelMapper;
+
+    @GetMapping("/get")
+    @ResponseStatus(HttpStatus.OK)
+    public List<User> getAllUsers(){
+        return userService.getAllUsers();
+    }
 
     @PostMapping("/save")
     @ResponseStatus(HttpStatus.CREATED)

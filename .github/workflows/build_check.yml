@@ -1,7 +1,12 @@
 name: Build check
 
 on:
-  [push, pull_request]
+  pull_request:
+    branches:    
+      - development
+  push:
+    branches-ignore:
+      - development
 
 jobs:
   build:
