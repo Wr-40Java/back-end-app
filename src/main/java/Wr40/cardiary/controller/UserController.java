@@ -1,9 +1,7 @@
 package Wr40.cardiary.controller;
 
 import Wr40.cardiary.model.dto.UserDTO;
-import Wr40.cardiary.model.entity.Car;
 import Wr40.cardiary.model.entity.User;
-import Wr40.cardiary.service.CarService;
 import Wr40.cardiary.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -17,9 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     UserService userService;
-
     ModelMapper modelMapper;
-
 
     @PostMapping("/save")
     @ResponseStatus(HttpStatus.CREATED)
@@ -44,5 +40,4 @@ public class UserController {
     public User getUser(@PathVariable String username){
         return userService.getUser(username);
     }
-
 }
