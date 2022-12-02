@@ -25,4 +25,13 @@ public class TaxTypeService {
     public TaxType getTaxTypeById(Long id) {
         return taxTypeRepository.findById(id).orElseThrow(NoSuchEntityFound::new);
     }
+
+    public TaxType updateTaxType(Long id, TaxType mappedTaxType) {
+        TaxType foundTaxType = taxTypeRepository.findById(id).orElseThrow(NoSuchEntityFound::new);
+        foundTaxType.setName(mappedTaxType.getName());
+        foundTaxType.setDescription(mappedTaxType.getDescription());
+        foundTaxType.setInstitutionToPayFor(mappedTaxType.getInstitutionToPayFor());
+        foundTaxType.setInstitutionToPayForPhoneNumber(mappedTaxType.getInstitutionToPayForPhoneNumber());
+        return taxTypeRepository.save(foundTaxType);
+    }
 }

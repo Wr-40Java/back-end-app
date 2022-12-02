@@ -56,4 +56,15 @@ public class TaxTypeServiceTest {
         Mockito.when(taxTypeRepository.findById(taxType.getId())).thenThrow(new NoSuchEntityFound());
         Assertions.assertThrows(NoSuchEntityFound.class, () -> taxTypeService.getTaxTypeById(taxType.getId()));
     }
+
+    @Test
+    public void whenUpdateTaxType_shouldUpdateGivenTaxType(){
+        TaxType taxType = new TaxType();
+        TaxType taxType1 = new TaxType();
+        taxType1.setDescription("Something");
+        Mockito.when(taxTypeRepository.findById(taxType.getId())).thenReturn(Optional.of(taxType));
+        Mockito.when(taxTypeRepository.save(taxType)).thenReturn(taxType1);
+        TaxType updatedTaxType = taxTypeService.updateTaxType(taxType.getId(), taxType1);
+        Assertions.assertEquals("Something",updatedTaxType.getDescription());
+    }
 }
