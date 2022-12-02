@@ -1,5 +1,6 @@
 package Wr40.cardiary.service;
 
+import Wr40.cardiary.exception.NoSuchEntityFound;
 import Wr40.cardiary.exception.TaxTypeAlreadyExistsException;
 import Wr40.cardiary.model.entity.TaxType;
 import Wr40.cardiary.repo.TaxTypeRepository;
@@ -19,5 +20,9 @@ public class TaxTypeService {
             throw new TaxTypeAlreadyExistsException();
         }
         return taxTypeRepository.save(mappedTaxType);
+    }
+
+    public TaxType getTaxTypeById(Long id) {
+        return taxTypeRepository.findById(id).orElseThrow(NoSuchEntityFound::new);
     }
 }
