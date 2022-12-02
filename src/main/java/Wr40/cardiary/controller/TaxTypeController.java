@@ -24,4 +24,10 @@ public class TaxTypeController {
         TaxType mappedTaxType = modelMapper.map(dto, TaxType.class);
         return taxTypeService.saveTaxType(mappedTaxType);
     }
+
+    @PostMapping("/get/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public TaxType getTaxType(@PathVariable Long id){
+        return taxTypeService.getTaxTypeById(id);
+    }
 }

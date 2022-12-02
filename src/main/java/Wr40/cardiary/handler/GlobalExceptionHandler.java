@@ -41,4 +41,10 @@ public class GlobalExceptionHandler {
     public final ResponseEntity<ErrorDetails> handleTaxTypeAlreadyExistsException(TaxTypeAlreadyExistsException e){
         return ResponseEntity.badRequest().body(new ErrorDetails(LocalDateTime.now(),e.getMessage(),HttpStatus.BAD_REQUEST));
     }
+
+    @ExceptionHandler(NoSuchEntityFound.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public final ResponseEntity<ErrorDetails> handleNoSuchEntityFound(NoSuchEntityFound e){
+        return ResponseEntity.badRequest().body(new ErrorDetails(LocalDateTime.now(),e.getMessage(),HttpStatus.BAD_REQUEST));
+    }
 }
