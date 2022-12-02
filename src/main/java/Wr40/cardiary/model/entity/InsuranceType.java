@@ -1,9 +1,14 @@
 package Wr40.cardiary.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
 import java.math.BigDecimal;
 
 @Entity
+@Accessors(chain = true) @Setter
 public class InsuranceType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

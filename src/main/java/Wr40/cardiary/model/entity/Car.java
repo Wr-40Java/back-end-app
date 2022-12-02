@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Year;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Getter
@@ -17,7 +16,6 @@ import java.util.Set;
 public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
     @Column(length = 45)
     private String brand;
@@ -46,4 +44,9 @@ public class Car {
             joinColumns = @JoinColumn(name = "car_id"),
             inverseJoinColumns = @JoinColumn(name = "insurance_company_id"))
     private Set<InsuranceCompany> insuranceCompanies;
+
+    public void addInsuranceCompany(InsuranceCompany insuranceCompany) {
+        insuranceCompanies.add(insuranceCompany);
+        insuranceCompany.setCars(Set.of(this));
+    }
 }
