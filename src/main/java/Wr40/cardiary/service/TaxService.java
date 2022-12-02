@@ -1,6 +1,5 @@
 package Wr40.cardiary.service;
 
-import Wr40.cardiary.exception.TaxAlreadyExistException;
 import Wr40.cardiary.exception.TaxNotFoundException;
 import Wr40.cardiary.model.entity.Tax;
 import Wr40.cardiary.repo.TaxRepository;
@@ -22,9 +21,6 @@ public class TaxService {
     }
 
     public Tax saveTax(Tax tax) {
-        if (taxRepository.findById(tax.getId()).isPresent()) {
-            throw new TaxAlreadyExistException();
-        }
         return taxRepository.save(tax);
     }
 
@@ -45,8 +41,8 @@ public class TaxService {
         taxRepository.deleteAll();
     }
 
-    public Tax updateTax(Tax tax) {
-        Tax taxToUpdate = taxRepository.findById(tax.getId()).orElseThrow(TaxNotFoundException::new);
+    public Tax updateTax(Long id, Tax tax) {
+        Tax taxToUpdate = taxRepository.findById(id).orElseThrow(TaxNotFoundException::new);
         taxToUpdate.setCostOfTransaction(tax.getCostOfTransaction());
         return taxRepository.save(taxToUpdate);
     }

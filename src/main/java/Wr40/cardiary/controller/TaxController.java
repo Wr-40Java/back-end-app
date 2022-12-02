@@ -50,10 +50,10 @@ public class TaxController {
         taxService.deleteAllTaxes();
     }
 
-    @PutMapping("/update")
+    @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Tax updateTax(@Valid @RequestBody TaxDTO dto){
+    public Tax updateTax(@PathVariable Long id, @Valid @RequestBody TaxDTO dto){
         Tax mappedTax = modelMapper.map(dto, Tax.class);
-        return taxService.updateTax(mappedTax);
+        return taxService.updateTax(id, mappedTax);
     }
 }

@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface TaxRepository extends JpaRepository<Tax, Long> {
-    Optional<Tax> findById(Long id);
+
 }
