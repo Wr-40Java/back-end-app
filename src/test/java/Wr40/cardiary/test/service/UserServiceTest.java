@@ -13,6 +13,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.Mockito.verify;
@@ -25,6 +27,23 @@ public class UserServiceTest {
     @InjectMocks
     private UserService userService;
 
+    @Test
+    public void whenFindAll_shouldReturnListOFSizeOne_IfOneUserAdded(){
+        List<User> list = new ArrayList<>();
+        list.add(new User());
+        Mockito.when(userRepository.findAll()).thenReturn(list);
+        List<User> allUsers = userService.getAllUsers();
+        Assertions.assertEquals(1,allUsers.size());
+
+    }
+
+    @Test
+    public void whenFindAll_shouldReturnListOFSizeZero_IfNoUserAdded(){
+        List<User> list = new ArrayList<>();
+        Mockito.when(userRepository.findAll()).thenReturn(list);
+        List<User> allUsers = userService.getAllUsers();
+        Assertions.assertEquals(0,allUsers.size());
+    }
     @Test
     public void whenSavingUserShouldSave() {
         User user = new User();
