@@ -19,8 +19,6 @@ public class CarService {
 
     CarRepository carRepository;
 
-    EntityManager entityManager;
-
     public Car saveCar(Car car) {
         if (carRepository.findByVINnumber(car.getVINnumber()).isPresent()) {
             throw new CarAlreadyExistsException();
