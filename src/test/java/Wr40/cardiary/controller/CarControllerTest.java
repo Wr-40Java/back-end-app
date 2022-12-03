@@ -10,9 +10,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.time.Year;
 
 
-@RunWith(SpringRunner.class)
+@SpringBootTest(classes = DatabaseConfig.class)
 @AutoConfigureMockMvc
 class CarControllerTest {
     @Autowired
@@ -28,9 +29,9 @@ class CarControllerTest {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
     }
 
-//    @Test
-//    void shouldReturnCreatedStatusCode() throws Exception {
-//
+    @Test
+    void shouldReturnCreatedStatusCode() throws Exception {
+
 //        CarDTO carDTO = new CarDTO();
 //        carDTO.setBrand("Toyota")
 //                .setModel("Yaris")
@@ -39,7 +40,7 @@ class CarControllerTest {
 //                .setVinnumber("198343234")
 //                .setColor("Red")
 //                .setHorsePower((short) 100)
-//                .setProductionYear(Year.of(2010));
+//                .setProductionYear(Year.of(2000));
 //
 //
 //        String json = mapper.writeValueAsString(carDTO);
@@ -52,9 +53,8 @@ class CarControllerTest {
 //                .characterEncoding("utf-8"))
 //                .andDo(print())
 //                .andExpect(status().isCreated());
-//
-//
-//
-//    }
+
+
+    }
 
 }
