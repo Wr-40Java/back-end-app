@@ -28,6 +28,12 @@ public class InsuranceController {
         return insuranceService.saveInsuranceWithTypeToTheCar(insuranceCompanyWithTypeDTO, vinNumber);
     }
 
+    @GetMapping("/list/{vin_number}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<InsuranceCompanyWithTypeDTO> getAllInsuranceCompanyWithTypeForCar(@PathVariable(name = "vin_number", required = true) String vinNumber) {
+        return insuranceService.getInsuranceCompWithType(vinNumber);
+    }
+
     @PostMapping("/save")
     @ResponseStatus(HttpStatus.CREATED)
     public InsuranceCompanyDTO saveInsuranceCompany(@Valid @RequestBody InsuranceCompanyDTO insuranceCompanyDTO) {

@@ -5,10 +5,12 @@ import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.Getter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;
 
-@Data
+@Data @ToString
 @Accessors(chain = true)
 public class InsuranceCompanyWithTypeDTO {
     @NotEmpty
