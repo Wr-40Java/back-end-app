@@ -32,19 +32,9 @@ public class UserService {
         return userRepository.findUserByUsername(username).orElseThrow(UserNotFoundException::new);
     }
 
-    private static final String EMAIL_VALIDATION_REGEX = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
-            + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
-
     public User saveUser(User user) {
 
-        if (userRepository.findUserByUsername(user.getUsername()).isPresent()) {
-            throw new UserAlreadyExistedException();
-        }
-        Pattern pattern = Pattern.compile(EMAIL_VALIDATION_REGEX);
-        Matcher matcher = pattern.matcher(user.getEmail());
-        if (!matcher.matches()) {
-            throw new WrongEmailAddressException();
-        }
+
         return userRepository.save(user);
     }
 
