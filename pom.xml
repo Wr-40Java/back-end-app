@@ -101,14 +101,6 @@
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.8</version>
-				<configuration>
-					<excludes>
-						<exclude>**/controller/**</exclude>
-						<exclude>**/security/**</exclude>
-						<exclude>**/config/**</exclude>
-						<exclude>**/entity/**</exclude>
-					</excludes>
-				</configuration>
 				<executions>
 					<execution>
 						<id>default-prepare-agent</id>
