@@ -37,4 +37,10 @@ public class TaxTypeController {
         TaxType mappedTaxType = modelMapper.map(dto, TaxType.class);
         return taxTypeService.updateTaxType(id, mappedTaxType);
     }
+
+    @DeleteMapping("/delete/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteTaxType(@PathVariable Long id) {
+        taxTypeService.deleteTaxType(id);
+    }
 }

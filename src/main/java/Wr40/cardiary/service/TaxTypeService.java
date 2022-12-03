@@ -34,4 +34,9 @@ public class TaxTypeService {
         foundTaxType.setInstitutionToPayForPhoneNumber(mappedTaxType.getInstitutionToPayForPhoneNumber());
         return taxTypeRepository.save(foundTaxType);
     }
+
+    public void deleteTaxType(Long id) {
+        TaxType taxType = taxTypeRepository.findById(id).orElseThrow(NoSuchEntityFound::new);
+        taxTypeRepository.delete(taxType);
+    }
 }
