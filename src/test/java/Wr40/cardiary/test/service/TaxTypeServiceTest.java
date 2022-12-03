@@ -67,4 +67,11 @@ public class TaxTypeServiceTest {
         TaxType updatedTaxType = taxTypeService.updateTaxType(taxType.getId(), taxType1);
         Assertions.assertEquals("Something",updatedTaxType.getDescription());
     }
+
+    @Test
+    public void whenDeleteTaxType_givenWrongId_shouldThrowException(){
+        TaxType taxType = new TaxType();
+        Mockito.when(taxTypeRepository.findById(taxType.getId())).thenThrow(new NoSuchEntityFound());
+        Assertions.assertThrows(NoSuchEntityFound.class, () -> taxTypeService.deleteTaxType(taxType.getId()));
+    }
 }
