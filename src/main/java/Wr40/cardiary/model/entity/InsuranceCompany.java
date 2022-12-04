@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -23,5 +24,5 @@ public class InsuranceCompany {
     private InsuranceType insuranceType;
 
     @ManyToMany(mappedBy = "insuranceCompanies")
-    private Set<Car> cars;
+    private Set<Car> cars = new HashSet<>();
 }

@@ -42,6 +42,14 @@ public class InsuranceController {
         return insuranceService.linkCarWithInsuranceCompanyAndInsuranceType(vinNumber, InsCompId, InsTypeId);
     }
 
+    @DeleteMapping("/delete/{vin_number}/{ic_id}/{it_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public String deleteLinkedInsuranceCompanyWithTypeAndCar(@PathVariable(name = "vin_number", required = true) String vinNumber,
+                                                                          @PathVariable(name = "ic_id", required = true) Integer InsCompId,
+                                                                          @PathVariable(name = "it_id", required = false) Integer InsTypeId) {
+        return insuranceService.deleteLinkInsuranceCompanyWithTypeAndCar(vinNumber, InsCompId, InsTypeId);
+    }
+
     @PostMapping("/save")
     @ResponseStatus(HttpStatus.CREATED)
     public InsuranceCompanyDTO saveInsuranceCompany(@Valid @RequestBody InsuranceCompanyDTO insuranceCompanyDTO) {

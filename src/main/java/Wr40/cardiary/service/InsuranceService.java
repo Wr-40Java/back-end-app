@@ -13,7 +13,6 @@ import Wr40.cardiary.model.entity.InsuranceType;
 import Wr40.cardiary.repo.CarRepository;
 import Wr40.cardiary.repo.InsuranceRepository;
 import Wr40.cardiary.repo.InsuranceTypeRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -84,6 +83,17 @@ public class InsuranceService {
         savedInsuranceCompany.setInsuranceTypeDTO(
                 modelMapper.map(savedCar.getInsuranceCompanies().stream().map(obj -> obj.getInsuranceType()).findFirst().get(), InsuranceTypeDTO.class));
         return savedInsuranceCompany;
+    }
+
+    public String deleteLinkInsuranceCompanyWithTypeAndCar(String VINNumber, Integer InsCompId, Integer InsTypeId) {
+        Car car = carRepository.findByVINnumber(VINNumber).orElseThrow(NoSuchCarFoundException::new);
+        for (InsuranceCompany insuranceCompany : car.getInsuranceCompanies()) {
+            if(insuranceCompany.getId().equals(Long.valueOf(InsCompId))) {
+                car.removeInsuranceCompany(insuranceCompany);
+            }
+        }
+        insuranceRepository.deleteById(Long.valueOf(InsCompId));
+        return "Successfully deleted insurance! You can still pick this company for different type of it.";
     }
 
     private InsuranceTypeDTO mapInsuranceTypeToDTO(InsuranceType insuranceType) {
