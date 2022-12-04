@@ -49,12 +49,10 @@ public class InsuranceService {
         allIncuranceCompaniesWithType.stream().map(o->o.getInsuranceType()).forEach(System.out::println);
         List<InsuranceCompanyWithTypeDTO> mappedInsCompanyDTO = allIncuranceCompaniesWithType.stream()
                 .map(obj -> modelMapper.map(obj, InsuranceCompanyWithTypeDTO.class)).toList();
-        System.out.println(mappedInsCompanyDTO);
         List<InsuranceCompanyWithTypeDTO> mappedInsCompanyWithTypeDTO = mappedInsCompanyDTO.stream()
-                .map(obj -> obj.setInsuranceTypeDTO(mapInsuranceTypeToDTO(allIncuranceCompaniesWithType.stream().peek(System.out::println)
-                                .filter(obj2 -> obj.getPhoneNumber().equals(obj2.getPhoneNumber())).peek(System.out::println)
+                .map(obj -> obj.setInsuranceTypeDTO(mapInsuranceTypeToDTO(allIncuranceCompaniesWithType.stream()
+                                .filter(obj2 -> obj.getPhoneNumber().equals(obj2.getPhoneNumber()))
                                 .map(obj1 -> obj1.getInsuranceType()).findFirst().get()))).toList();
-        System.out.println(mappedInsCompanyWithTypeDTO);
         return mappedInsCompanyWithTypeDTO;
     }
 
