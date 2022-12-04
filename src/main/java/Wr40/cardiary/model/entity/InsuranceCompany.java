@@ -10,6 +10,7 @@ import lombok.experimental.Accessors;
 import java.util.Set;
 
 @Entity
+@ToString
 @Setter @Getter @Accessors(chain = true)
 public class InsuranceCompany {
     @Id

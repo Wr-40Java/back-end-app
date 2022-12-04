@@ -219,4 +219,36 @@ public class InsuranceServiceTest {
         Assertions.assertThrows(NoSuchInsuranceCompanyException.class, () -> insuranceService.updateInsuranceCompany(insuranceCompanyDTO, id));
 
     }
+
+    @Test
+    public void whenGetAllInsuranceCompaniesWithTypeForCarInvoked_shouldReturnListOfThose() {
+
+        //given
+        List<InsuranceCompany> insuranceCompanyList = new ArrayList<>();
+        List<InsuranceType> insuranceTypeList = new ArrayList<>();
+
+        InsuranceCompany insuranceCompany = new InsuranceCompany();
+        insuranceCompany.setName("NewSafeLvl").setDescription("For me the best so far").setPhoneNumber(19027883L);
+        InsuranceCompany insuranceCompany2 = new InsuranceCompany();
+        insuranceCompany.setName("BeingSafe").setDescription("Not bad, may be useful").setPhoneNumber(18101132L);
+
+        InsuranceType insuranceType = new InsuranceType();
+        insuranceType.setType("AUTOCASCO").setDescription("obligatory").setCoveredCompensation(BigDecimal.valueOf(200_000)).setCostsPerYear(BigDecimal.valueOf(2000));
+        InsuranceType insuranceType2 = new InsuranceType();
+        insuranceType2.setType("AUTOCASCO").setDescription("obligatory").setCoveredCompensation(BigDecimal.valueOf(200_000)).setCostsPerYear(BigDecimal.valueOf(2000));
+
+        insuranceCompany.setInsuranceType(insuranceType);
+        insuranceCompany2.setInsuranceType(insuranceType2);
+
+        insuranceCompanyList.add(insuranceCompany);
+        insuranceCompanyList.add(insuranceCompany2);
+
+        //when
+        Mockito.when(insuranceRepository.getAllInsuranceCompanies()).thenReturn(insuranceCompanyList);
+
+        //then
+        Assertions.assertEquals(insuranceCompanyList, insuranceRepository.getAllInsuranceCompanies());
+        Assertions.assertEquals(insuranceRepository.getAllInsuranceCompanies().size(), 2);
+    }
+
 }

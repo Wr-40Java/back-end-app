@@ -44,6 +44,25 @@ public class InsuranceService {
         return mappedInsCompanyDTO;
     }
 
+    public List<InsuranceCompanyWithTypeDTO> getInsuranceCompWithType(String VINNumber) {
+        List<InsuranceCompany> allIncuranceCompaniesWithType = insuranceRepository.getAllIncuranceCompaniesWithType(VINNumber);
+        allIncuranceCompaniesWithType.stream().map(o->o.getInsuranceType()).forEach(System.out::println);
+        List<InsuranceCompanyWithTypeDTO> mappedInsCompanyDTO = allIncuranceCompaniesWithType.stream()
+                .map(obj -> modelMapper.map(obj, InsuranceCompanyWithTypeDTO.class)).toList();
+        List<InsuranceCompanyWithTypeDTO> mappedInsCompanyWithTypeDTO = mappedInsCompanyDTO.stream()
+                .map(obj -> obj.setInsuranceTypeDTO(mapInsuranceTypeToDTO(allIncuranceCompaniesWithType.stream()
+                                .filter(obj2 -> obj.getPhoneNumber().equals(obj2.getPhoneNumber()))
+                                .map(obj1 -> obj1.getInsuranceType()).findFirst().get()))).toList();
+        return mappedInsCompanyWithTypeDTO;
+    }
+
+    private InsuranceTypeDTO mapInsuranceTypeToDTO(InsuranceType insuranceType) {
+        InsuranceTypeDTO insuranceTypeDTO = new InsuranceTypeDTO();
+        insuranceTypeDTO.setType(insuranceType.getType()).setDescription(insuranceType.getDescription()).setCostsPerYear(insuranceType.getCostsPerYear())
+                .setCoveredCompensation(insuranceType.getCoveredCompensation());
+        return insuranceTypeDTO;
+    }
+
     public InsuranceCompanyDTO saveInsurenceCompany(InsuranceCompanyDTO insuranceCompanyDTO) {
         Optional<InsuranceCompany> insuranceCompanyOptional = insuranceRepository.findByName(insuranceCompanyDTO.getName());
         if(insuranceCompanyOptional.isPresent()) {
@@ -55,14 +74,14 @@ public class InsuranceService {
         return mappedInCompanyDTO;
     }
 
-    public void deleteInsuranceCompById(Integer id) {
-        InsuranceCompany insuranceCompany = insuranceRepository.findById(Long.valueOf(id)).orElseThrow(NoSuchInsuranceCompanyException::new);
-        insuranceRepository.deleteById(insuranceCompany.getId());
-    }
-
     public List<InsuranceCompanyDTO> getAllInsuranceCompanies() {
         List<InsuranceCompany> allInsuranceCompanies = insuranceRepository.getAllInsuranceCompanies();
         return allInsuranceCompanies.stream().map(obj -> modelMapper.map(obj, InsuranceCompanyDTO.class)).toList();
+    }
+
+    public void deleteInsuranceCompById(Integer id) {
+        InsuranceCompany insuranceCompany = insuranceRepository.findById(Long.valueOf(id)).orElseThrow(NoSuchInsuranceCompanyException::new);
+        insuranceRepository.deleteById(insuranceCompany.getId());
     }
 
     public InsuranceCompanyDTO updateInsuranceCompany(InsuranceCompanyDTO insuranceCompanyDTO, Integer id) {
