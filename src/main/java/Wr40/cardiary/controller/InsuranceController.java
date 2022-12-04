@@ -34,6 +34,14 @@ public class InsuranceController {
         return insuranceService.getInsuranceCompWithType(vinNumber);
     }
 
+    @PostMapping("/link/{vin_number}/{ic_id}/{it_id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public InsuranceCompanyWithTypeDTO linkInsuranceCompanyWithTypeAndCar(@PathVariable(name = "vin_number", required = true) String vinNumber,
+                                                                          @PathVariable(name = "ic_id", required = true) Integer InsCompId,
+                                                                          @PathVariable(name = "it_id", required = true) Integer InsTypeId) {
+        return insuranceService.linkCarWithInsuranceCompanyAndInsuranceType(vinNumber, InsCompId, InsTypeId);
+    }
+
     @PostMapping("/save")
     @ResponseStatus(HttpStatus.CREATED)
     public InsuranceCompanyDTO saveInsuranceCompany(@Valid @RequestBody InsuranceCompanyDTO insuranceCompanyDTO) {

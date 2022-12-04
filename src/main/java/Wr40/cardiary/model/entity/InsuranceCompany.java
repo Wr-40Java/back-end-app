@@ -10,7 +10,6 @@ import lombok.experimental.Accessors;
 import java.util.Set;
 
 @Entity
-@ToString
 @Setter @Getter @Accessors(chain = true)
 public class InsuranceCompany {
     @Id
@@ -20,7 +19,7 @@ public class InsuranceCompany {
     private String name;
     private Long phoneNumber;
     private String description;
-    @OneToOne(cascade = CascadeType.PERSIST, orphanRemoval = false)
+    @OneToOne(orphanRemoval = false)
     private InsuranceType insuranceType;
 
     @ManyToMany(mappedBy = "insuranceCompanies")
