@@ -1,11 +1,9 @@
 package Wr40.cardiary.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.time.Year;
 import java.util.*;
@@ -44,10 +42,15 @@ public class Car {
             name = "car_company",
             joinColumns = @JoinColumn(name = "car_id"),
             inverseJoinColumns = @JoinColumn(name = "insurance_company_id"))
-    private Set<InsuranceCompany> insuranceCompanies;
+    private Set<InsuranceCompany> insuranceCompanies = new HashSet<>();
 
     public void addInsuranceCompany(InsuranceCompany insuranceCompany) {
         insuranceCompanies.add(insuranceCompany);
-        insuranceCompany.setCars(Set.of(this));
+        insuranceCompany.getCars().add(this);
+    }
+
+    public void removeInsuranceCompany(InsuranceCompany insuranceCompany) {
+        this.insuranceCompanies.remove(insuranceCompany);
+        insuranceCompany.getCars().remove(this);
     }
 }

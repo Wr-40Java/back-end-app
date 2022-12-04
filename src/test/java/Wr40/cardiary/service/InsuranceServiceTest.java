@@ -13,6 +13,7 @@ import Wr40.cardiary.model.entity.InsuranceType;
 import Wr40.cardiary.repo.CarRepository;
 import Wr40.cardiary.repo.InsuranceRepository;
 import Wr40.cardiary.repo.InsuranceTypeRepository;
+import org.checkerframework.checker.units.qual.C;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -138,7 +139,7 @@ public class InsuranceServiceTest {
     }
 
     @Test
-    public void whenSavingInsuranceCompanyAloneAlreadyExisting_shouldThrowException() {
+    public void whenDeletingInsuranceCompanyAlone_shouldDeleteObject() {
         //given
         Integer id = 1;
         InsuranceCompany insuranceCompany = new InsuranceCompany();
@@ -335,4 +336,34 @@ public class InsuranceServiceTest {
         Assertions.assertThrows(NoSuchInsuranceTypeException.class, () -> insuranceService.linkCarWithInsuranceCompanyAndInsuranceType(VINNumber, 1, 1));
     }
 
+    @Test
+    public void whenDeletingLinkedCarInsuranceCompanyType_shouldReturnPositiveInfo() {
+        //given
+        String VINNumber = "SRC1000";
+
+        InsuranceCompany insuranceCompany = new InsuranceCompany();
+        insuranceCompany.setId(1L);
+        Car car = new Car();
+        car.setInsuranceCompanies(new HashSet<>());
+        car.addInsuranceCompany(insuranceCompany);
+
+        Mockito.when(carRepository.findByVINnumber(VINNumber)).thenReturn((Optional.of(car)));
+
+        //when
+        //then
+        insuranceService.deleteLinkInsuranceCompanyWithTypeAndCar(VINNumber, 1, 1);
+        Mockito.verify(insuranceRepository).deleteById(Long.valueOf(1));
+    }
+
+    @Test
+    public void whenDeletingLinkingInsuranceTypeWhenGivenCarNotExisting_shouldThrowException() {
+
+        //given
+        String VINNumber = "SRC1000";
+        Mockito.when(carRepository.findByVINnumber(VINNumber)).thenReturn(Optional.empty());
+
+        //when
+        //then
+        Assertions.assertThrows(NoSuchCarFoundException.class, () -> insuranceService.deleteLinkInsuranceCompanyWithTypeAndCar(VINNumber, 1, 1));
+    }
 }
