@@ -29,6 +29,7 @@ import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 
 @RunWith(MockitoJUnitRunner.class)
 public class InsuranceServiceTest {
@@ -366,4 +367,99 @@ public class InsuranceServiceTest {
         //then
         Assertions.assertThrows(NoSuchCarFoundException.class, () -> insuranceService.deleteLinkInsuranceCompanyWithTypeAndCar(VINNumber, 1, 1));
     }
+
+    @Test
+    public void whenUpdatingLinkingCarInsuranceCompanyAndType_shouldAssignEntitesAndSave() {
+
+        //given
+        String VINNumber = "SRC1000";
+        Long OldInsCompId = 1L;
+        Long InsCompId = 10L;
+        Long InsTypeId = 5L;
+        InsuranceType insuranceType = new InsuranceType();
+        insuranceType.setType("Collision insurance").setDescription("Keep me solvable in case something happend on the road").setCostsPerYear(BigDecimal.valueOf(900))
+                .setCoveredCompensation(BigDecimal.valueOf(200_000));
+
+        InsuranceType insuranceTypeToAssignToCar = new InsuranceType();
+        insuranceTypeToAssignToCar.setType("Collision insurance").setDescription("Keep me solvable in case something happend on the road").setCostsPerYear(BigDecimal.valueOf(900));
+
+        InsuranceCompany insuranceCompany = new InsuranceCompany();
+        insuranceCompany.setName("NewSafeLvl").setDescription("For me the best so far").setPhoneNumber(19027883L).setInsuranceType(insuranceType);
+
+        InsuranceCompany insuranceCompanyToAssignToCar = new InsuranceCompany();
+        insuranceCompanyToAssignToCar.setName("NewSafeLvl").setDescription("For me the best so far").setPhoneNumber(19027883L).setInsuranceType(insuranceType);
+
+        insuranceCompany.setInsuranceType(insuranceType);
+        insuranceCompanyToAssignToCar.setInsuranceType(insuranceTypeToAssignToCar);
+
+        Car car = new Car();
+        car.addInsuranceCompany(insuranceCompany);
+
+        Mockito.when(carRepository.findByVINnumber(VINNumber)).thenReturn(Optional.of(car));
+        Mockito.when(insuranceRepository.findById(OldInsCompId)).thenReturn((Optional.of(insuranceCompany)));
+
+        Car carNewVersion = new Car();
+        carNewVersion.addInsuranceCompany(insuranceCompanyToAssignToCar);
+
+        Mockito.when(insuranceRepository.findById(InsCompId)).thenReturn((Optional.of(insuranceCompanyToAssignToCar)));
+        Mockito.when(insuranceTypeRepository.findById(InsTypeId)).thenReturn((Optional.of(insuranceTypeToAssignToCar)));
+
+        Mockito.when(insuranceRepository.save(insuranceCompanyToAssignToCar)).thenReturn(insuranceCompanyToAssignToCar);
+
+        InsuranceTypeDTO insuranceTypeToAssignToCarDTO = new InsuranceTypeDTO();
+        insuranceTypeToAssignToCarDTO.setType("Collision insurance").setDescription("Keep me solvable in case something happend on the road").setCostsPerYear(BigDecimal.valueOf(900));
+        InsuranceCompanyWithTypeDTO insuranceCompanyToAssignToCarDTO = new InsuranceCompanyWithTypeDTO();
+        insuranceCompanyToAssignToCarDTO.setName("NewSafeLvl").setDescription("For me the best so far").setPhoneNumber(19027883L).setInsuranceTypeDTO(insuranceTypeToAssignToCarDTO);
+        Mockito.when(modelMapper.map(insuranceCompanyToAssignToCar, InsuranceCompanyWithTypeDTO.class)).thenReturn(insuranceCompanyToAssignToCarDTO);
+        Mockito.when(modelMapper.map(insuranceCompanyToAssignToCar.getInsuranceType(), InsuranceTypeDTO.class)).thenReturn(insuranceTypeToAssignToCarDTO);
+
+        //when
+        InsuranceCompanyWithTypeDTO updatedInsuranceCompanyWithTypeDTO = insuranceService
+                .updateLinkInsuranceCompanyWithTypeAndCar(VINNumber, OldInsCompId.intValue(),InsCompId.intValue(),InsTypeId.intValue());
+
+        //then
+        Assertions.assertEquals(updatedInsuranceCompanyWithTypeDTO, insuranceCompanyToAssignToCarDTO);
+        Mockito.verify(insuranceRepository).save(insuranceCompanyToAssignToCar);
+        Mockito.verify(insuranceTypeRepository).findById(InsTypeId);
+        Mockito.verify(insuranceRepository).findById(InsCompId);
+    }
+
+    @Test
+    public void whenUpdatingLinkingInsuranceTypeWhenGivenCarNotExisting_shouldThrowException() {
+
+        //given
+        String VINNumber = "SRC1000";
+        Mockito.when(carRepository.findByVINnumber(VINNumber)).thenReturn(Optional.empty());
+
+        //when
+        //then
+        Assertions.assertThrows(NoSuchCarFoundException.class, () -> insuranceService.updateLinkInsuranceCompanyWithTypeAndCar(VINNumber, 1, 1, 1));
+    }
+    @Test
+    public void whenUpdatingLinkingInsuranceTypeWhenGivenCarNotExisting_shouldThrowException2() {
+
+        //given
+        String VINNumber = "SRC1000";
+        Mockito.when(carRepository.findByVINnumber(VINNumber)).thenReturn(Optional.of(new Car()));
+        Mockito.when(insuranceRepository.findById(1L)).thenReturn(Optional.empty());
+
+        //when
+        //then
+        Assertions.assertThrows(NoSuchInsuranceCompanyException.class, () -> insuranceService.updateLinkInsuranceCompanyWithTypeAndCar(VINNumber, 1, 1, 1));
+    }
+    @Test
+    public void whenUpdatingLinkingInsuranceTypeWhenGivenCarNotExisting_shouldThrowException3() {
+
+        //given
+        String VINNumber = "SRC1000";
+        Mockito.when(carRepository.findByVINnumber(VINNumber)).thenReturn(Optional.of(new Car()));
+        Mockito.when(insuranceRepository.findById(1L)).thenReturn(Optional.of(new InsuranceCompany()));
+        Mockito.when(insuranceTypeRepository.findById(1L)).thenReturn(Optional.empty());
+
+        //when
+        //then
+        Assertions.assertThrows(NoSuchInsuranceTypeException.class, () -> insuranceService.updateLinkInsuranceCompanyWithTypeAndCar(VINNumber, 1, 1, 1));
+    }
+
+
 }
