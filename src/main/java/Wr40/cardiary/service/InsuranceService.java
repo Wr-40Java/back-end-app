@@ -85,6 +85,28 @@ public class InsuranceService {
         return savedInsuranceCompany;
     }
 
+    public InsuranceCompanyWithTypeDTO updateLinkInsuranceCompanyWithTypeAndCar(String VINNumber, Integer OldInsCompId, Integer InsCompId, Integer InsTypeId) {
+        Car car = carRepository.findByVINnumber(VINNumber).orElseThrow(NoSuchCarFoundException::new);
+        Optional<InsuranceCompany> insuranceCompanyOptional = insuranceRepository.findById(Long.valueOf(OldInsCompId));
+        if(!insuranceCompanyOptional.isPresent()) {
+            throw new NoSuchInsuranceCompanyException();
+        }
+        InsuranceCompany toAssignInsuranceCompany = insuranceRepository.findById(Long.valueOf(InsCompId)).orElseThrow(NoSuchInsuranceCompanyException::new);
+
+        InsuranceType toAssignInsuranceType = insuranceTypeRepository.findById(Long.valueOf(InsTypeId)).orElseThrow(NoSuchInsuranceTypeException::new);
+        toAssignInsuranceCompany.setInsuranceType(toAssignInsuranceType);
+
+        InsuranceCompany savedInsuranceCompany = insuranceRepository.save(toAssignInsuranceCompany);
+
+        car.removeInsuranceCompany(insuranceCompanyOptional.get());
+        car.addInsuranceCompany(toAssignInsuranceCompany);
+        carRepository.save(car);
+
+        InsuranceCompanyWithTypeDTO mappedInsCompanyDTO = modelMapper.map(savedInsuranceCompany, InsuranceCompanyWithTypeDTO.class);
+        mappedInsCompanyDTO.setInsuranceTypeDTO(modelMapper.map(savedInsuranceCompany.getInsuranceType(), InsuranceTypeDTO.class));
+        return mappedInsCompanyDTO;
+    }
+
     public String deleteLinkInsuranceCompanyWithTypeAndCar(String VINNumber, Integer InsCompId, Integer InsTypeId) {
         Car car = carRepository.findByVINnumber(VINNumber).orElseThrow(NoSuchCarFoundException::new);
         for (InsuranceCompany insuranceCompany : car.getInsuranceCompanies()) {
