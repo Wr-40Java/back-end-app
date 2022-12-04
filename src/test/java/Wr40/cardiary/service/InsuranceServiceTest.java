@@ -1,7 +1,9 @@
 package Wr40.cardiary.service;
 
 import Wr40.cardiary.exception.InsuranceCompanyAlreadyExistsException;
+import Wr40.cardiary.exception.NoSuchCarFoundException;
 import Wr40.cardiary.exception.NoSuchInsuranceCompanyException;
+import Wr40.cardiary.exception.NoSuchInsuranceTypeException;
 import Wr40.cardiary.model.dto.insurance.InsuranceCompanyDTO;
 import Wr40.cardiary.model.dto.insurance.InsuranceCompanyWithTypeDTO;
 import Wr40.cardiary.model.dto.insurance.InsuranceTypeDTO;
@@ -10,6 +12,7 @@ import Wr40.cardiary.model.entity.InsuranceCompany;
 import Wr40.cardiary.model.entity.InsuranceType;
 import Wr40.cardiary.repo.CarRepository;
 import Wr40.cardiary.repo.InsuranceRepository;
+import Wr40.cardiary.repo.InsuranceTypeRepository;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -21,12 +24,10 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 
 @RunWith(MockitoJUnitRunner.class)
 public class InsuranceServiceTest {
@@ -36,6 +37,8 @@ public class InsuranceServiceTest {
     @Mock
     private InsuranceRepository insuranceRepository;
 
+    @Mock
+    private InsuranceTypeRepository insuranceTypeRepository;
     @Mock
     private ModelMapper modelMapper;
     @InjectMocks
@@ -249,6 +252,87 @@ public class InsuranceServiceTest {
         //then
         Assertions.assertEquals(insuranceCompanyList, insuranceRepository.getAllInsuranceCompanies());
         Assertions.assertEquals(insuranceRepository.getAllInsuranceCompanies().size(), 2);
+    }
+
+    @Test
+    public void whenLinkingCarInsuranceCompanyAndType_shouldLinkEntitesAndSave() {
+
+        //given
+        String VINNumber = "SRC1000";
+        Long InsCompId = 1L;
+        Long InsTypeId = 1L;
+        Car car = new Car();
+        InsuranceTypeDTO insuranceTypeDTO = new InsuranceTypeDTO();
+        insuranceTypeDTO.setType("Collision insurance").setDescription("Keep me solvable in case something happend on the road").setCostsPerYear(BigDecimal.valueOf(900))
+                .setCoveredCompensation(BigDecimal.valueOf(200_000));
+
+        InsuranceCompanyWithTypeDTO insuranceCompanyWithTypeDTO = new InsuranceCompanyWithTypeDTO();
+        insuranceCompanyWithTypeDTO.setName("NewSafeLvl").setDescription("For me the best so far").setPhoneNumber(19027883L).setInsuranceTypeDTO(insuranceTypeDTO);
+
+        InsuranceType insuranceType = new InsuranceType();
+        insuranceType.setType("Collision insurance").setDescription("Keep me solvable in case something happend on the road").setCostsPerYear(BigDecimal.valueOf(900));
+
+        InsuranceCompany insuranceCompany = new InsuranceCompany();
+        insuranceCompany.setName("NewSafeLvl").setDescription("For me the best so far").setPhoneNumber(19027883L).setInsuranceType(insuranceType);
+
+        Mockito.when(carRepository.findByVINnumber(VINNumber)).thenReturn(Optional.of(car));
+        Mockito.when(insuranceRepository.findById(InsCompId)).thenReturn((Optional.of(insuranceCompany)));
+        Mockito.when(insuranceTypeRepository.findById(InsTypeId)).thenReturn((Optional.of(insuranceType)));
+
+        HashSet<InsuranceCompany> objects = new HashSet<>();
+        insuranceCompany.setInsuranceType(insuranceType);
+        objects.add(insuranceCompany);
+        car.setInsuranceCompanies(objects);
+        Mockito.when(carRepository.save(car)).thenReturn(car);
+
+        Mockito.when(modelMapper.map(insuranceCompany, InsuranceCompanyWithTypeDTO.class)).thenReturn(insuranceCompanyWithTypeDTO);
+        Mockito.when(modelMapper.map(insuranceType, InsuranceTypeDTO.class)).thenReturn(insuranceTypeDTO);
+
+        //when
+        InsuranceCompanyWithTypeDTO savedInsuranceCompanyWithTypeDTO = insuranceService.linkCarWithInsuranceCompanyAndInsuranceType(VINNumber, 1, 1);
+
+        //then
+        Assertions.assertEquals(savedInsuranceCompanyWithTypeDTO, insuranceCompanyWithTypeDTO);
+        Mockito.verify(carRepository).save(car);
+        Mockito.verify(insuranceTypeRepository).findById(InsTypeId);
+        Mockito.verify(insuranceRepository).findById(InsCompId);
+    }
+
+    @Test
+    public void whenLinkingCarNotExisting_shouldThrowException() {
+
+        //given
+        String VINNumber = "SRC1000";
+        Mockito.when(carRepository.findByVINnumber(VINNumber)).thenReturn(Optional.empty());
+
+        //when
+        //then
+        Assertions.assertThrows(NoSuchCarFoundException.class, () -> insuranceService.linkCarWithInsuranceCompanyAndInsuranceType(VINNumber, 1, 1));
+    }
+    @Test
+    public void whenLinkingInsuranceCompanyNotExisting_shouldThrowException() {
+
+        //given
+        String VINNumber = "SRC1000";
+        Mockito.when(carRepository.findByVINnumber("SRC1000")).thenReturn(Optional.of(new Car()));
+        Mockito.when(insuranceRepository.findById(1L)).thenReturn(Optional.empty());
+
+        //when
+        //then
+        Assertions.assertThrows(NoSuchInsuranceCompanyException.class, () -> insuranceService.linkCarWithInsuranceCompanyAndInsuranceType(VINNumber, 1, 1));
+    }
+    @Test
+    public void whenLinkingInsuranceTypeNotExisting_shouldThrowException() {
+
+        //given
+        String VINNumber = "SRC1000";
+        Mockito.when(carRepository.findByVINnumber("SRC1000")).thenReturn(Optional.of(new Car()));
+        Mockito.when(insuranceRepository.findById(1L)).thenReturn(Optional.of(new InsuranceCompany()));
+        Mockito.when(insuranceTypeRepository.findById(1L)).thenReturn(Optional.empty());
+
+        //when
+        //then
+        Assertions.assertThrows(NoSuchInsuranceTypeException.class, () -> insuranceService.linkCarWithInsuranceCompanyAndInsuranceType(VINNumber, 1, 1));
     }
 
 }

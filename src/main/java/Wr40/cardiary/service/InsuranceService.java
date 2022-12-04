@@ -3,6 +3,7 @@ package Wr40.cardiary.service;
 import Wr40.cardiary.exception.InsuranceCompanyAlreadyExistsException;
 import Wr40.cardiary.exception.NoSuchCarFoundException;
 import Wr40.cardiary.exception.NoSuchInsuranceCompanyException;
+import Wr40.cardiary.exception.NoSuchInsuranceTypeException;
 import Wr40.cardiary.model.dto.insurance.InsuranceCompanyDTO;
 import Wr40.cardiary.model.dto.insurance.InsuranceCompanyWithTypeDTO;
 import Wr40.cardiary.model.dto.insurance.InsuranceTypeDTO;
@@ -11,6 +12,7 @@ import Wr40.cardiary.model.entity.InsuranceCompany;
 import Wr40.cardiary.model.entity.InsuranceType;
 import Wr40.cardiary.repo.CarRepository;
 import Wr40.cardiary.repo.InsuranceRepository;
+import Wr40.cardiary.repo.InsuranceTypeRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -27,6 +29,7 @@ public class InsuranceService {
 
     private CarRepository carRepository;
     private InsuranceRepository insuranceRepository;
+    private InsuranceTypeRepository insuranceTypeRepository;
     private ModelMapper modelMapper;
     public InsuranceCompanyWithTypeDTO saveInsuranceWithTypeToTheCar(InsuranceCompanyWithTypeDTO insuranceCompanyWithTypeDTO, String VINNumber) {
         Car car = carRepository.findByVINnumber(VINNumber).orElseThrow(NoSuchCarFoundException::new);
@@ -54,6 +57,33 @@ public class InsuranceService {
                                 .filter(obj2 -> obj.getPhoneNumber().equals(obj2.getPhoneNumber()))
                                 .map(obj1 -> obj1.getInsuranceType()).findFirst().get()))).toList();
         return mappedInsCompanyWithTypeDTO;
+    }
+
+    public InsuranceCompanyWithTypeDTO linkCarWithInsuranceCompanyAndInsuranceType(String VINNumber, Integer InsCompId, Integer InsTypeId) {
+        Car car = carRepository.findByVINnumber(VINNumber).orElseThrow(NoSuchCarFoundException::new);
+        InsuranceCompany insuranceCompany = insuranceRepository.findById(Long.valueOf(InsCompId)).orElseThrow(NoSuchInsuranceCompanyException::new);
+        InsuranceType insuranceType = insuranceTypeRepository.findById(Long.valueOf(InsTypeId)).orElseThrow(NoSuchInsuranceTypeException::new);
+
+/**
+        The aim of deep copy with InsuranceCompany table is to leave not related tables as base for next linking of data for user,
+        after adding linking between tables( composition of data with new Id ) save as new objects
+*/
+
+        InsuranceCompany insuranceCompanyDeepCopy = new InsuranceCompany();
+        insuranceCompanyDeepCopy.setName(insuranceCompany.getName());
+        insuranceCompanyDeepCopy.setDescription(insuranceType.getDescription());
+        insuranceCompanyDeepCopy.setPhoneNumber(insuranceCompany.getPhoneNumber());
+
+        insuranceCompanyDeepCopy.setInsuranceType(insuranceType);
+        insuranceRepository.save(insuranceCompanyDeepCopy);
+
+        car.addInsuranceCompany(insuranceCompanyDeepCopy);
+        Car savedCar = carRepository.save(car);
+        InsuranceCompanyWithTypeDTO savedInsuranceCompany = modelMapper.map(savedCar.getInsuranceCompanies().stream().findFirst().get(), InsuranceCompanyWithTypeDTO.class);
+
+        savedInsuranceCompany.setInsuranceTypeDTO(
+                modelMapper.map(savedCar.getInsuranceCompanies().stream().map(obj -> obj.getInsuranceType()).findFirst().get(), InsuranceTypeDTO.class));
+        return savedInsuranceCompany;
     }
 
     private InsuranceTypeDTO mapInsuranceTypeToDTO(InsuranceType insuranceType) {
