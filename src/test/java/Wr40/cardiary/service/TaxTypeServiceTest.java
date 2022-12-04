@@ -1,4 +1,4 @@
-package Wr40.cardiary.test.service;
+package Wr40.cardiary.service;
 
 
 import Wr40.cardiary.exception.NoSuchEntityFound;

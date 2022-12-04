@@ -1,4 +1,4 @@
-package Wr40.cardiary.test.service;
+package Wr40.cardiary.service;
 
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
