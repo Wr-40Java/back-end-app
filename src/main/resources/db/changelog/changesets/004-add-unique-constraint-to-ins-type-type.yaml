@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: 8
+      author: Tomasz Borowski
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: type
+            constraintName: it_unique_type
+            tableName: insurance_type
