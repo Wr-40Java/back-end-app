@@ -74,7 +74,7 @@ class MaintenanceHistoryServiceTest {
         MaintenanceHistory mh1 = new MaintenanceHistory();
         Long id = 1L;
 
-        Mockito.when(maintenanceHRepo.findById(mh1.getId())).thenThrow(NoSuchMaintenanceHistoryException.class);
+        Mockito.when(maintenanceHRepo.findById(id)).thenReturn(Optional.empty());
 
         // When & Then
         assertThrows(NoSuchMaintenanceHistoryException.class, () -> maintenanceHService.updateMH(id, mh1));
