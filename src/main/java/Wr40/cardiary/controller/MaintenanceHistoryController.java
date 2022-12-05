@@ -20,8 +20,17 @@ public class MaintenanceHistoryController {
 
     @PostMapping("/save/{vin}")
     @ResponseStatus(HttpStatus.CREATED)
-    public MaintenanceHistory saveMH(@Valid @RequestBody MaintenanceHistoryDTO maintenance, @PathVariable(name = "vin") String vin) {
+    public MaintenanceHistory saveMH(@Valid @RequestBody MaintenanceHistoryDTO maintenance,
+                                     @PathVariable(name = "vin") String vin) {
         MaintenanceHistory mh = modelMapper.map(maintenance, MaintenanceHistory.class);
         return maintenanceHS.saveMH(vin, mh);
+    }
+
+    @PutMapping("/update/{maintenance_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public MaintenanceHistory updateMH(@Valid @RequestBody MaintenanceHistoryDTO maintenance,
+                                       @PathVariable(name = "maintenance_id") Long id) {
+        MaintenanceHistory mh = modelMapper.map(maintenance, MaintenanceHistory.class);
+        return maintenanceHS.updateMH(id, mh);
     }
 }

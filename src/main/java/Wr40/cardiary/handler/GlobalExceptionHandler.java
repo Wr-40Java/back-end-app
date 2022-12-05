@@ -65,4 +65,10 @@ public class GlobalExceptionHandler {
     public final ResponseEntity<ErrorDetails> handleNotExistingInsCompanyTypeException(NoSuchInsuranceTypeException e) {
         return ResponseEntity.badRequest().body(new ErrorDetails(LocalDateTime.now(), e.getMessage(), HttpStatus.BAD_REQUEST));
     }
+
+    @ExceptionHandler(NoSuchMaintenanceHistoryException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public final ResponseEntity<ErrorDetails> handleNoSuchMaintenanceHistoryException(NoSuchMaintenanceHistoryException e){
+        return ResponseEntity.badRequest().body(new ErrorDetails(LocalDateTime.now(),e.getMessage(),HttpStatus.BAD_REQUEST));
+    }
 }
