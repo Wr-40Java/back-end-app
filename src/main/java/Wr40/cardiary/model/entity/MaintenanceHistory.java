@@ -1,6 +1,8 @@
 package Wr40.cardiary.model.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.*;
@@ -9,6 +11,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Setter
+@NoArgsConstructor
 public class MaintenanceHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,8 +22,8 @@ public class MaintenanceHistory {
     private String description;
     @CreationTimestamp
     private LocalDateTime timestamp;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     private TechnicalService technicalService;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     private MaintenanaceEvent maintenanaceEvent;
 }
