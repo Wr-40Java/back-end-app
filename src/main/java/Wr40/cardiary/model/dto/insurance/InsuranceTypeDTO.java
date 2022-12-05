@@ -12,7 +12,7 @@ import org.hibernate.validator.constraints.Length;
 
 import java.math.BigDecimal;
 
-@Data @ToString
+@Data
 @Accessors(chain = true)
 public class InsuranceTypeDTO {
     @NotEmpty
