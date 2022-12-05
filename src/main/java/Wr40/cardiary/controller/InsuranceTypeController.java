@@ -22,8 +22,15 @@ public class InsuranceTypeController {
 
     @PostMapping("/save")
     @ResponseStatus(HttpStatus.CREATED)
-    public InsuranceTypeDTO saveInsuranceCompanyWithTypeAndCar(@Valid @RequestBody InsuranceTypeDTO insuranceTypeDTO) {
-        InsuranceType insuranceType = modelMapper.map(insuranceTypeDTO, InsuranceType.class);
+    public InsuranceTypeDTO saveInsuranceType(@Valid @RequestBody InsuranceTypeDTO insuranceTypeDTO) {
         return insuranceTypeService.saveInsuranceType(insuranceTypeDTO);
     }
+
+    @PutMapping("/update")
+    @ResponseStatus(HttpStatus.CREATED)
+    public String updateInsuranceType(@Valid @RequestBody InsuranceTypeDTO insuranceTypeDTO) {
+        Integer rowsUpdated = insuranceTypeService.updateInsuranceType(insuranceTypeDTO);
+        return String.format("Congratulations, you updated %d row(s)", rowsUpdated);
+    }
+
 }
