@@ -129,5 +129,32 @@ public class InsuranceTypeServiceTest {
         Assertions.assertEquals(insTypeDTOs, ireturnedFromServiceIsuranceTypes);
     }
 
+    @Test
+    public void whenDeleteInsuranceType_shouldReturnNrOfRowsDeleted() {
+        String typeToDelete = "deletion";
+        Integer nrOfRowsDeleted = 1;
+
+        Mockito.when(insuranceTypeRepository.findByType(typeToDelete)).thenReturn(Optional.of(new InsuranceType()));
+        Mockito.when(insuranceTypeRepository.deleteByType(typeToDelete)).thenReturn(nrOfRowsDeleted);
+
+        //when
+        Integer nrOfDeletedRows = insuranceTypeService.deleteInsuranceType(typeToDelete);
+
+        //then
+        Mockito.verify(insuranceTypeRepository).findByType(typeToDelete);
+        Mockito.verify(insuranceTypeRepository).deleteByType(typeToDelete);
+        Assertions.assertEquals(nrOfRowsDeleted, nrOfDeletedRows);
+    }
+
+    @Test
+    public void whenDeletingInsuranceTypeWithTypeNotExisting_shouldThrowException() {
+        InsuranceTypeDTO insuranceTypeDTO = new InsuranceTypeDTO();
+        insuranceTypeDTO.setType("testing");
+
+        Mockito.when(insuranceTypeRepository.findByType(insuranceTypeDTO.getType())).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(NoSuchInsuranceTypeException.class, () -> insuranceTypeService.deleteInsuranceType(insuranceTypeDTO.getType()));
+    }
+
 
 }

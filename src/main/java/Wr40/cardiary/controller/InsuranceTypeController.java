@@ -41,4 +41,11 @@ public class InsuranceTypeController {
         return insuranceTypeService.getInsuranceTypes();
     }
 
+    @DeleteMapping("/delete/{type}")
+    @ResponseStatus(HttpStatus.OK)
+    public String deleteInsuranceType(@PathVariable(name = "type") String type) {
+        Integer deletedRows = insuranceTypeService.deleteInsuranceType(type);
+        return String.format("Successfully deleted %d rows", deletedRows);
+    }
+
 }

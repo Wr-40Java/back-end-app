@@ -11,6 +11,7 @@ import java.util.Optional;
 
 public interface InsuranceTypeRepository extends JpaRepository<InsuranceType, Long> {
     Optional<InsuranceType> findByType(String type);
+    Integer deleteByType(String type);
     @Modifying
     @Query(value = "update insurance_type set (description, costs_per_year, covered_compensation) = " +
             "(:description, :costs_per_year, :covered_compensation) WHERE type = :type", nativeQuery = true)

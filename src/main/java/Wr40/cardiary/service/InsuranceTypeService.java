@@ -48,4 +48,9 @@ public class InsuranceTypeService {
         }
         return allInsTypeDTOs;
     }
+
+    public Integer deleteInsuranceType(String type) {
+        insuranceTypeRepository.findByType(type).orElseThrow(NoSuchInsuranceTypeException::new);
+        return insuranceTypeRepository.deleteByType(type);
+    }
 }
