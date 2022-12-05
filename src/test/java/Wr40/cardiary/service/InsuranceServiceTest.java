@@ -276,15 +276,12 @@ public class InsuranceServiceTest {
 
         InsuranceCompany insuranceCompany = new InsuranceCompany();
         insuranceCompany.setName("NewSafeLvl").setDescription("For me the best so far").setPhoneNumber(19027883L).setInsuranceType(insuranceType);
+        car.addInsuranceCompany(insuranceCompany);
 
         Mockito.when(carRepository.findByVINnumber(VINNumber)).thenReturn(Optional.of(car));
         Mockito.when(insuranceRepository.findById(InsCompId)).thenReturn((Optional.of(insuranceCompany)));
         Mockito.when(insuranceTypeRepository.findById(InsTypeId)).thenReturn((Optional.of(insuranceType)));
 
-        HashSet<InsuranceCompany> objects = new HashSet<>();
-        insuranceCompany.setInsuranceType(insuranceType);
-        objects.add(insuranceCompany);
-        car.setInsuranceCompanies(objects);
         Mockito.when(carRepository.save(car)).thenReturn(car);
 
         Mockito.when(modelMapper.map(insuranceCompany, InsuranceCompanyWithTypeDTO.class)).thenReturn(insuranceCompanyWithTypeDTO);
