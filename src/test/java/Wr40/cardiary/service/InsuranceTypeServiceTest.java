@@ -14,6 +14,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -90,5 +92,42 @@ public class InsuranceTypeServiceTest {
 
         Assertions.assertThrows(NoSuchInsuranceTypeException.class, () -> insuranceTypeService.updateInsuranceType(insuranceTypeDTO));
     }
+    @Test
+    public void whenGetAllInsuranceTypes_shouldReturnObjects() {
+        InsuranceType insuranceType = new InsuranceType();
+        insuranceType.setType("testing");
+        InsuranceType insuranceType2 = new InsuranceType();
+        insuranceType2.setType("testing");
+        InsuranceType insuranceType3 = new InsuranceType();
+        insuranceType3.setType("testing");
+        ArrayList<InsuranceType> insTypes = new ArrayList<>();
+        insTypes.add(insuranceType);
+        insTypes.add(insuranceType2);
+        insTypes.add(insuranceType3);
+
+        InsuranceTypeDTO insuranceTypeDTO = new InsuranceTypeDTO();
+        insuranceType.setType("testing");
+        InsuranceTypeDTO insuranceType2DTO = new InsuranceTypeDTO();
+        insuranceType2.setType("testing");
+        InsuranceTypeDTO insuranceType3DTO = new InsuranceTypeDTO();
+        insuranceType3.setType("testing");
+        ArrayList<InsuranceTypeDTO> insTypeDTOs = new ArrayList<>();
+        insTypeDTOs.add(insuranceTypeDTO);
+        insTypeDTOs.add(insuranceType2DTO);
+        insTypeDTOs.add(insuranceType3DTO);
+
+        Mockito.when(insuranceTypeRepository.findAll()).thenReturn(insTypes);
+        Mockito.when(modelMapper.map(insuranceType, InsuranceTypeDTO.class)).thenReturn(insuranceTypeDTO);
+        Mockito.when(modelMapper.map(insuranceType2, InsuranceTypeDTO.class)).thenReturn(insuranceType2DTO);
+        Mockito.when(modelMapper.map(insuranceType3, InsuranceTypeDTO.class)).thenReturn(insuranceType3DTO);
+
+        //when
+        List<InsuranceTypeDTO> ireturnedFromServiceIsuranceTypes = insuranceTypeService.getInsuranceTypes();
+
+        //then
+        Mockito.verify(insuranceTypeRepository).findAll();
+        Assertions.assertEquals(insTypeDTOs, ireturnedFromServiceIsuranceTypes);
+    }
+
 
 }
