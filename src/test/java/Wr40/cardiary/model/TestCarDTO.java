@@ -1,4 +1,4 @@
-package Wr40.cardiary.test.model;
+package Wr40.cardiary.model;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
