@@ -55,6 +55,7 @@ public class CarService {
         carToUpdate.setColor(car.getColor());
         carToUpdate.setProductionYear(car.getProductionYear());
         carToUpdate.setHorsePower(car.getHorsePower());
+        carToUpdate.setMaintenanceHistories(car.getMaintenanceHistories());
         return carRepository.save(carToUpdate);
     }
 
