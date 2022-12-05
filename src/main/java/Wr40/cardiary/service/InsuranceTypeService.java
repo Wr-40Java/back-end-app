@@ -9,6 +9,9 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 @Transactional
@@ -35,5 +38,14 @@ public class InsuranceTypeService {
         oldInsuranceType.setDescription(insuranceType.getDescription())
                 .setCostsPerYear(insuranceType.getCostsPerYear()).setCoveredCompensation(insuranceType.getCoveredCompensation());
         return oldInsuranceType;
+    }
+
+    public List<InsuranceTypeDTO> getInsuranceTypes() {
+        List<InsuranceTypeDTO> allInsTypeDTOs = new ArrayList<>();
+        List<InsuranceType> allInsTypes = insuranceTypeRepository.findAll();
+        for (InsuranceType insType : allInsTypes) {
+            allInsTypeDTOs.add(modelMapper.map(insType, InsuranceTypeDTO.class));
+        }
+        return allInsTypeDTOs;
     }
 }

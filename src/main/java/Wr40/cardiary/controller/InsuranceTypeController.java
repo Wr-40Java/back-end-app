@@ -12,6 +12,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/cardiary/insurancetype")
 @AllArgsConstructor
@@ -31,6 +33,12 @@ public class InsuranceTypeController {
     public String updateInsuranceType(@Valid @RequestBody InsuranceTypeDTO insuranceTypeDTO) {
         Integer rowsUpdated = insuranceTypeService.updateInsuranceType(insuranceTypeDTO);
         return String.format("Congratulations, you updated %d row(s)", rowsUpdated);
+    }
+
+    @GetMapping("/list")
+    @ResponseStatus(HttpStatus.OK)
+    public List<InsuranceTypeDTO> getInsuranceTypes() {
+        return insuranceTypeService.getInsuranceTypes();
     }
 
 }
