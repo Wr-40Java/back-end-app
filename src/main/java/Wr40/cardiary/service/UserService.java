@@ -27,7 +27,8 @@ public class UserService {
     }
 
     private void updateEmailIfMatchTemplate(User user, User userToUpdate) {
-        if (user.getEmail().equals("^(.+)@(\\\\S+)$")){
+        if (user.getEmail().equals("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
+                + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$")){
             userToUpdate.setEmail(user.getEmail());
         }
         else throw new WrongEmailAddressException();
