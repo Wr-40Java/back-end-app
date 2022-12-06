@@ -47,7 +47,7 @@ class MaintenanceHistoryServiceTest {
         MaintenanceHistory mhSaved = maintenanceHService.saveMH("VinTest", mh);
 
         // Then
-        Assertions.assertEquals(mhSaved, mh);
+        Assertions.assertEquals(mh, mhSaved);
         verify(maintenanceHRepo).save(mh);
     }
 
@@ -68,15 +68,43 @@ class MaintenanceHistoryServiceTest {
     }
 
     @Test
-    @DisplayName("Should Throw Exception When Update Maintenance History Is Not In Database")
-    void shouldThrowExceptionWhenUpdateMaintenanceHistoryIsNotInDatabase() {
+    @DisplayName("Should Throw Exception When Update Of Maintenance History Is Not In Database")
+    void shouldThrowExceptionWhenUpdateOfMaintenanceHistoryIsNotInDatabase() {
         // Given
         MaintenanceHistory mh1 = new MaintenanceHistory();
         Long id = 1L;
-
         Mockito.when(maintenanceHRepo.findById(id)).thenReturn(Optional.empty());
 
         // When & Then
         assertThrows(NoSuchMaintenanceHistoryException.class, () -> maintenanceHService.updateMH(id, mh1));
+    }
+
+    @Test
+    @DisplayName("Should Return Maintenance History When Maintenance History Exists In Database")
+    void shouldReturnMaintenanceHistoryWhenMaintenanceHistoryExistsInDatabase() {
+        // Given
+        MaintenanceHistory mh1 = new MaintenanceHistory();
+        Long id = 1L;
+        Mockito.when(maintenanceHRepo.existsById(id)).thenReturn(true);
+        Mockito.when(maintenanceHRepo.getReferenceById(id)).thenReturn(mh1);
+
+        // When
+        MaintenanceHistory savedMH = maintenanceHService.getMaintenanceHistory(id);
+
+        // Then
+        assertEquals(mh1, savedMH);
+        verify(maintenanceHRepo).existsById(id);
+        verify(maintenanceHRepo).getReferenceById(id);
+    }
+
+    @Test
+    @DisplayName("Should Throw Exception When Get By Id Maintenance History Is Not In Database")
+    void shouldThrowExceptionWhenGetByIdUpdateOfMaintenanceHistoryIsNotInDatabase() {
+        // Given
+        Long id = 1L;
+        Mockito.when(maintenanceHRepo.existsById(id)).thenThrow(NoSuchMaintenanceHistoryException.class);
+
+        // When & Then
+        assertThrows(NoSuchMaintenanceHistoryException.class, () -> maintenanceHService.getMaintenanceHistory(id));
     }
 }

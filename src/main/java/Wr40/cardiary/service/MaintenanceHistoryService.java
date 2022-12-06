@@ -30,6 +30,19 @@ public class MaintenanceHistoryService {
         return savedMH;
     }
 
+    public MaintenanceHistory updateMH(Long maintenanceId, MaintenanceHistory mh) {
+        MaintenanceHistory savedMH = maintenanceHistRepo.findById(maintenanceId).orElseThrow(NoSuchMaintenanceHistoryException::new);
+        savedMH.setDescription(mh.getDescription());
+        return maintenanceHistRepo.save(savedMH);
+    }
+
+    public MaintenanceHistory getMaintenanceHistory(Long maintenanceId) {
+        if (!maintenanceHistRepo.existsById(maintenanceId)) {
+            throw new NoSuchMaintenanceHistoryException();
+        }
+        return maintenanceHistRepo.getReferenceById(maintenanceId);
+    }
+
     private void setMaintenanceCost(MaintenanceHistory maintenanceHistory) {
 //        MaintenanaceEvent event = maintenanceHistory.getMaintenanaceEvent();
 //        TechnicalService service = maintenanceHistory.getTechnicalService();
@@ -41,12 +54,5 @@ public class MaintenanceHistoryService {
 //            overallCost = overallCost.add(service.getCost());
 //        }
         maintenanceHistory.setOverallCost(overallCost);
-    }
-
-    public MaintenanceHistory updateMH(Long maintenanceId, MaintenanceHistory mh) {
-        MaintenanceHistory savedMH = maintenanceHistRepo.findById(maintenanceId)
-                .orElseThrow(NoSuchMaintenanceHistoryException::new);
-        savedMH.setDescription(mh.getDescription());
-        return maintenanceHistRepo.save(savedMH);
     }
 }
