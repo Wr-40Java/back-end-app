@@ -55,4 +55,8 @@ public class MaintenanceHistoryService {
 //        }
         maintenanceHistory.setOverallCost(overallCost);
     }
+
+    public List<MaintenanceHistory> getAllMaintenanceHistory() {
+        return maintenanceHistRepo.findAll();
+    }
 }

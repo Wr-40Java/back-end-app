@@ -10,6 +10,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/cardiary/maintenanceHistory")
 @AllArgsConstructor
@@ -39,5 +41,11 @@ public class MaintenanceHistoryController {
     public MaintenanceHistory getMaintenanceHistory(
             @PathVariable(name = "maintenance_id") Long maintenanceId) {
         return maintenanceHS.getMaintenanceHistory(maintenanceId);
+    }
+
+    @GetMapping("/get")
+    @ResponseStatus(HttpStatus.OK)
+    public List<MaintenanceHistory> getAllMaintenanceHistory() {
+        return maintenanceHS.getAllMaintenanceHistory();
     }
 }

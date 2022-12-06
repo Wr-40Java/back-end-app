@@ -14,10 +14,10 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -106,5 +106,23 @@ class MaintenanceHistoryServiceTest {
 
         // When & Then
         assertThrows(NoSuchMaintenanceHistoryException.class, () -> maintenanceHService.getMaintenanceHistory(id));
+    }
+
+    @Test
+    @DisplayName("Should Provide All Maintenance History When Getting All Maintenance History")
+    void shouldProvideAllMaintenanceHistoryWhenGettingAllMaintenanceHistory() {
+        // Given
+        List<MaintenanceHistory> mhLists = new ArrayList<>();
+        MaintenanceHistory mh = new MaintenanceHistory();
+        mhLists.add(mh);
+        Mockito.when(maintenanceHRepo.findAll()).thenReturn(mhLists);
+
+        // Given
+        List<MaintenanceHistory> mhListsSaved = maintenanceHService.getAllMaintenanceHistory();
+
+        // When
+
+        assertEquals(mhLists, mhListsSaved);
+        verify(maintenanceHRepo).findAll();
     }
 }
