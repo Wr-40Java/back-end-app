@@ -33,4 +33,11 @@ public class MaintenanceHistoryController {
         MaintenanceHistory mh = modelMapper.map(maintenance, MaintenanceHistory.class);
         return maintenanceHS.updateMH(id, mh);
     }
+
+    @GetMapping("/get/{maintenance_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public MaintenanceHistory getMaintenanceHistory(
+            @PathVariable(name = "maintenance_id") Long maintenanceId) {
+        return maintenanceHS.getMaintenanceHistory(maintenanceId);
+    }
 }
