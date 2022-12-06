@@ -19,5 +19,5 @@ public class UserDTO {
     @NotEmpty
     private String email;
     @Digits(integer = 15, fraction = 0)
-    private short phoneNumber;
+    private Long phoneNumber;
 }
