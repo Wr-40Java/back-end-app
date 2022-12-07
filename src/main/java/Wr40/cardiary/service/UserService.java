@@ -53,7 +53,7 @@ public class UserService {
         userToUpdate.setSurname(user.getSurname());
         userToUpdate.setUsername(user.getUsername());
         userToUpdate.setPassword(user.getPassword());
-        updateEmailIfMatchTemplate(user, userToUpdate);
+        userToUpdate.setEmail(user.getEmail());
         userToUpdate.setPhoneNumber(user.getPhoneNumber());
         return userRepository.save(userToUpdate);
     }
@@ -66,13 +66,5 @@ public class UserService {
 
         userRepository.save(userToUpdateWithNewCar);
     }
-
-    private void updateEmailIfMatchTemplate(User user, User userToUpdate) {
-        if (user.getEmail().equals("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
-                + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$")) {
-            userToUpdate.setEmail(user.getEmail());
-        } else throw new WrongEmailAddressException();
-    }
-
 
 }
