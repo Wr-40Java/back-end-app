@@ -57,9 +57,12 @@ public class TaxController {
         return taxService.updateTax(id, mappedTax);
     }
 
-    @PutMapping("/add_tax_type/{tax_id}/{tax_type_id}")
+    @PostMapping("/link/{tax_id}/{tax_type_id}")
     @ResponseStatus(HttpStatus.OK)
-    public void addTaxTypeToTax(@PathVariable Long taxId, @PathVariable Long taxTypeId) {
-        taxService.addTaxTypeToTax(taxId, taxTypeId);
+    public Tax linkTaxTypeToTax(
+            @PathVariable(name = "tax_id") Long taxId,
+            @PathVariable(name = "tax_type_id") Long taxTypeId
+    ) {
+        return taxService.linkTaxTypeToTax(taxId, taxTypeId);
     }
 }
