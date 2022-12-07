@@ -8,7 +8,6 @@ import Wr40.cardiary.repo.TaxRepository;
 import Wr40.cardiary.repo.TaxTypeRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,14 +17,8 @@ import java.util.List;
 @Transactional
 public class TaxService {
 
-    private TaxRepository taxRepository;
-    private TaxTypeRepository taxTypeRepository;
-
-
-    @Autowired
-    public TaxService(TaxRepository taxRepository) {
-        this.taxRepository = taxRepository;
-    }
+    TaxRepository taxRepository;
+    TaxTypeRepository taxTypeRepository;
 
     public Tax saveTax(Tax tax) {
         return taxRepository.save(tax);
