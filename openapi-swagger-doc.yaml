@@ -1,0 +1,1406 @@
+openapi: 3.0.1
+info:
+  title: CarDiary API
+  version: v1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Server url
+paths:
+  /api/cardiary/user/update:
+    put:
+      tags:
+        - user-controller
+      operationId: updateUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/user/addCar/{userName}/{vin}:
+    put:
+      tags:
+        - user-controller
+      operationId: addCarToUserByVinNumber
+      parameters:
+        - name: userName
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: vin
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/taxtype/update/{id}:
+    put:
+      tags:
+        - tax-type-controller
+      operationId: updateTaxType
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaxTypeDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TaxType'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/tax/update/{id}:
+    put:
+      tags:
+        - tax-controller
+      operationId: updateTax
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaxDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Tax'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/maintenanceHistory/update/{maintenance_id}:
+    put:
+      tags:
+        - maintenance-history-controller
+      operationId: updateMH
+      parameters:
+        - name: maintenance_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MaintenanceHistoryDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MaintenanceHistory'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/insurancetype/update:
+    put:
+      tags:
+        - insurance-type-controller
+      operationId: updateInsuranceType
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InsuranceTypeDTO'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            '*/*':
+              schema:
+                type: string
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/insurance/update/{vin_number}/{old_ic_id}/{ic_id}/{it_id}:
+    put:
+      tags:
+        - insurance-controller
+      operationId: deleteLinkedInsuranceCompanyWithTypeAndCar
+      parameters:
+        - name: vin_number
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: old_ic_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: ic_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: it_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/InsuranceCompanyWithTypeDTO'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/insurance/update/{id}:
+    put:
+      tags:
+        - insurance-controller
+      operationId: updateInsuranceCompany
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InsuranceCompanyDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/InsuranceCompanyDTO'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/car/update:
+    put:
+      tags:
+        - car-controller
+      operationId: updateCar
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Car'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/user/save:
+    post:
+      tags:
+        - user-controller
+      operationId: saveUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDTO'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/taxtype/save:
+    post:
+      tags:
+        - tax-type-controller
+      operationId: saveTaxType
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaxTypeDTO'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TaxType'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/taxtype/get/{id}:
+    post:
+      tags:
+        - tax-type-controller
+      operationId: getTaxType
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TaxType'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/tax/save:
+    post:
+      tags:
+        - tax-controller
+      operationId: saveTax
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaxDTO'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Tax'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/maintenanceHistory/save/{vin}:
+    post:
+      tags:
+        - maintenance-history-controller
+      operationId: saveMH
+      parameters:
+        - name: vin
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MaintenanceHistoryDTO'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MaintenanceHistory'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/insurancetype/save:
+    post:
+      tags:
+        - insurance-type-controller
+      operationId: saveInsuranceType
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InsuranceTypeDTO'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/InsuranceTypeDTO'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/insurance/save:
+    post:
+      tags:
+        - insurance-controller
+      operationId: saveInsuranceCompany
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InsuranceCompanyDTO'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/InsuranceCompanyDTO'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/insurance/save/{vin_number}:
+    post:
+      tags:
+        - insurance-controller
+      operationId: saveInsuranceCompanyWithTypeAndCar
+      parameters:
+        - name: vin_number
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InsuranceCompanyWithTypeDTO'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/InsuranceCompanyWithTypeDTO'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/insurance/link/{vin_number}/{ic_id}/{it_id}:
+    post:
+      tags:
+        - insurance-controller
+      operationId: linkInsuranceCompanyWithTypeAndCar
+      parameters:
+        - name: vin_number
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: ic_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: it_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '201':
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/InsuranceCompanyWithTypeDTO'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/car/save:
+    post:
+      tags:
+        - car-controller
+      operationId: saveCar
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarDTO'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Car'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/user/get:
+    get:
+      tags:
+        - user-controller
+      operationId: getAllUsers
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/user/get/{username}:
+    get:
+      tags:
+        - user-controller
+      operationId: getUser
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/tax/get:
+    get:
+      tags:
+        - tax-controller
+      operationId: getAllTaxes
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tax'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/tax/get/{id}:
+    get:
+      tags:
+        - tax-controller
+      operationId: getTax
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Tax'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/maintenanceHistory/get:
+    get:
+      tags:
+        - maintenance-history-controller
+      operationId: getAllMaintenanceHistory
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MaintenanceHistory'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/maintenanceHistory/get/{maintenance_id}:
+    get:
+      tags:
+        - maintenance-history-controller
+      operationId: getMaintenanceHistory
+      parameters:
+        - name: maintenance_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MaintenanceHistory'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/insurancetype/list:
+    get:
+      tags:
+        - insurance-type-controller
+      operationId: getInsuranceTypes
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InsuranceTypeDTO'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/insurance/list:
+    get:
+      tags:
+        - insurance-controller
+      operationId: getAllInsuranceCompany
+      parameters:
+        - name: insuranceCompanyDTO
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/InsuranceCompanyDTO'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InsuranceCompanyDTO'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/insurance/list/{vin_number}:
+    get:
+      tags:
+        - insurance-controller
+      operationId: getAllInsuranceCompanyWithTypeForCar
+      parameters:
+        - name: vin_number
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InsuranceCompanyWithTypeDTO'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/car/get:
+    get:
+      tags:
+        - car-controller
+      operationId: getAllCars
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Car'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/car/get/{vin}:
+    get:
+      tags:
+        - car-controller
+      operationId: getCar
+      parameters:
+        - name: vin
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Car'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/user/delete/{username}:
+    delete:
+      tags:
+        - user-controller
+      operationId: deleteUser
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/user/delete/all:
+    delete:
+      tags:
+        - user-controller
+      operationId: deleteAllUsers
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/taxtype/delete/{id}:
+    delete:
+      tags:
+        - tax-type-controller
+      operationId: deleteTaxType
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/tax/delete/{id}:
+    delete:
+      tags:
+        - tax-controller
+      operationId: deleteTax
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/tax/delete/all:
+    delete:
+      tags:
+        - tax-controller
+      operationId: deleteAllTaxes
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/maintenanceHistory/delete:
+    delete:
+      tags:
+        - maintenance-history-controller
+      operationId: deleteMaintenanceHistory
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/maintenanceHistory/delete/{maintenance_id}:
+    delete:
+      tags:
+        - maintenance-history-controller
+      operationId: deleteMaintenanceHistory_1
+      parameters:
+        - name: maintenance_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/insurancetype/delete/{type}:
+    delete:
+      tags:
+        - insurance-type-controller
+      operationId: deleteInsuranceType
+      parameters:
+        - name: type
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/insurance/delete/{vin_number}/{ic_id}/{it_id}:
+    delete:
+      tags:
+        - insurance-controller
+      operationId: deleteLinkedInsuranceCompanyWithTypeAndCar_1
+      parameters:
+        - name: vin_number
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: ic_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: it_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/insurance/delete/{id}:
+    delete:
+      tags:
+        - insurance-controller
+      operationId: deleteInsuranceCompany
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/car/delete/{vin}:
+    delete:
+      tags:
+        - car-controller
+      operationId: deleteCar
+      parameters:
+        - name: vin
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+  /api/cardiary/car/delete/all:
+    delete:
+      tags:
+        - car-controller
+      operationId: deleteAllCars
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ErrorDetails'
+components:
+  schemas:
+    ErrorDetails:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        message:
+          type: string
+        status:
+          type: string
+          enum:
+            - 100 CONTINUE
+            - 101 SWITCHING_PROTOCOLS
+            - 102 PROCESSING
+            - 103 CHECKPOINT
+            - 200 OK
+            - 201 CREATED
+            - 202 ACCEPTED
+            - 203 NON_AUTHORITATIVE_INFORMATION
+            - 204 NO_CONTENT
+            - 205 RESET_CONTENT
+            - 206 PARTIAL_CONTENT
+            - 207 MULTI_STATUS
+            - 208 ALREADY_REPORTED
+            - 226 IM_USED
+            - 300 MULTIPLE_CHOICES
+            - 301 MOVED_PERMANENTLY
+            - 302 FOUND
+            - 302 MOVED_TEMPORARILY
+            - 303 SEE_OTHER
+            - 304 NOT_MODIFIED
+            - 305 USE_PROXY
+            - 307 TEMPORARY_REDIRECT
+            - 308 PERMANENT_REDIRECT
+            - 400 BAD_REQUEST
+            - 401 UNAUTHORIZED
+            - 402 PAYMENT_REQUIRED
+            - 403 FORBIDDEN
+            - 404 NOT_FOUND
+            - 405 METHOD_NOT_ALLOWED
+            - 406 NOT_ACCEPTABLE
+            - 407 PROXY_AUTHENTICATION_REQUIRED
+            - 408 REQUEST_TIMEOUT
+            - 409 CONFLICT
+            - 410 GONE
+            - 411 LENGTH_REQUIRED
+            - 412 PRECONDITION_FAILED
+            - 413 PAYLOAD_TOO_LARGE
+            - 413 REQUEST_ENTITY_TOO_LARGE
+            - 414 URI_TOO_LONG
+            - 414 REQUEST_URI_TOO_LONG
+            - 415 UNSUPPORTED_MEDIA_TYPE
+            - 416 REQUESTED_RANGE_NOT_SATISFIABLE
+            - 417 EXPECTATION_FAILED
+            - 418 I_AM_A_TEAPOT
+            - 419 INSUFFICIENT_SPACE_ON_RESOURCE
+            - 420 METHOD_FAILURE
+            - 421 DESTINATION_LOCKED
+            - 422 UNPROCESSABLE_ENTITY
+            - 423 LOCKED
+            - 424 FAILED_DEPENDENCY
+            - 425 TOO_EARLY
+            - 426 UPGRADE_REQUIRED
+            - 428 PRECONDITION_REQUIRED
+            - 429 TOO_MANY_REQUESTS
+            - 431 REQUEST_HEADER_FIELDS_TOO_LARGE
+            - 451 UNAVAILABLE_FOR_LEGAL_REASONS
+            - 500 INTERNAL_SERVER_ERROR
+            - 501 NOT_IMPLEMENTED
+            - 502 BAD_GATEWAY
+            - 503 SERVICE_UNAVAILABLE
+            - 504 GATEWAY_TIMEOUT
+            - 505 HTTP_VERSION_NOT_SUPPORTED
+            - 506 VARIANT_ALSO_NEGOTIATES
+            - 507 INSUFFICIENT_STORAGE
+            - 508 LOOP_DETECTED
+            - 509 BANDWIDTH_LIMIT_EXCEEDED
+            - 510 NOT_EXTENDED
+            - 511 NETWORK_AUTHENTICATION_REQUIRED
+    UserDTO:
+      required:
+        - email
+        - name
+        - password
+        - surname
+        - username
+      type: object
+      properties:
+        name:
+          type: string
+        surname:
+          type: string
+        username:
+          type: string
+        password:
+          type: string
+        email:
+          type: string
+        phoneNumber:
+          type: integer
+          format: int64
+    Car:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        brand:
+          type: string
+        model:
+          type: string
+        engineType:
+          type: string
+        bodyType:
+          type: string
+        color:
+          type: string
+        productionYear:
+          type: object
+          properties:
+            value:
+              type: integer
+              format: int32
+            leap:
+              type: boolean
+        horsePower:
+          type: integer
+          format: int32
+        tax:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tax'
+        maintenanceHistories:
+          type: array
+          items:
+            $ref: '#/components/schemas/MaintenanceHistory'
+        insuranceCompanies:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/InsuranceCompany'
+        vinnumber:
+          type: string
+    InsuranceCompany:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        phoneNumber:
+          type: integer
+          format: int64
+        description:
+          type: string
+        insuranceType:
+          $ref: '#/components/schemas/InsuranceType'
+        cars:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/Car'
+    InsuranceType:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        type:
+          type: string
+        description:
+          type: string
+        costsPerYear:
+          type: number
+        coveredCompensation:
+          type: number
+    MaintenanaceEvent:
+      type: object
+    MaintenanceHistory:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        overallCost:
+          type: number
+        description:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        technicalService:
+          $ref: '#/components/schemas/TechnicalService'
+        maintenanaceEvent:
+          $ref: '#/components/schemas/MaintenanaceEvent'
+    Role:
+      type: object
+    Tax:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        costOfTransaction:
+          type: number
+        taxType:
+          $ref: '#/components/schemas/TaxType'
+    TaxType:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        institutionToPayFor:
+          type: string
+        institutionToPayForPhoneNumber:
+          type: integer
+          format: int32
+        description:
+          type: string
+    TechnicalService:
+      type: object
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        surname:
+          type: string
+        username:
+          type: string
+        password:
+          type: string
+        email:
+          type: string
+        phoneNumber:
+          type: integer
+          format: int64
+        creationDate:
+          type: string
+          format: date-time
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
+        cars:
+          type: array
+          items:
+            $ref: '#/components/schemas/Car'
+    TaxTypeDTO:
+      required:
+        - institutionToPayFor
+        - institutionToPayForPhoneNumber
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+        institutionToPayFor:
+          type: string
+        institutionToPayForPhoneNumber:
+          type: integer
+          format: int32
+        description:
+          type: string
+    TaxDTO:
+      required:
+        - costOfTransaction
+      type: object
+      properties:
+        costOfTransaction:
+          minimum: 1
+          type: number
+    MaintenanceHistoryDTO:
+      required:
+        - description
+      type: object
+      properties:
+        description:
+          type: string
+    InsuranceTypeDTO:
+      required:
+        - costsPerYear
+        - coveredCompensation
+        - description
+        - type
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        type:
+          type: string
+        description:
+          type: string
+        costsPerYear:
+          type: number
+        coveredCompensation:
+          type: number
+    InsuranceCompanyWithTypeDTO:
+      required:
+        - description
+        - name
+        - phoneNumber
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+        phoneNumber:
+          type: integer
+          format: int64
+        description:
+          type: string
+        insuranceTypeDTO:
+          $ref: '#/components/schemas/InsuranceTypeDTO'
+    InsuranceCompanyDTO:
+      required:
+        - description
+        - name
+        - phoneNumber
+      type: object
+      properties:
+        name:
+          type: string
+        phoneNumber:
+          type: integer
+          format: int64
+        description:
+          type: string
+    CarDTO:
+      required:
+        - bodyType
+        - brand
+        - color
+        - engineType
+        - horsePower
+        - model
+        - productionYear
+        - vinnumber
+      type: object
+      properties:
+        brand:
+          type: string
+        model:
+          type: string
+        vinnumber:
+          type: string
+        engineType:
+          type: string
+        bodyType:
+          type: string
+        color:
+          type: string
+        productionYear:
+          type: object
+          properties:
+            value:
+              type: integer
+              format: int32
+            leap:
+              type: boolean
+        horsePower:
+          minimum: 1
+          type: integer
+          format: int32
