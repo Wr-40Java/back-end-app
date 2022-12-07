@@ -29,21 +29,21 @@ public class UserServiceTest {
     private UserService userService;
 
     @Test
-    public void whenFindAll_shouldReturnListOFSizeOne_IfOneUserAdded() {
+    public void whenFindAll_shouldReturnListOFSizeOne_IfOneUserAdded(){
         List<User> list = new ArrayList<>();
         list.add(new User());
         Mockito.when(userRepository.findAll()).thenReturn(list);
         List<User> allUsers = userService.getAllUsers();
-        Assertions.assertEquals(1, allUsers.size());
+        Assertions.assertEquals(1,allUsers.size());
 
     }
 
     @Test
-    public void whenFindAll_shouldReturnListOFSizeZero_IfNoUserAdded() {
+    public void whenFindAll_shouldReturnListOFSizeZero_IfNoUserAdded(){
         List<User> list = new ArrayList<>();
         Mockito.when(userRepository.findAll()).thenReturn(list);
         List<User> allUsers = userService.getAllUsers();
-        Assertions.assertEquals(0, allUsers.size());
+        Assertions.assertEquals(0,allUsers.size());
     }
 
     @Test
@@ -66,7 +66,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void whenDeletingExistingUserShouldDelete() {
+    public void whenDeletingExistingUserShouldDelete(){
         User user = new User();
         Mockito.when(userRepository.findUserByUsername(user.getUsername())).thenReturn(Optional.of(user));
         userService.deleteUser(user.getUsername());
@@ -74,29 +74,29 @@ public class UserServiceTest {
     }
 
     @Test
-    public void whenDeletingNotExistingUserShouldThrowException() {
+    public void whenDeletingNotExistingUserShouldThrowException(){
         User user = new User();
         Mockito.when(userRepository.findUserByUsername(user.getUsername())).thenThrow(new UserNotFoundException());
         Assertions.assertThrows(UserNotFoundException.class, () -> userService.deleteUser(user.getUsername()));
     }
 
     @Test
-    public void whenDeleteAllUsersShouldDeleteAll() {
+    public void whenDeleteAllUsersShouldDeleteAll(){
         userService.deleteAllUsers();
         verify(userRepository).deleteAll();
     }
 
     @Test
-    public void whenWeFindingUserByUsername() {
+    public void whenWeFindingUserByUsername(){
         User user = new User();
         Mockito.when(userRepository.findUserByUsername(user.getUsername())).thenReturn(Optional.of(user));
         User sameUsername = userService.getUser(user.getUsername());
-        Assertions.assertEquals(user, sameUsername);
+        Assertions.assertEquals(user,sameUsername);
         verify(userRepository).findUserByUsername(user.getUsername());
     }
 
     @Test
-    public void whenDontFindUserByUsername() {
+    public void whenDontFindUserByUsername(){
         User user = new User();
         Mockito.when(userRepository.findUserByUsername(user.getUsername())).thenThrow(new UserNotFoundException());
         Assertions.assertThrows(UserNotFoundException.class, () -> userService.getUser(user.getUsername()));

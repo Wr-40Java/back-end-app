@@ -7,6 +7,8 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +23,7 @@ public class UserController {
 
     @GetMapping("/get")
     @ResponseStatus(HttpStatus.OK)
-    public List<User> getAllUsers() {
+    public List<User> getAllUsers(){
         return userService.getAllUsers();
     }
 
