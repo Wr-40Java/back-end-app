@@ -48,4 +48,18 @@ public class MaintenanceHistoryController {
     public List<MaintenanceHistory> getAllMaintenanceHistory() {
         return maintenanceHS.getAllMaintenanceHistory();
     }
+
+    @DeleteMapping("/delete/{maintenance_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteMaintenanceHistory(
+            @PathVariable(name = "maintenance_id") Long maintenanceId) {
+        maintenanceHS.deleteMaintenanceHistory(maintenanceId);
+    }
+
+    @DeleteMapping("/delete")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteMaintenanceHistory() {
+        maintenanceHS.deleteAllMaintenanceHistory();
+    }
+
 }

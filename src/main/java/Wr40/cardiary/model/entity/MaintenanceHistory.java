@@ -22,8 +22,8 @@ public class MaintenanceHistory {
     private String description;
     @CreationTimestamp
     private LocalDateTime timestamp;
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.ALL)
     private TechnicalService technicalService;
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.ALL)
     private MaintenanaceEvent maintenanaceEvent;
 }
