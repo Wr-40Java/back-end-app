@@ -28,17 +28,17 @@ public class StatisticsService {
         for (String object : maintenanceStatsWithSumOfExpenses) {
             String[] objectStatArray = object.split(";");
             SumMaintenanceStatsDTO sumMaintenanceStatsDTO = new SumMaintenanceStatsDTO(
-                    BigDecimal.valueOf(Double.parseDouble(objectStatArray[0])), objectStatArray[1], objectStatArray[3]);
+                    BigDecimal.valueOf(Double.parseDouble(objectStatArray[0])), objectStatArray[1], objectStatArray[2]);
             maintenanceStatsWithSumOfExpensesDTO.add(sumMaintenanceStatsDTO);
         }
 
         for (String object : maintenanceStatsWithAvgOfExpenses) {
             String[] objectStatArray = object.split(";");
             AvgMaintenanceStatsDTO avgMaintenanceStatsDTO = new AvgMaintenanceStatsDTO(
-                    BigDecimal.valueOf(Double.parseDouble(objectStatArray[0])), objectStatArray[1], objectStatArray[3]);
+                    BigDecimal.valueOf(Double.parseDouble(objectStatArray[0])), objectStatArray[1], objectStatArray[2]);
             maintenanceStatsWithAvgOfExpensesDTO.add(avgMaintenanceStatsDTO);
         }
-        return new MaintenanceStatisticsDTO(maintenanceStatsWithAvgOfExpensesDTO, maintenanceStatsWithSumOfExpensesDTO);
+        return new MaintenanceStatisticsDTO(maintenanceStatsWithSumOfExpensesDTO, maintenanceStatsWithAvgOfExpensesDTO);
     }
 }
 
