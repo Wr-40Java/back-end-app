@@ -56,4 +56,10 @@ public class TaxController {
         Tax mappedTax = modelMapper.map(dto, Tax.class);
         return taxService.updateTax(id, mappedTax);
     }
+
+    @PutMapping("/add_tax_type/{tax_id}/{tax_type_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void addTaxTypeToTax(@PathVariable Long taxId, @PathVariable Long taxTypeId) {
+        taxService.addTaxTypeToTax(taxId, taxTypeId);
+    }
 }
