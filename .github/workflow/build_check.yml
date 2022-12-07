@@ -1,12 +1,7 @@
 name: Build check
 
 on:
-  pull_request:
-    branches:    
-      - development
-  push:
-    branches-ignore:
-      - development
+  [push, pull_request]
 
 jobs:
   build:
@@ -31,5 +26,3 @@ jobs:
         uses: cicirello/jacoco-badge-generator@v2
         with:
           generate-branches-badge: true
-
-

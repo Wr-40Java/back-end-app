@@ -1,6 +1,5 @@
-package Wr40.cardiary.model.dto;
+package Wr40.cardiary.test.model;
 
-import Wr40.cardiary.validation.constraint.EmailConstraint;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
@@ -8,7 +7,7 @@ import lombok.experimental.Accessors;
 
 @Data
 @Accessors(chain = true)
-public class UserDTO {
+public class TestUserDTO {
     @NotEmpty
     private String name;
     @NotEmpty
@@ -18,7 +17,6 @@ public class UserDTO {
     @NotEmpty
     private String password;
     @NotEmpty
-    @EmailConstraint
     private String email;
     @Digits(integer = 15, fraction = 0)
     private Long phoneNumber;

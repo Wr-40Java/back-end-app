@@ -28,7 +28,7 @@ public class User {
     private String password;
     @Column(length = 45)
     private String email;
-    private short phoneNumber;
+    private Long phoneNumber;
     @CreationTimestamp
     private LocalDateTime creationDate;
     @OneToMany
