@@ -59,4 +59,15 @@ public class MaintenanceHistoryService {
     public List<MaintenanceHistory> getAllMaintenanceHistory() {
         return maintenanceHistRepo.findAll();
     }
+
+    public void deleteMaintenanceHistory(Long id) {
+        if (!maintenanceHistRepo.existsById(id)) {
+            throw new NoSuchMaintenanceHistoryException();
+        }
+        maintenanceHistRepo.deleteById(id);
+    }
+
+    public void deleteAllMaintenanceHistory() {
+        maintenanceHistRepo.deleteAll();
+    }
 }

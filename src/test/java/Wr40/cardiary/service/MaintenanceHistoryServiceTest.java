@@ -24,9 +24,9 @@ import static org.mockito.Mockito.verify;
 class MaintenanceHistoryServiceTest {
 
     @Mock
-    private MaintenanceHistoryRepository maintenanceHRepo;
+    private MaintenanceHistoryRepository maintenanceHistoryRepository;
     @InjectMocks
-    private MaintenanceHistoryService maintenanceHService;
+    private MaintenanceHistoryService maintenanceHistoryService;
     @Mock
     private CarService carService;
 
@@ -40,15 +40,15 @@ class MaintenanceHistoryServiceTest {
         car.setMaintenanceHistories(new ArrayList<>());
 
         MaintenanceHistory mh = new MaintenanceHistory();
-        Mockito.when(maintenanceHRepo.save(mh)).thenReturn(mh);
+        Mockito.when(maintenanceHistoryRepository.save(mh)).thenReturn(mh);
         Mockito.when(carService.getCar(vinNumber)).thenReturn(car);
 
         // When
-        MaintenanceHistory mhSaved = maintenanceHService.saveMH("VinTest", mh);
+        MaintenanceHistory mhSaved = maintenanceHistoryService.saveMH("VinTest", mh);
 
         // Then
         Assertions.assertEquals(mh, mhSaved);
-        verify(maintenanceHRepo).save(mh);
+        verify(maintenanceHistoryRepository).save(mh);
     }
 
     @Test
@@ -60,10 +60,10 @@ class MaintenanceHistoryServiceTest {
         mh2.setId(mh1.getId());
         mh2.setDescription("Technical maintenance");
 
-        Mockito.when(maintenanceHRepo.findById(1L)).thenReturn(Optional.of(mh1));
-        Mockito.when(maintenanceHRepo.save(mh1)).thenReturn(mh2);
+        Mockito.when(maintenanceHistoryRepository.findById(1L)).thenReturn(Optional.of(mh1));
+        Mockito.when(maintenanceHistoryRepository.save(mh1)).thenReturn(mh2);
 
-        MaintenanceHistory updateMH = maintenanceHService.updateMH(1L, mh2);
+        MaintenanceHistory updateMH = maintenanceHistoryService.updateMH(1L, mh2);
         assertEquals("Technical maintenance", updateMH.getDescription());
     }
 
@@ -73,10 +73,10 @@ class MaintenanceHistoryServiceTest {
         // Given
         MaintenanceHistory mh1 = new MaintenanceHistory();
         Long id = 1L;
-        Mockito.when(maintenanceHRepo.findById(id)).thenReturn(Optional.empty());
+        Mockito.when(maintenanceHistoryRepository.findById(id)).thenReturn(Optional.empty());
 
         // When & Then
-        assertThrows(NoSuchMaintenanceHistoryException.class, () -> maintenanceHService.updateMH(id, mh1));
+        assertThrows(NoSuchMaintenanceHistoryException.class, () -> maintenanceHistoryService.updateMH(id, mh1));
     }
 
     @Test
@@ -85,16 +85,16 @@ class MaintenanceHistoryServiceTest {
         // Given
         MaintenanceHistory mh1 = new MaintenanceHistory();
         Long id = 1L;
-        Mockito.when(maintenanceHRepo.existsById(id)).thenReturn(true);
-        Mockito.when(maintenanceHRepo.getReferenceById(id)).thenReturn(mh1);
+        Mockito.when(maintenanceHistoryRepository.existsById(id)).thenReturn(true);
+        Mockito.when(maintenanceHistoryRepository.getReferenceById(id)).thenReturn(mh1);
 
         // When
-        MaintenanceHistory savedMH = maintenanceHService.getMaintenanceHistory(id);
+        MaintenanceHistory savedMH = maintenanceHistoryService.getMaintenanceHistory(id);
 
         // Then
         assertEquals(mh1, savedMH);
-        verify(maintenanceHRepo).existsById(id);
-        verify(maintenanceHRepo).getReferenceById(id);
+        verify(maintenanceHistoryRepository).existsById(id);
+        verify(maintenanceHistoryRepository).getReferenceById(id);
     }
 
     @Test
@@ -102,10 +102,10 @@ class MaintenanceHistoryServiceTest {
     void shouldThrowExceptionWhenGetByIdUpdateOfMaintenanceHistoryIsNotInDatabase() {
         // Given
         Long id = 1L;
-        Mockito.when(maintenanceHRepo.existsById(id)).thenThrow(NoSuchMaintenanceHistoryException.class);
+        Mockito.when(maintenanceHistoryRepository.existsById(id)).thenThrow(NoSuchMaintenanceHistoryException.class);
 
         // When & Then
-        assertThrows(NoSuchMaintenanceHistoryException.class, () -> maintenanceHService.getMaintenanceHistory(id));
+        assertThrows(NoSuchMaintenanceHistoryException.class, () -> maintenanceHistoryService.getMaintenanceHistory(id));
     }
 
     @Test
@@ -115,14 +115,49 @@ class MaintenanceHistoryServiceTest {
         List<MaintenanceHistory> mhLists = new ArrayList<>();
         MaintenanceHistory mh = new MaintenanceHistory();
         mhLists.add(mh);
-        Mockito.when(maintenanceHRepo.findAll()).thenReturn(mhLists);
+        Mockito.when(maintenanceHistoryRepository.findAll()).thenReturn(mhLists);
 
         // Given
-        List<MaintenanceHistory> mhListsSaved = maintenanceHService.getAllMaintenanceHistory();
+        List<MaintenanceHistory> mhListsSaved = maintenanceHistoryService.getAllMaintenanceHistory();
 
         // When
 
         assertEquals(mhLists, mhListsSaved);
-        verify(maintenanceHRepo).findAll();
+        verify(maintenanceHistoryRepository).findAll();
     }
+
+    @Test
+    @DisplayName("Should Delete Maintenance History When Given Id Is Correct")
+    void shouldDeleteMaintenanceHistoryWhenGivenIdIsCorrect() {
+        // Given
+        Long id = 1L;
+        Mockito.when(maintenanceHistoryRepository.existsById(id)).thenReturn(true);
+
+        // When
+        maintenanceHistoryService.deleteMaintenanceHistory(id);
+
+        // Then
+        verify(maintenanceHistoryRepository).deleteById(id);
+    }
+
+    @Test
+    @DisplayName("Should Delete All Maintenance History When Given Id Is Correct")
+    void shouldDeleteAllMaintenanceHistoryWhenGivenIdIsCorrect() {
+        // Given & When
+        maintenanceHistoryService.deleteAllMaintenanceHistory();
+
+        // Then
+        verify(maintenanceHistoryRepository).deleteAll();
+    }
+
+    @Test
+    @DisplayName("Should Throw Exception When Deleting Maintenance History With Wrong Id")
+    void shouldThrowExceptionWhenDeletingMaintenanceHistoryWithWrongId() {
+        Long id = 1L;
+        Mockito.when(maintenanceHistoryRepository.existsById(id)).thenThrow(NoSuchMaintenanceHistoryException.class);
+
+        // When & Then
+        assertThrows(NoSuchMaintenanceHistoryException.class, () -> maintenanceHistoryService.deleteMaintenanceHistory(id));
+    }
+
 }
