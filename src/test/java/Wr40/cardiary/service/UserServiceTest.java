@@ -2,6 +2,7 @@ package Wr40.cardiary.service;
 
 import Wr40.cardiary.exception.UserAlreadyExistedException;
 import Wr40.cardiary.exception.UserNotFoundException;
+import Wr40.cardiary.model.entity.Car;
 import Wr40.cardiary.model.entity.User;
 import Wr40.cardiary.repo.UserRepository;
 import Wr40.cardiary.service.UserService;
@@ -44,6 +45,7 @@ public class UserServiceTest {
         List<User> allUsers = userService.getAllUsers();
         Assertions.assertEquals(0,allUsers.size());
     }
+
     @Test
     public void whenSavingUserShouldSave() {
         User user = new User();
@@ -99,5 +101,16 @@ public class UserServiceTest {
         Mockito.when(userRepository.findUserByUsername(user.getUsername())).thenThrow(new UserNotFoundException());
         Assertions.assertThrows(UserNotFoundException.class, () -> userService.getUser(user.getUsername()));
         verify(userRepository).findUserByUsername(user.getUsername());
+    }
+
+    @Test
+    public void whenUpdateUser_shouldUpdateUser() {
+        User user = new User();
+        User user2 = new User();
+        user2.setName("Buick");
+        Mockito.when(userRepository.findUserByUsername(user.getName())).thenReturn(Optional.of(user));
+        Mockito.when(userRepository.save(user)).thenReturn(user2);
+        User updatedUser = userService.updateUser(user);
+        Assertions.assertEquals("Buick", updatedUser.getName());
     }
 }

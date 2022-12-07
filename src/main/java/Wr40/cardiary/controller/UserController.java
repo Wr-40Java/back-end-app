@@ -1,6 +1,5 @@
 package Wr40.cardiary.controller;
 
-import Wr40.cardiary.model.entity.User;
 import Wr40.cardiary.model.dto.UserDTO;
 import Wr40.cardiary.model.entity.User;
 import Wr40.cardiary.service.UserService;
@@ -8,10 +7,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,9 +45,24 @@ public class UserController {
     public void deleteAllUsers() {
         userService.deleteAllUsers();
     }
+
     @GetMapping("/get/{username}")
     @ResponseStatus(HttpStatus.OK)
-    public User getUser(@PathVariable String username){
+    public User getUser(@PathVariable String username) {
         return userService.getUser(username);
+
+    }
+
+    @PutMapping("/update")
+    @ResponseStatus(HttpStatus.OK)
+    public User updateUser(@Valid @RequestBody UserDTO userDTO) {
+        User mappedUser = modelMapper.map(userDTO, User.class);
+        return userService.updateUser(mappedUser);
+    }
+
+    @PutMapping("/addCar/{userName}/{vin}")
+    @ResponseStatus(HttpStatus.OK)
+    public void addCarToUserByVinNumber(@PathVariable String userName, @PathVariable String vin) {
+        userService.addCarToUserByVin(userName, vin);
     }
 }
