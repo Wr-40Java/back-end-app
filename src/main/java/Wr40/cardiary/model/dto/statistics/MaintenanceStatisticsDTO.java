@@ -11,5 +11,5 @@ import java.util.List;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class MaintenanceStatisticsDTO {
     private List<AvgMaintenanceStatsDTO> avgMaintenanceStats;
-    private List<SumMaintanceStatsDTO> sumMaintenanceStats;
+    private List<SumMaintenanceStatsDTO> sumMaintenanceStats;
 }

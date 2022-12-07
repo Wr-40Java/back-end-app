@@ -6,7 +6,6 @@ import jakarta.validation.constraints.Digits;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,10 +13,10 @@ import java.time.LocalDateTime;
 @Setter
 @EqualsAndHashCode
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class SumMaintanceStatsDTO {
+public class SumMaintenanceStatsDTO {
     @Digits(integer = 12, fraction = 2)
     private BigDecimal maintenanceCost;
     private String companyResponsibleForName;
     private String description;
-    private LocalDateTime timestamp;
+    //private LocalDateTime timestamp;
 }

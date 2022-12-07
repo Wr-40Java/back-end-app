@@ -19,7 +19,7 @@ public class AvgMaintenanceStatsDTO {
     private BigDecimal averageMaintenanceCost;
     private String companyResponsibleForName;
     private String description;
-    private LocalDateTime timestamp;
+    //private LocalDateTime timestamp;
 
 
 }
