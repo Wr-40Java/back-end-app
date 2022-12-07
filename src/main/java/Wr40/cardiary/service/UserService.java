@@ -2,27 +2,21 @@ package Wr40.cardiary.service;
 
 import Wr40.cardiary.exception.UserNotFoundException;
 import Wr40.cardiary.model.entity.User;
-import Wr40.cardiary.exception.UserAlreadyExistedException;
-import Wr40.cardiary.exception.WrongEmailAddressException;
 import Wr40.cardiary.repo.UserRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
 @Transactional
+@AllArgsConstructor
 public class UserService {
     UserRepository userRepository;
 
-    @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    CarService carService;
 
     public List<User> getAllUsers(){
         return userRepository.findAll();
