@@ -1,24 +1,24 @@
 package Wr40.cardiary.service;
 
+import Wr40.cardiary.exception.NoSuchEntityFound;
 import Wr40.cardiary.exception.TaxNotFoundException;
 import Wr40.cardiary.model.entity.Tax;
+import Wr40.cardiary.model.entity.TaxType;
 import Wr40.cardiary.repo.TaxRepository;
+import Wr40.cardiary.repo.TaxTypeRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 @Transactional
 public class TaxService {
 
     TaxRepository taxRepository;
-
-    @Autowired
-    public TaxService(TaxRepository taxRepository) {
-        this.taxRepository = taxRepository;
-    }
+    TaxTypeRepository taxTypeRepository;
 
     public Tax saveTax(Tax tax) {
         return taxRepository.save(tax);
@@ -45,5 +45,15 @@ public class TaxService {
         Tax taxToUpdate = taxRepository.findById(id).orElseThrow(TaxNotFoundException::new);
         taxToUpdate.setCostOfTransaction(tax.getCostOfTransaction());
         return taxRepository.save(taxToUpdate);
+    }
+
+    public Tax linkTaxTypeToTax(Long taxId, Long taxTypeId) {
+        Tax tax = taxRepository.findById(taxId).orElseThrow(TaxNotFoundException::new);
+        TaxType taxType = taxTypeRepository.findById(taxTypeId).orElseThrow(NoSuchEntityFound::new);
+
+        Tax updatedTax = new Tax();
+        updatedTax.setCostOfTransaction(tax.getCostOfTransaction());
+        updatedTax.setTaxType(taxType);
+        return taxRepository.save(updatedTax);
     }
 }
