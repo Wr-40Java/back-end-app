@@ -18,8 +18,10 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -52,7 +54,13 @@ public class InsuranceService {
     }
 
     public List<InsuranceCompanyWithTypeDTO> getInsuranceCompWithType(String VINNumber) {
-        List<InsuranceCompany> allIncuranceCompaniesWithType = insuranceRepository.getAllIncuranceCompaniesWithType(VINNumber);
+        List<InsuranceCompany> allIncuranceCompaniesWithType = new ArrayList<>();
+        Car car = carRepository.findByVINnumber(VINNumber).orElseThrow(NoSuchCarFoundException::new);
+        Set<InsuranceCompany> insuranceCompanies = car.getInsuranceCompanies();
+        for (InsuranceCompany insuranceCompany : insuranceCompanies) {
+            allIncuranceCompaniesWithType.add(insuranceCompany);
+        }
+//        List<InsuranceCompany> allIncuranceCompaniesWithType = insuranceRepository.getAllIncuranceCompaniesWithType(VINNumber);
         allIncuranceCompaniesWithType.stream().map(o->o.getInsuranceType()).forEach(System.out::println);
         List<InsuranceCompanyWithTypeDTO> mappedInsCompanyDTO = allIncuranceCompaniesWithType.stream()
                 .map(obj -> modelMapper.map(obj, InsuranceCompanyWithTypeDTO.class)).toList();
