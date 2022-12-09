@@ -10,6 +10,7 @@ import org.hibernate.validator.constraints.Length;
 @Data
 @Accessors(chain = true)
 public class InsuranceCompanyDTO {
+    private Long id;
     @NotEmpty
     @Length(max = 45)
     private String name;

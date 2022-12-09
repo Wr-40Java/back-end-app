@@ -24,7 +24,6 @@ public class InsuranceController {
     @ResponseStatus(HttpStatus.CREATED)
     public InsuranceCompanyWithTypeDTO saveInsuranceCompanyWithTypeAndCar(@PathVariable(name = "vin_number", required = false) String vinNumber,
                                                                           @Valid @RequestBody InsuranceCompanyWithTypeDTO insuranceCompanyWithTypeDTO) {
-        InsuranceCompany insuranceCompany = modelMapper.map(insuranceCompanyWithTypeDTO, InsuranceCompany.class);
         return insuranceService.saveInsuranceWithTypeToTheCar(insuranceCompanyWithTypeDTO, vinNumber);
     }
 
@@ -42,13 +41,13 @@ public class InsuranceController {
         return insuranceService.linkCarWithInsuranceCompanyAndInsuranceType(vinNumber, InsCompId, InsTypeId);
     }
 
-    @PutMapping("/update/{vin_number}/{old_ic_id}/{ic_id}/{it_id}")
+    @PutMapping("/update/{vin_number}/{ic_id}/{it_id}")
     @ResponseStatus(HttpStatus.OK)
-    public InsuranceCompanyWithTypeDTO deleteLinkedInsuranceCompanyWithTypeAndCar(@PathVariable(name = "vin_number", required = true) String vinNumber,
-                                                             @PathVariable(name = "old_ic_id", required = true) Integer OldInsCompId,
+    public InsuranceCompanyWithTypeDTO updateLinkedInsuranceCompanyWithTypeAndCar(@PathVariable(name = "vin_number", required = true) String vinNumber,
+//                                                             @PathVariable(name = "old_ic_id", required = true) Integer OldInsCompId,
                                                              @PathVariable(name = "ic_id", required = true) Integer InsCompId,
                                                              @PathVariable(name = "it_id", required = true) Integer InsTypeId) {
-        return insuranceService.updateLinkInsuranceCompanyWithTypeAndCar(vinNumber, OldInsCompId, InsCompId, InsTypeId);
+        return insuranceService.updateLinkInsuranceCompanyWithTypeAndCar(vinNumber, InsCompId, InsTypeId);
     }
 
     @DeleteMapping("/delete/{vin_number}/{ic_id}/{it_id}")
@@ -67,7 +66,7 @@ public class InsuranceController {
 
     @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
-    public List<InsuranceCompanyDTO> getAllInsuranceCompany(@Valid @RequestBody InsuranceCompanyDTO insuranceCompanyDTO) {
+    public List<InsuranceCompanyDTO> getAllInsuranceCompany() {
         return insuranceService.getAllInsuranceCompanies();
     }
 

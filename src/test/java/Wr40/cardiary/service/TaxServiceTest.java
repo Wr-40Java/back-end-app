@@ -1,9 +1,10 @@
 package Wr40.cardiary.service;
 
+import Wr40.cardiary.exception.NoSuchEntityFound;
 import Wr40.cardiary.exception.TaxNotFoundException;
-import Wr40.cardiary.model.entity.Tax;
+import Wr40.cardiary.model.entity.*;
 import Wr40.cardiary.repo.TaxRepository;
-import Wr40.cardiary.service.TaxService;
+import Wr40.cardiary.repo.TaxTypeRepository;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -24,6 +25,8 @@ public class TaxServiceTest {
 
     @Mock
     private TaxRepository taxRepository;
+    @Mock
+    private TaxTypeRepository taxTypeRepository;
     @InjectMocks
     private TaxService taxService;
 
@@ -102,4 +105,21 @@ public class TaxServiceTest {
         Tax updatedCar = taxService.updateTax(tax.getId(), tax);
         Assertions.assertEquals(BigDecimal.valueOf(50),updatedCar.getCostOfTransaction());
     }
+
+    @Test
+    public void whenLinkingNotExistingTax_ShouldThrowException() {
+        Mockito.when(taxRepository.findById(1L)).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(TaxNotFoundException.class, () -> taxService.linkTaxTypeToTax(1L, 1L));
+    }
+
+    @Test
+    public void whenLinkingInsuranceCompanyNotExisting_shouldThrowException() {
+        Mockito.when(taxRepository.findById(1L)).thenReturn(Optional.of(new Tax()));
+        Mockito.when(taxTypeRepository.findById(1L)).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(NoSuchEntityFound.class, () -> taxService.linkTaxTypeToTax(1L, 1L));
+    }
 }
+
+

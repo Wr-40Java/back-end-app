@@ -1,8 +1,5 @@
 package Wr40.cardiary.model.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.*;
@@ -13,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-public class MaintenanaceEvent {
+public class MaintenanceEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,12 +23,7 @@ public class MaintenanaceEvent {
     private LocalDateTime nextVisitSchedule;
     @CreationTimestamp
     private LocalDateTime timestamp;
-
-//    @JoinColumn(name = "maintenanace_event_id")
-//    @OneToOne(mappedBy = "maintenanaceEvent", cascade = CascadeType.ALL)
-//    @PrimaryKeyJoinColumn
-    @OneToOne(mappedBy = "maintenanaceEvent")
-//    @MapsId
-//    @JoinColumn(name = "maintenanace_event_id")
+    @PrimaryKeyJoinColumn
+    @OneToOne
     private MaintenanceHistory maintenanceHistory;
 }

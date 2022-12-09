@@ -18,7 +18,7 @@ import static org.hibernate.annotations.QueryHints.READ_ONLY;
 @Data
 @Accessors(chain = true)
 public class InsuranceTypeDTO {
-    private Integer id;
+    private Long id;
     @NotEmpty
     @Length(max = 45)
     private String type;

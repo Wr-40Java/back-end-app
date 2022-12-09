@@ -75,8 +75,8 @@ public class InsuranceServiceTest {
 
         Mockito.when(modelMapper.map(insuranceCompanyWithTypeDTO, InsuranceCompany.class)).thenReturn(insuranceCompany);
         Mockito.when(modelMapper.map(insuranceCompany, InsuranceCompanyWithTypeDTO.class)).thenReturn(insuranceCompanyWithTypeDTO);
-        Mockito.when(modelMapper.map(insuranceTypeDTO, InsuranceType.class)).thenReturn(insuranceType);
-        Mockito.when(modelMapper.map(insuranceType, InsuranceTypeDTO.class)).thenReturn(insuranceTypeDTO);
+//        Mockito.when(modelMapper.map(insuranceTypeDTO, InsuranceType.class)).thenReturn(insuranceType);
+//        Mockito.when(modelMapper.map(insuranceType, InsuranceTypeDTO.class)).thenReturn(insuranceTypeDTO);
 
         //when
         InsuranceCompanyWithTypeDTO savedInsuranceCompanyWithTypeDTO = insuranceService.saveInsuranceWithTypeToTheCar(insuranceCompanyWithTypeDTO, VINNumber);
@@ -276,6 +276,7 @@ public class InsuranceServiceTest {
 //
 //        InsuranceCompany insuranceCompany = new InsuranceCompany();
 //        insuranceCompany.setName("NewSafeLvl").setDescription("For me the best so far").setPhoneNumber(19027883L).setInsuranceType(insuranceType);
+//        car.addInsuranceCompany(insuranceCompany);
 //
 //        Mockito.when(carRepository.findByVINnumber(VINNumber)).thenReturn(Optional.of(car));
 //        Mockito.when(insuranceRepository.findById(InsCompId)).thenReturn((Optional.of(insuranceCompany)));
@@ -396,7 +397,8 @@ public class InsuranceServiceTest {
         car.addInsuranceCompany(insuranceCompany);
 
         Mockito.when(carRepository.findByVINnumber(VINNumber)).thenReturn(Optional.of(car));
-        Mockito.when(insuranceRepository.findById(OldInsCompId)).thenReturn((Optional.of(insuranceCompany)));
+        // update changed for insurance company
+//        Mockito.when(insuranceRepository.findById(OldInsCompId)).thenReturn((Optional.of(insuranceCompany)));
 
         Car carNewVersion = new Car();
         carNewVersion.addInsuranceCompany(insuranceCompanyToAssignToCar);
@@ -415,7 +417,7 @@ public class InsuranceServiceTest {
 
         //when
         InsuranceCompanyWithTypeDTO updatedInsuranceCompanyWithTypeDTO = insuranceService
-                .updateLinkInsuranceCompanyWithTypeAndCar(VINNumber, OldInsCompId.intValue(),InsCompId.intValue(),InsTypeId.intValue());
+                .updateLinkInsuranceCompanyWithTypeAndCar(VINNumber,InsCompId.intValue(),InsTypeId.intValue());
 
         //then
         Assertions.assertEquals(updatedInsuranceCompanyWithTypeDTO, insuranceCompanyToAssignToCarDTO);
@@ -433,7 +435,7 @@ public class InsuranceServiceTest {
 
         //when
         //then
-        Assertions.assertThrows(NoSuchCarFoundException.class, () -> insuranceService.updateLinkInsuranceCompanyWithTypeAndCar(VINNumber, 1, 1, 1));
+        Assertions.assertThrows(NoSuchCarFoundException.class, () -> insuranceService.updateLinkInsuranceCompanyWithTypeAndCar(VINNumber, 1, 1));
     }
     @Test
     public void whenUpdatingLinkingInsuranceTypeWhenGivenCarNotExisting_shouldThrowException2() {
@@ -445,7 +447,7 @@ public class InsuranceServiceTest {
 
         //when
         //then
-        Assertions.assertThrows(NoSuchInsuranceCompanyException.class, () -> insuranceService.updateLinkInsuranceCompanyWithTypeAndCar(VINNumber, 1, 1, 1));
+        Assertions.assertThrows(NoSuchInsuranceCompanyException.class, () -> insuranceService.updateLinkInsuranceCompanyWithTypeAndCar(VINNumber, 1, 1));
     }
     @Test
     public void whenUpdatingLinkingInsuranceTypeWhenGivenCarNotExisting_shouldThrowException3() {
@@ -458,7 +460,7 @@ public class InsuranceServiceTest {
 
         //when
         //then
-        Assertions.assertThrows(NoSuchInsuranceTypeException.class, () -> insuranceService.updateLinkInsuranceCompanyWithTypeAndCar(VINNumber, 1, 1, 1));
+        Assertions.assertThrows(NoSuchInsuranceTypeException.class, () -> insuranceService.updateLinkInsuranceCompanyWithTypeAndCar(VINNumber, 1, 1));
     }
 
 

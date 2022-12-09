@@ -18,8 +18,10 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -36,8 +38,13 @@ public class InsuranceService {
         if(insuranceCompanyOptional.isPresent()) {
             throw new InsuranceCompanyAlreadyExistsException();
         }
+        InsuranceType insuranceType = modelMapper.map(insuranceCompanyWithTypeDTO.getInsuranceTypeDTO(), InsuranceType.class);
+        InsuranceType savedInsuranceType = insuranceTypeRepository.save(insuranceType);
+
         InsuranceCompany insuranceCompany = modelMapper.map(insuranceCompanyWithTypeDTO, InsuranceCompany.class);
-        insuranceCompany.setInsuranceType(modelMapper.map(insuranceCompanyWithTypeDTO.getInsuranceTypeDTO(), InsuranceType.class));
+//        insuranceCompany.setInsuranceType(modelMapper.map(insuranceCompanyWithTypeDTO.getInsuranceTypeDTO(), InsuranceType.class));
+
+        insuranceCompany.setInsuranceType(savedInsuranceType);
         car.addInsuranceCompany(insuranceCompany);
         InsuranceCompany savedInsuranceCompany = insuranceRepository.save(insuranceCompany);
         carRepository.save(car);
@@ -47,8 +54,13 @@ public class InsuranceService {
     }
 
     public List<InsuranceCompanyWithTypeDTO> getInsuranceCompWithType(String VINNumber) {
-        List<InsuranceCompany> allIncuranceCompaniesWithType = insuranceRepository.getAllIncuranceCompaniesWithType(VINNumber);
-        allIncuranceCompaniesWithType.stream().map(o->o.getInsuranceType()).forEach(System.out::println);
+        List<InsuranceCompany> allIncuranceCompaniesWithType = new ArrayList<>();
+        Car car = carRepository.findByVINnumber(VINNumber).orElseThrow(NoSuchCarFoundException::new);
+        Set<InsuranceCompany> insuranceCompanies = car.getInsuranceCompanies();
+        for (InsuranceCompany insuranceCompany : insuranceCompanies) {
+            allIncuranceCompaniesWithType.add(insuranceCompany);
+        }
+//        List<InsuranceCompany> allIncuranceCompaniesWithType = insuranceRepository.getAllIncuranceCompaniesWithType(VINNumber);
         List<InsuranceCompanyWithTypeDTO> mappedInsCompanyDTO = allIncuranceCompaniesWithType.stream()
                 .map(obj -> modelMapper.map(obj, InsuranceCompanyWithTypeDTO.class)).toList();
         List<InsuranceCompanyWithTypeDTO> mappedInsCompanyWithTypeDTO = mappedInsCompanyDTO.stream()
@@ -85,12 +97,12 @@ public class InsuranceService {
         return savedInsuranceCompany;
     }
 
-    public InsuranceCompanyWithTypeDTO updateLinkInsuranceCompanyWithTypeAndCar(String VINNumber, Integer OldInsCompId, Integer InsCompId, Integer InsTypeId) {
+    public InsuranceCompanyWithTypeDTO updateLinkInsuranceCompanyWithTypeAndCar(String VINNumber, Integer InsCompId, Integer InsTypeId) {
         Car car = carRepository.findByVINnumber(VINNumber).orElseThrow(NoSuchCarFoundException::new);
-        Optional<InsuranceCompany> insuranceCompanyOptional = insuranceRepository.findById(Long.valueOf(OldInsCompId));
-        if(!insuranceCompanyOptional.isPresent()) {
-            throw new NoSuchInsuranceCompanyException();
-        }
+//        Optional<InsuranceCompany> insuranceCompanyOptional = insuranceRepository.findById(Long.valueOf(OldInsCompId));
+//        if(!insuranceCompanyOptional.isPresent()) {
+//            throw new NoSuchInsuranceCompanyException();
+//        }
         InsuranceCompany toAssignInsuranceCompany = insuranceRepository.findById(Long.valueOf(InsCompId)).orElseThrow(NoSuchInsuranceCompanyException::new);
 
         InsuranceType toAssignInsuranceType = insuranceTypeRepository.findById(Long.valueOf(InsTypeId)).orElseThrow(NoSuchInsuranceTypeException::new);
@@ -98,7 +110,7 @@ public class InsuranceService {
 
         InsuranceCompany savedInsuranceCompany = insuranceRepository.save(toAssignInsuranceCompany);
 
-        car.removeInsuranceCompany(insuranceCompanyOptional.get());
+//        car.removeInsuranceCompany(insuranceCompanyOptional.get());
         car.addInsuranceCompany(toAssignInsuranceCompany);
         carRepository.save(car);
 
@@ -121,7 +133,7 @@ public class InsuranceService {
     private InsuranceTypeDTO mapInsuranceTypeToDTO(InsuranceType insuranceType) {
         InsuranceTypeDTO insuranceTypeDTO = new InsuranceTypeDTO();
         insuranceTypeDTO.setType(insuranceType.getType()).setDescription(insuranceType.getDescription()).setCostsPerYear(insuranceType.getCostsPerYear())
-                .setCoveredCompensation(insuranceType.getCoveredCompensation());
+                .setCoveredCompensation(insuranceType.getCoveredCompensation()).setId(insuranceType.getId());
         return insuranceTypeDTO;
     }
 
