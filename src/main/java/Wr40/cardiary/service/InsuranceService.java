@@ -38,7 +38,7 @@ public class InsuranceService {
         if(insuranceCompanyOptional.isPresent()) {
             throw new InsuranceCompanyAlreadyExistsException();
         }
-        InsuranceType insuranceType = modelMapper.map(insuranceCompanyWithTypeDTO, InsuranceType.class);
+        InsuranceType insuranceType = modelMapper.map(insuranceCompanyWithTypeDTO.getInsuranceTypeDTO(), InsuranceType.class);
         InsuranceType savedInsuranceType = insuranceTypeRepository.save(insuranceType);
 
         InsuranceCompany insuranceCompany = modelMapper.map(insuranceCompanyWithTypeDTO, InsuranceCompany.class);
@@ -61,7 +61,6 @@ public class InsuranceService {
             allIncuranceCompaniesWithType.add(insuranceCompany);
         }
 //        List<InsuranceCompany> allIncuranceCompaniesWithType = insuranceRepository.getAllIncuranceCompaniesWithType(VINNumber);
-        allIncuranceCompaniesWithType.stream().map(o->o.getInsuranceType()).forEach(System.out::println);
         List<InsuranceCompanyWithTypeDTO> mappedInsCompanyDTO = allIncuranceCompaniesWithType.stream()
                 .map(obj -> modelMapper.map(obj, InsuranceCompanyWithTypeDTO.class)).toList();
         List<InsuranceCompanyWithTypeDTO> mappedInsCompanyWithTypeDTO = mappedInsCompanyDTO.stream()
@@ -134,7 +133,7 @@ public class InsuranceService {
     private InsuranceTypeDTO mapInsuranceTypeToDTO(InsuranceType insuranceType) {
         InsuranceTypeDTO insuranceTypeDTO = new InsuranceTypeDTO();
         insuranceTypeDTO.setType(insuranceType.getType()).setDescription(insuranceType.getDescription()).setCostsPerYear(insuranceType.getCostsPerYear())
-                .setCoveredCompensation(insuranceType.getCoveredCompensation());
+                .setCoveredCompensation(insuranceType.getCoveredCompensation()).setId(insuranceType.getId());
         return insuranceTypeDTO;
     }
 
