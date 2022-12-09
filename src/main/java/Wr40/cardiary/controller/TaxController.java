@@ -56,4 +56,13 @@ public class TaxController {
         Tax mappedTax = modelMapper.map(dto, Tax.class);
         return taxService.updateTax(id, mappedTax);
     }
+
+    @PostMapping("/link/{tax_id}/{tax_type_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Tax linkTaxTypeToTax(
+            @PathVariable(name = "tax_id") Long taxId,
+            @PathVariable(name = "tax_type_id") Long taxTypeId
+    ) {
+        return taxService.linkTaxTypeToTax(taxId, taxTypeId);
+    }
 }
