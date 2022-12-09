@@ -276,6 +276,7 @@ public class InsuranceServiceTest {
 //
 //        InsuranceCompany insuranceCompany = new InsuranceCompany();
 //        insuranceCompany.setName("NewSafeLvl").setDescription("For me the best so far").setPhoneNumber(19027883L).setInsuranceType(insuranceType);
+//        car.addInsuranceCompany(insuranceCompany);
 //
 //        Mockito.when(carRepository.findByVINnumber(VINNumber)).thenReturn(Optional.of(car));
 //        Mockito.when(insuranceRepository.findById(InsCompId)).thenReturn((Optional.of(insuranceCompany)));

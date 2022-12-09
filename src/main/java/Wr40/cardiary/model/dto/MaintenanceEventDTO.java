@@ -1,6 +1,5 @@
 package Wr40.cardiary.model.dto;
 
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -10,15 +9,20 @@ import lombok.experimental.Accessors;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-
 @Data
 @Accessors(chain = true)
-public class MaintenanceHistoryDTO {
+public class MaintenanceEventDTO {
+    @NotNull
+    @Digits(integer = 12,fraction = 2)
+    private Long cost;
+    @NotEmpty
+    private String companyResponsibleForName;
+    @NotNull
+    private short companyResponsibleForPhoneNumber;
     @NotEmpty
     private String description;
-    @NotNull
-    @Digits(integer = 14,fraction = 2)
-    private Long overallCost;
+    @NotEmpty
+    private Date nextVisitSchedule;
     @NotEmpty
     private LocalDateTime timestamp;
 }

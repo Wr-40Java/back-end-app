@@ -25,5 +25,5 @@ public class MaintenanceHistory {
     @OneToOne(cascade = CascadeType.ALL)
     private TechnicalService technicalService;
     @OneToOne(cascade = CascadeType.ALL)
-    private MaintenanaceEvent maintenanaceEvent;
+    private MaintenanceEvent maintenanaceEvent;
 }
