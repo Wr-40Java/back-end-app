@@ -24,7 +24,6 @@ public class InsuranceController {
     @ResponseStatus(HttpStatus.CREATED)
     public InsuranceCompanyWithTypeDTO saveInsuranceCompanyWithTypeAndCar(@PathVariable(name = "vin_number", required = false) String vinNumber,
                                                                           @Valid @RequestBody InsuranceCompanyWithTypeDTO insuranceCompanyWithTypeDTO) {
-        InsuranceCompany insuranceCompany = modelMapper.map(insuranceCompanyWithTypeDTO, InsuranceCompany.class);
         return insuranceService.saveInsuranceWithTypeToTheCar(insuranceCompanyWithTypeDTO, vinNumber);
     }
 
@@ -67,7 +66,7 @@ public class InsuranceController {
 
     @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
-    public List<InsuranceCompanyDTO> getAllInsuranceCompany(@Valid @RequestBody InsuranceCompanyDTO insuranceCompanyDTO) {
+    public List<InsuranceCompanyDTO> getAllInsuranceCompany() {
         return insuranceService.getAllInsuranceCompanies();
     }
 

@@ -36,8 +36,13 @@ public class InsuranceService {
         if(insuranceCompanyOptional.isPresent()) {
             throw new InsuranceCompanyAlreadyExistsException();
         }
+        InsuranceType insuranceType = modelMapper.map(insuranceCompanyWithTypeDTO, InsuranceType.class);
+        InsuranceType savedInsuranceType = insuranceTypeRepository.save(insuranceType);
+
         InsuranceCompany insuranceCompany = modelMapper.map(insuranceCompanyWithTypeDTO, InsuranceCompany.class);
-        insuranceCompany.setInsuranceType(modelMapper.map(insuranceCompanyWithTypeDTO.getInsuranceTypeDTO(), InsuranceType.class));
+//        insuranceCompany.setInsuranceType(modelMapper.map(insuranceCompanyWithTypeDTO.getInsuranceTypeDTO(), InsuranceType.class));
+
+        insuranceCompany.setInsuranceType(savedInsuranceType);
         car.addInsuranceCompany(insuranceCompany);
         InsuranceCompany savedInsuranceCompany = insuranceRepository.save(insuranceCompany);
         carRepository.save(car);
