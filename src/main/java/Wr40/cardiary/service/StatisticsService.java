@@ -23,6 +23,7 @@ public class StatisticsService {
         List<SumMaintenanceStatsDTO> maintenanceStatsWithSumOfExpensesDTO = new ArrayList<>();
         List<AvgMaintenanceStatsDTO> maintenanceStatsWithAvgOfExpensesDTO = new ArrayList<>();
         List<String> maintenanceStatsWithSumOfExpenses = maintenanceEventRepository.getMaintenanceStatsWithSumOfExpenses();
+        System.out.println(maintenanceStatsWithSumOfExpenses);
         List<String> maintenanceStatsWithAvgOfExpenses = maintenanceEventRepository.getMaintenanceStatsWithAvgOfExpenses();
 
         for (String object : maintenanceStatsWithSumOfExpenses) {

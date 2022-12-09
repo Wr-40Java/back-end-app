@@ -97,12 +97,12 @@ public class InsuranceService {
         return savedInsuranceCompany;
     }
 
-    public InsuranceCompanyWithTypeDTO updateLinkInsuranceCompanyWithTypeAndCar(String VINNumber, Integer OldInsCompId, Integer InsCompId, Integer InsTypeId) {
+    public InsuranceCompanyWithTypeDTO updateLinkInsuranceCompanyWithTypeAndCar(String VINNumber, Integer InsCompId, Integer InsTypeId) {
         Car car = carRepository.findByVINnumber(VINNumber).orElseThrow(NoSuchCarFoundException::new);
-        Optional<InsuranceCompany> insuranceCompanyOptional = insuranceRepository.findById(Long.valueOf(OldInsCompId));
-        if(!insuranceCompanyOptional.isPresent()) {
-            throw new NoSuchInsuranceCompanyException();
-        }
+//        Optional<InsuranceCompany> insuranceCompanyOptional = insuranceRepository.findById(Long.valueOf(OldInsCompId));
+//        if(!insuranceCompanyOptional.isPresent()) {
+//            throw new NoSuchInsuranceCompanyException();
+//        }
         InsuranceCompany toAssignInsuranceCompany = insuranceRepository.findById(Long.valueOf(InsCompId)).orElseThrow(NoSuchInsuranceCompanyException::new);
 
         InsuranceType toAssignInsuranceType = insuranceTypeRepository.findById(Long.valueOf(InsTypeId)).orElseThrow(NoSuchInsuranceTypeException::new);
@@ -110,7 +110,7 @@ public class InsuranceService {
 
         InsuranceCompany savedInsuranceCompany = insuranceRepository.save(toAssignInsuranceCompany);
 
-        car.removeInsuranceCompany(insuranceCompanyOptional.get());
+//        car.removeInsuranceCompany(insuranceCompanyOptional.get());
         car.addInsuranceCompany(toAssignInsuranceCompany);
         carRepository.save(car);
 
