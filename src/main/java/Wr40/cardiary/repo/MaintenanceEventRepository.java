@@ -10,16 +10,16 @@ import java.util.List;
 @Repository
 public interface MaintenanceEventRepository extends JpaRepository<MaintenanaceEvent, Long> {
     @Query(value = """
-            select CONCAT (round(SUM(maintenance_event.cost),2), ';', maintenance_event.company_responsible_for_name, ';', maintenance_event.description) AS "info" from maintenance_history left join maintenance_event on maintenance_history.maintenance_event_id = maintenance_event.id
-            group by maintenance_event.description, maintenance_event.company_responsible_for_name
-            order by round(SUM(maintenance_event.cost),2)""", nativeQuery = true)
+            select CONCAT (round(SUM(maintenanace_event.cost),2), ';' ,maintenanace_event.description, ';', maintenanace_event.company_responsible_for_name) AS "info" from maintenance_history left join maintenanace_event on maintenance_history.maintenanace_event_id = maintenanace_event.id
+                        group by maintenanace_event.description, maintenanace_event.company_responsible_for_name
+                        order by round(SUM(maintenanace_event.cost),2)""", nativeQuery = true)
 
     List<String> getMaintenanceStatsWithSumOfExpenses();
 
     @Query(value = """
-            select CONCAT (round(AVG(maintenance_event.cost),2), ';' maintenance_event.description, ';', maintenance_event.company_responsible_for_name) AS "info" from maintenance_history left join maintenance_event on maintenance_history.maintenance_event_id = maintenance_event.id
-            group by maintenance_event.description, maintenance_event.company_responsible_for_name
-            order by round(AVG(maintenance_event.cost),2)""", nativeQuery = true)
+            select CONCAT (round(AVG(maintenanace_event.cost),2), ';' ,maintenanace_event.description, ';', maintenanace_event.company_responsible_for_name) AS "info" from maintenance_history left join maintenanace_event on maintenance_history.maintenanace_event_id = maintenanace_event.id
+                        group by maintenanace_event.description, maintenanace_event.company_responsible_for_name
+                        order by round(AVG(maintenanace_event.cost),2)""", nativeQuery = true)
 
     List<String> getMaintenanceStatsWithAvgOfExpenses();
 
