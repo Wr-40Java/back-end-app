@@ -21,5 +21,5 @@ public class MaintenanceHistory {
     @OneToOne
     private TechnicalService technicalService;
     @OneToOne
-    private MaintenanaceEvent maintenanaceEvent;
+    private MaintenanceEvent maintenanceEvent;
 }
