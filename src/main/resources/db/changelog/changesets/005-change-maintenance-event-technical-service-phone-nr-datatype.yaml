@@ -37,3 +37,86 @@ databaseChangeLog:
                   name: company_responsible_for_phone_number
                   type: BIGINT
             tableName: technical_service
+
+  - changeSet:
+      id:  8
+      author:  Damian Grudzien
+      changes:
+        -  dropForeignKeyConstraint:
+             baseTableName:  maintenance_history
+             constraintName:  FK_MAINTENANCEHISTORY_ON_MAINTENANACEEVENT
+
+
+  - changeSet:
+      id:  9
+      author:  Damian Grudzien
+      changes:
+        -  renameColumn:
+             newColumnName:  maintenance_event_id
+             oldColumnName:  maintenanace_event_id
+             tableName:  maintenance_history
+
+  - changeSet:
+      id:  10
+      author:  Damian Grudzien
+      changes:
+        -  renameTable:
+             newTableName:  maintenance_event
+             oldTableName:  maintenanace_event
+
+#  - changeSet:
+#      id: 11
+#      author: Damian Grudzien
+#      changes:
+#        - addColumn:
+#            tableName: maintenance_event
+#            columns:
+#              - column:
+#                  autoIncrement: true
+#                  constraints:
+#                    nullable: false
+#                    primaryKey: true
+#                    primaryKeyName: pk_temp
+#                  name: id_temp
+#                  type: BIGINT
+  - changeSet:
+      id: 12
+      author: Damian Grudzien
+      changes:
+        - dropColumn:
+            columnName: id
+            tableName: maintenance_event
+  - changeSet:
+      id: 13
+      author: Damian Grudzien
+      changes:
+        - addColumn:
+            tableName: maintenance_event
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_maintenanceevent
+                  name: id
+                  type: BIGINT
+#  - changeSet:
+#      id: 14
+#      author: Damian Grudzien
+#      changes:
+#        - dropColumn:
+#            columnName: id_temp
+#            tableName: maintenance_event
+#
+  - changeSet:
+      id: 15
+      author: Damian Grudzien
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: maintenance_event_id
+            baseTableName: maintenance_history
+            constraintName: FK_MAINTENANCEHISTORY_ON_MAINTENANCEEVENT
+            referencedColumnNames: id
+            referencedTableName: maintenance_event

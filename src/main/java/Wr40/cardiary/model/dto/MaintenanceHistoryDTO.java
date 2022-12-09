@@ -1,7 +1,9 @@
 package Wr40.cardiary.model.dto;
 
 import Wr40.cardiary.validation.constraint.ValidWhenNotNull;
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.experimental.Accessors;
 

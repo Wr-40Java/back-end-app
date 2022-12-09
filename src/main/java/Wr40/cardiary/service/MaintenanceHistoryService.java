@@ -2,13 +2,11 @@ package Wr40.cardiary.service;
 
 import Wr40.cardiary.exception.NoSuchMaintenanceHistoryException;
 import Wr40.cardiary.model.entity.Car;
-import Wr40.cardiary.model.entity.MaintenanaceEvent;
 import Wr40.cardiary.model.entity.MaintenanceHistory;
 import Wr40.cardiary.repo.MaintenanceEventRepository;
 import Wr40.cardiary.repo.MaintenanceHistoryRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
