@@ -15,12 +15,12 @@ public class TechnicalService {
     private BigDecimal cost;
     @Column(length = 45)
     private String companyResponsibleForName;
-    private short companyResponsibleForPhoneNumber;
+    private Long companyResponsibleForPhoneNumber;
     private String reason;
     private String description;
     @CreationTimestamp
     private LocalDateTime timestamp;
     @PrimaryKeyJoinColumn
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private MaintenanceHistory maintenanceHistory;
 }

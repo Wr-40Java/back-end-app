@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/cardiary/maintenanceHistory")
+@RequestMapping("/api/cardiary/maintenancehistory")
 @AllArgsConstructor
 public class MaintenanceHistoryController {
 

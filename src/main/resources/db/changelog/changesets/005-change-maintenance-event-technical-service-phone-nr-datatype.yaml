@@ -1,0 +1,39 @@
+databaseChangeLog:
+  - changeSet:
+      id: 4
+      author: Damian Grudzien
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropColumn:
+            columnName: company_responsible_for_phone_number
+            tableName: maintenanace_event
+  - changeSet:
+      id: 5
+      author: Damian Grudzien
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  name: company_responsible_for_phone_number
+                  type: BIGINT
+            tableName: maintenanace_event
+  - changeSet:
+      id: 6
+      author: Damian Grudzien
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropColumn:
+            columnName: company_responsible_for_phone_number
+            tableName: technical_service
+  - changeSet:
+      id: 7
+      author: Damian Grudzien
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addColumn:
+            columns:
+              - column:
+                  name: company_responsible_for_phone_number
+                  type: BIGINT
+            tableName: technical_service
