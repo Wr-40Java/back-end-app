@@ -48,6 +48,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(new ErrorDetails(LocalDateTime.now(), e.getMessage(), HttpStatus.BAD_REQUEST));
     }
 
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public final ResponseEntity<ErrorDetails> handleUserNotFoundException(UserNotFoundException e) {
+        return ResponseEntity.badRequest().body(new ErrorDetails(LocalDateTime.now(), e.getMessage(), HttpStatus.BAD_REQUEST));
+    }
+
     @ExceptionHandler(InsuranceCompanyAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public final ResponseEntity<ErrorDetails> handleExistingInsCompanyNameException(InsuranceCompanyAlreadyExistsException e) {

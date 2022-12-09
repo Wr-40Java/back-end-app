@@ -1,11 +1,16 @@
 package Wr40.cardiary.service;
 
 import Wr40.cardiary.exception.UserNotFoundException;
+import Wr40.cardiary.model.SecurityModel.UserSecurity;
 import Wr40.cardiary.model.entity.Car;
 import Wr40.cardiary.model.entity.User;
 import Wr40.cardiary.repo.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,9 +19,10 @@ import java.util.List;
 @Service
 @Transactional
 @AllArgsConstructor
-public class UserService {
+public class UserService implements UserDetailsService {
     UserRepository userRepository;
     CarService carService;
+    PasswordEncoder passwordEncoder;
 
 
     public List<User> getAllUsers() {
@@ -28,8 +34,7 @@ public class UserService {
     }
 
     public User saveUser(User user) {
-
-
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
@@ -62,4 +67,9 @@ public class UserService {
         userRepository.save(userToUpdateWithNewCar);
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findUserByUsername(username).orElseThrow(UserNotFoundException::new);
+        return new UserSecurity(user);
+    }
 }
