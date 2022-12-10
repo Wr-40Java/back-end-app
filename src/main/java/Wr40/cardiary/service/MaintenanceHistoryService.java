@@ -21,26 +21,19 @@ import static Wr40.cardiary.util.Calculations.calculateMaintenanceCost;
 public class MaintenanceHistoryService {
     private MaintenanceHistoryRepository maintenanceHistRepo;
     private CarService carService;
-//    @Lazy
-//    private MaintenanaceEventService maintenanaceEventService;
-    private MaintenanceEventRepository maintenanceEventRepository;
 
     @Transactional
     public MaintenanceHistory saveMH(String carVin, MaintenanceHistory maintenanceHistory) {
         Car car = carService.getCar(carVin);
-
-//        MaintenanceEvent savedMaintenanceEvent = maintenanceEventRepository.save(maintenanceHistory.getMaintenanceEvent());
-//        maintenanceHistory.setMaintenanceEvent(savedMaintenanceEvent);
-//        calculateMaintenanceCost(maintenanceHistory);
 
         MaintenanceHistory savedMH = maintenanceHistRepo.save(maintenanceHistory);
 
         List<MaintenanceHistory> maintenanceHistories = car.getMaintenanceHistories();
         maintenanceHistories.add(savedMH);
         car.setMaintenanceHistories(maintenanceHistories);
-        Car updateCar = carService.updateCar(car);
+        carService.updateCar(car);
 
-        return updateCar.getMaintenanceHistories().get(0);
+        return savedMH;
     }
 
     public MaintenanceHistory updateMH(Long maintenanceId, MaintenanceHistory mh) {

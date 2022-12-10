@@ -1,26 +1,26 @@
-package Wr40.cardiary.model.dto;
+package Wr40.cardiary.model.dto.maintenance;
 
 import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import org.hibernate.validator.constraints.Length;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
 @Accessors(chain = true)
-public class MaintenanaceEventDTO {
+public class MaintenanceEventDTO {
+    @NotNull
     @Digits(integer = 12, fraction = 2)
+    private Long cost;
     @NotEmpty
-    private BigDecimal cost;
-    @NotEmpty
-    @Length(max = 45)
     private String companyResponsibleForName;
-    @NotEmpty
+    @NotNull
     private Long companyResponsibleForPhoneNumber;
-    private String description;
     @NotEmpty
+    private String description;
+    @Future
     private LocalDateTime nextVisitSchedule;
 }
