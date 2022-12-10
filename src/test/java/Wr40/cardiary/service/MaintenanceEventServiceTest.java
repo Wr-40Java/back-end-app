@@ -2,6 +2,8 @@ package Wr40.cardiary.service;
 
 
 import Wr40.cardiary.exception.MaintenanceEventAlreadyExistsException;
+import Wr40.cardiary.exception.NoSuchMaintenanceEventFoundException;
+import Wr40.cardiary.model.dto.maintenance.MaintenanceEventDTO;
 import Wr40.cardiary.model.dto.maintenance.MaintenanceEventResponseDTO;
 import Wr40.cardiary.model.entity.MaintenanceEvent;
 import Wr40.cardiary.model.entity.MaintenanceHistory;
@@ -16,9 +18,13 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.postgresql.hostchooser.HostRequirement.any;
 
 @ExtendWith(MockitoExtension.class)
 class MaintenanceEventServiceTest {
@@ -69,5 +75,34 @@ class MaintenanceEventServiceTest {
         // When & Then
         assertThrows(MaintenanceEventAlreadyExistsException.class, () -> maintenanceEventService.saveMaintenanceEvent(id, mEvent));
 
+    }
+
+    @Test
+    @DisplayName("Should Update Given Maintenance History When Update Maintenance History")
+    void shouldUpdateGivenMaintenanceHistoryWhenUpdateMaintenanceHistory() {
+        MaintenanceEvent mEvent1 = new MaintenanceEvent();
+        MaintenanceEvent mEvent2 = new MaintenanceEvent();
+        Long mEventId = 1L;
+        mEvent2.setDescription("Technical maintenance");
+        MaintenanceEventResponseDTO mERDTO = new MaintenanceEventResponseDTO();
+        mERDTO.setDescription(mEvent2.getDescription());
+
+        Mockito.when(maintenanceEventRepository.existsById(any(Long.class))).thenReturn(true);
+        Mockito.when(maintenanceEventRepository.save(any(MaintenanceEvent.class))).thenReturn(mEvent2);
+        Mockito.when(modelMapper.map(mEvent2,MaintenanceEventResponseDTO.class)).thenReturn(mERDTO);
+        MaintenanceEventResponseDTO updateMH = maintenanceEventService.updateMaintenanceEvent(mEventId, mEvent1);
+        assertEquals("Technical maintenance", updateMH.getDescription());
+    }
+
+    @Test
+    @DisplayName("Should Throw Exception When Maintenance Event Is Not Present In Database")
+    void shouldThrowExceptionWhenMaintenanceEventIsNotPresentInDatabase() {
+        // Given
+        Long mEventId = 1L;
+        MaintenanceEvent mEvent = new MaintenanceEvent();
+        Mockito.when(maintenanceEventRepository.existsById(any(Long.class))).thenReturn(false);
+
+        // When & Then
+        assertThrows(NoSuchMaintenanceEventFoundException.class, () -> maintenanceEventService.updateMaintenanceEvent(mEventId,mEvent));
     }
 }
