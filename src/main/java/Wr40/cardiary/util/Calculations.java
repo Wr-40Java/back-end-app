@@ -12,7 +12,7 @@ public class Calculations {
     }
 
     public static void calculateMaintenanceCost(MaintenanceHistory maintenanceHistory) {
-        MaintenanceEvent event = maintenanceHistory.getMaintenanaceEvent();
+        MaintenanceEvent event = maintenanceHistory.getMaintenanceEvent();
 //        TechnicalService service = maintenanceHistory.getTechnicalService();
         BigDecimal overallCost = new BigDecimal(0);
         if (event != null) {

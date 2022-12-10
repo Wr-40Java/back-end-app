@@ -33,7 +33,7 @@ public class Car {
     @OneToMany
     @JoinColumn(name = "car_id")
     List<Tax> tax;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "car_id")
     List<MaintenanceHistory> maintenanceHistories;
 

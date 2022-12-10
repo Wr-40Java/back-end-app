@@ -2,6 +2,7 @@ package Wr40.cardiary.controller;
 
 
 import Wr40.cardiary.model.dto.MaintenanceHistoryDTO;
+import Wr40.cardiary.model.entity.MaintenanceEvent;
 import Wr40.cardiary.model.entity.MaintenanceHistory;
 import Wr40.cardiary.service.MaintenanceHistoryService;
 import jakarta.validation.Valid;
@@ -25,6 +26,8 @@ public class MaintenanceHistoryController {
     public MaintenanceHistory saveMH(@Valid @RequestBody MaintenanceHistoryDTO maintenance,
                                      @PathVariable(name = "vin") String vin) {
         MaintenanceHistory mh = modelMapper.map(maintenance, MaintenanceHistory.class);
+        MaintenanceEvent me = modelMapper.map(maintenance.getMaintenanceEventDTO(), MaintenanceEvent.class);
+        mh.setMaintenanceEvent(me);
         return maintenanceHS.saveMH(vin, mh);
     }
 

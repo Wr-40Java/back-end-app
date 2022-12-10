@@ -18,7 +18,7 @@ public class MaintenanceEventDTO {
     @NotEmpty
     private String companyResponsibleForName;
     @NotNull
-    private short companyResponsibleForPhoneNumber;
+    private Long companyResponsibleForPhoneNumber;
     @NotEmpty
     private String description;
     @NotEmpty

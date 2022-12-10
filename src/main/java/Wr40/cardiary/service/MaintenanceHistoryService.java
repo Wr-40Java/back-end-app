@@ -2,6 +2,7 @@ package Wr40.cardiary.service;
 
 import Wr40.cardiary.exception.NoSuchMaintenanceHistoryException;
 import Wr40.cardiary.model.entity.Car;
+import Wr40.cardiary.model.entity.MaintenanceEvent;
 import Wr40.cardiary.model.entity.MaintenanceHistory;
 import Wr40.cardiary.repo.MaintenanceEventRepository;
 import Wr40.cardiary.repo.MaintenanceHistoryRepository;
@@ -27,27 +28,25 @@ public class MaintenanceHistoryService {
     @Transactional
     public MaintenanceHistory saveMH(String carVin, MaintenanceHistory maintenanceHistory) {
         Car car = carService.getCar(carVin);
-        log.info(car.getVINnumber());
-//        MaintenanaceEvent savedMaintenanceEvent = maintenanaceEventService.saveMaintenanceEvent(1L,maintenanceHistory.getMaintenanaceEvent());
-//        MaintenanaceEvent savedMaintenanceEvent = maintenanceEventRepository.save(maintenanceHistory.getMaintenanaceEvent());
-//        maintenanceEventRepository.flush();
-//        maintenanceHistory.setMaintenanaceEvent(savedMaintenanceEvent);
-        calculateMaintenanceCost(maintenanceHistory);
+
+//        MaintenanceEvent savedMaintenanceEvent = maintenanceEventRepository.save(maintenanceHistory.getMaintenanceEvent());
+//        maintenanceHistory.setMaintenanceEvent(savedMaintenanceEvent);
+//        calculateMaintenanceCost(maintenanceHistory);
 
         MaintenanceHistory savedMH = maintenanceHistRepo.save(maintenanceHistory);
 
         List<MaintenanceHistory> maintenanceHistories = car.getMaintenanceHistories();
         maintenanceHistories.add(savedMH);
         car.setMaintenanceHistories(maintenanceHistories);
-//        carService.updateCar(car);
+        Car updateCar = carService.updateCar(car);
 
-        return savedMH;
+        return updateCar.getMaintenanceHistories().get(0);
     }
 
     public MaintenanceHistory updateMH(Long maintenanceId, MaintenanceHistory mh) {
         MaintenanceHistory savedMH = maintenanceHistRepo.findById(maintenanceId).orElseThrow(NoSuchMaintenanceHistoryException::new);
         savedMH.setDescription(mh.getDescription());
-        savedMH.setMaintenanaceEvent(mh.getMaintenanaceEvent());
+        savedMH.setMaintenanceEvent(mh.getMaintenanceEvent());
         return maintenanceHistRepo.save(savedMH);
     }
 

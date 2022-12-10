@@ -16,11 +16,11 @@ import java.util.Date;
 public class MaintenanceHistoryDTO {
     @NotEmpty
     private String description;
-    @NotNull
-    @Digits(integer = 14,fraction = 2)
-    private Long overallCost;
-    @NotEmpty
-    private LocalDateTime timestamp;
+//    @NotNull
+//    @Digits(integer = 14,fraction = 2)
+//    private Long overallCost;
+//    @NotEmpty
+//    private LocalDateTime timestamp;
 //    @ValidWhenNotNull(value = "maintenanaceEventDTO")
-    private MaintenanaceEventDTO maintenanaceEventDTO;
+    private MaintenanceEventDTO maintenanceEventDTO;
 }
