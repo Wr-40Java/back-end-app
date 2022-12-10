@@ -42,6 +42,7 @@ class MaintenanceHistoryServiceTest {
         MaintenanceHistory mh = new MaintenanceHistory();
         Mockito.when(maintenanceHistoryRepository.save(mh)).thenReturn(mh);
         Mockito.when(carService.getCar(vinNumber)).thenReturn(car);
+        Mockito.when(carService.updateCar(car)).thenReturn(car);
 
         // When
         MaintenanceHistory mhSaved = maintenanceHistoryService.saveMH("VinTest", mh);

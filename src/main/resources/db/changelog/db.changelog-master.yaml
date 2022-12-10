@@ -468,3 +468,5 @@ databaseChangeLog:
       file: db/changelog/changesets/002-change-insurance-phone-nr-datatype.yaml
   - include:
       file: db/changelog/changesets/004-add-unique-constraint-to-ins-type-type.yaml
+  - include:
+      file: db/changelog/changesets/005-change-maintenance-event-technical-service-phone-nr-datatype.yaml
