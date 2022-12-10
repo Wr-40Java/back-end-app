@@ -1,6 +1,7 @@
 package Wr40.cardiary.service;
 
 import Wr40.cardiary.exception.MaintenanceEventAlreadyExistsException;
+import Wr40.cardiary.exception.NoSuchMaintenanceEventFoundException;
 import Wr40.cardiary.model.dto.maintenance.MaintenanceEventResponseDTO;
 import Wr40.cardiary.model.entity.MaintenanceEvent;
 import Wr40.cardiary.model.entity.MaintenanceHistory;
@@ -35,5 +36,14 @@ public class MaintenanceEventService {
         return modelMapper.map(savedMaintenanceEvent,MaintenanceEventResponseDTO.class);
     }
 
+    public MaintenanceEventResponseDTO updateMaintenanceEvent(Long mEventId, MaintenanceEvent maintenanceEvent) {
+        if (!maintenanceEventRepository.existsById(mEventId)) {
+            throw new NoSuchMaintenanceEventFoundException();
+        }
+        maintenanceEvent.setId(mEventId);
+        MaintenanceEvent savedMaintenanceEvent = maintenanceEventRepository.save(maintenanceEvent);
+
+        return modelMapper.map(savedMaintenanceEvent,MaintenanceEventResponseDTO.class);
+    }
 }
 

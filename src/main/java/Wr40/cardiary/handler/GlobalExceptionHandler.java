@@ -97,4 +97,10 @@ public class GlobalExceptionHandler {
                 .toList();
         return ResponseEntity.badRequest().body(new ErrorDetails(LocalDateTime.now(), errors.toString(), HttpStatus.BAD_REQUEST));
     }
+
+    @ExceptionHandler(NoSuchMaintenanceEventFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public final ResponseEntity<ErrorDetails> handleNoSuchMaintenanceEventException(NoSuchMaintenanceEventFoundException e) {
+        return ResponseEntity.badRequest().body(new ErrorDetails(LocalDateTime.now(), e.getMessage(), HttpStatus.BAD_REQUEST));
+    }
 }

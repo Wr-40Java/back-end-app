@@ -25,4 +25,13 @@ public class MaintenanceEventController {
         MaintenanceEvent maintenanceEvent = modelMapper.map(maintenanaceEventDTO, MaintenanceEvent.class);
         return maintenanceEventService.saveMaintenanceEvent(mHistoryId, maintenanceEvent);
     }
+
+    @PutMapping("/{maintenance_event_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public MaintenanceEventResponseDTO updateMaintenanceEvent(@Valid @RequestBody MaintenanceEventDTO maintenanceEventDTO,
+                                                              @PathVariable(name = "maintenance_event_id") Long mEventId) {
+        MaintenanceEvent maintenanceEvent = modelMapper.map(maintenanceEventDTO, MaintenanceEvent.class);
+        return maintenanceEventService.updateMaintenanceEvent(mEventId, maintenanceEvent);
+
+    }
 }
