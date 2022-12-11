@@ -142,7 +142,7 @@ class MaintenanceHistoryServiceTest {
     }
 
     @Test
-    @DisplayName("Should Delete All Maintenance History When Given Id Is Correct")
+    @DisplayName("Should Delete All Maintenance History When DeleteAll Was Requested")
     void shouldDeleteAllMaintenanceHistoryWhenGivenIdIsCorrect() {
         // Given & When
         maintenanceHistoryService.deleteAllMaintenanceHistory();

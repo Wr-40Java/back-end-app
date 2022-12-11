@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @ControllerAdvice
 @Slf4j
@@ -103,4 +102,12 @@ public class GlobalExceptionHandler {
     public final ResponseEntity<ErrorDetails> handleNoSuchMaintenanceEventException(NoSuchMaintenanceEventFoundException e) {
         return ResponseEntity.badRequest().body(new ErrorDetails(LocalDateTime.now(), e.getMessage(), HttpStatus.BAD_REQUEST));
     }
+
+    @ExceptionHandler(UnableToDeleteMaintenanceEventException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public final ResponseEntity<ErrorDetails> handleUnableToDeleteMaintenanceEventException(UnableToDeleteMaintenanceEventException e) {
+        return ResponseEntity.badRequest().body(new ErrorDetails(LocalDateTime.now(), e.getMessage(), HttpStatus.BAD_REQUEST));
+    }
+
+
 }

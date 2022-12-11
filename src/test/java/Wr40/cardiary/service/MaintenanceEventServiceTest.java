@@ -3,6 +3,7 @@ package Wr40.cardiary.service;
 
 import Wr40.cardiary.exception.MaintenanceEventAlreadyExistsException;
 import Wr40.cardiary.exception.NoSuchMaintenanceEventFoundException;
+import Wr40.cardiary.exception.UnableToDeleteMaintenanceEventException;
 import Wr40.cardiary.model.dto.maintenance.MaintenanceEventResponseDTO;
 import Wr40.cardiary.model.entity.MaintenanceEvent;
 import Wr40.cardiary.model.entity.MaintenanceHistory;
@@ -160,5 +161,70 @@ class MaintenanceEventServiceTest {
         // When
         assertEquals(listMERDTO, mEventListsSaved);
         verify(maintenanceEventRepository).findAll();
+    }
+
+    @Test
+    @DisplayName("Should Delete Maintenance Event When Given Id Is Present In Database")
+    void shouldDeleteMaintenanceEventWhenGivenIdIsPresentInDatabase() {
+        // Given
+        MaintenanceEvent mEvent = new MaintenanceEvent();
+        Long mEventId = 1L;
+
+        Mockito.when(maintenanceEventRepository.findById(any(Long.class))).thenReturn(Optional.of(mEvent));
+        Mockito.when(maintenanceEventRepository.existsById(any(Long.class))).thenReturn(false);
+
+        // When
+        maintenanceEventService.deleteMaintenanceEvent(mEventId);
+
+        // Then
+        verify(maintenanceEventRepository).delete(mEvent);
+        verify(maintenanceEventRepository).existsById(mEventId);
+    }
+
+    @Test
+    @DisplayName("Should Throw Exception When Deleting Maintenance Event With Wrong Id")
+    void shouldThrowExceptionWhenDeletingMaintenanceEventWithWrongId() {
+        // Given
+        Long id = 1L;
+
+        // When & Then
+        assertThrows(NoSuchMaintenanceEventFoundException.class, () -> maintenanceEventService.deleteMaintenanceEvent(id));
+    }
+
+    @Test
+    @DisplayName("Should Throw Exception When Unable To Delete From Database")
+    void shouldThrowExceptionWhenUnableToDeleteFromDatabase() {
+        // Given
+        MaintenanceEvent mEvent = new MaintenanceEvent();
+        Long mEventId = 1L;
+        Mockito.when(maintenanceEventRepository.findById(any(Long.class))).thenReturn(Optional.of(mEvent));
+        Mockito.when(maintenanceEventRepository.existsById(any(Long.class))).thenReturn(true);
+        // When & Then
+
+        assertThrows(UnableToDeleteMaintenanceEventException.class, () -> maintenanceEventService.deleteMaintenanceEvent(mEventId));
+    }
+
+    @Test
+    @DisplayName("Should Delete All Maintenance Event When Delete All Was Requested")
+    void shouldDeleteAllMaintenanceEventWhenDeleteAllWasRequested() {
+        // Given
+        maintenanceEventService.deleteAllMaintenanceEvent();
+
+        // When & Then
+        verify(maintenanceEventRepository).deleteAll();
+    }
+
+    @Test
+    @DisplayName("Should Throw Exception When Unable To Delete All Maintenance Event From Database")
+    void shouldThrowExceptionWhenUnableToDeleteAllMaintenanceEventFromDatabase() {
+        // Given
+        Long size = 2L;
+        List<MaintenanceEvent> listME = new ArrayList<>();
+        MaintenanceEvent mEvent = new MaintenanceEvent();
+        listME.add(mEvent);
+        Mockito.when(maintenanceEventRepository.findAll()).thenReturn(listME);
+
+        // When & Then
+        assertThrows(UnableToDeleteMaintenanceEventException.class, () -> maintenanceEventService.deleteAllMaintenanceEvent());
     }
 }

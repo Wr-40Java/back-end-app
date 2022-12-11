@@ -2,6 +2,7 @@ package Wr40.cardiary.service;
 
 import Wr40.cardiary.exception.MaintenanceEventAlreadyExistsException;
 import Wr40.cardiary.exception.NoSuchMaintenanceEventFoundException;
+import Wr40.cardiary.exception.UnableToDeleteMaintenanceEventException;
 import Wr40.cardiary.model.dto.maintenance.MaintenanceEventResponseDTO;
 import Wr40.cardiary.model.entity.MaintenanceEvent;
 import Wr40.cardiary.model.entity.MaintenanceHistory;
@@ -60,6 +61,26 @@ public class MaintenanceEventService {
                 .stream()
                 .map(me -> modelMapper.map(me, MaintenanceEventResponseDTO.class))
                 .toList();
+    }
+
+    public void deleteMaintenanceEvent(Long mEventId) {
+        MaintenanceEvent maintenanceEvent = maintenanceEventRepository.findById(mEventId)
+                .orElseThrow(NoSuchMaintenanceEventFoundException::new);
+        maintenanceEventRepository.delete(maintenanceEvent);
+        if (maintenanceEventRepository.existsById(mEventId)) {
+            throw new UnableToDeleteMaintenanceEventException();
+        }
+    }
+
+    public Long deleteAllMaintenanceEvent() {
+        long sizeOfMaintenanceEventTable = maintenanceEventRepository.findAll().size();
+        maintenanceEventRepository.deleteAll();
+        long sizeAfterDelete = maintenanceEventRepository.findAll().size();
+        if (sizeAfterDelete == 0L) {
+            return sizeOfMaintenanceEventTable;
+        } else {
+            throw new UnableToDeleteMaintenanceEventException();
+        }
     }
 }
 

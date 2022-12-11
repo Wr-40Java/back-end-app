@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -47,5 +48,17 @@ public class MaintenanceEventController {
     @ResponseStatus(HttpStatus.OK)
     public List<MaintenanceEventResponseDTO> getAllMaintenanceEvent() {
         return maintenanceEventService.getAllMaintenanceEvent();
+    }
+
+    @DeleteMapping("/{maintenance_event_id}")
+    public ResponseEntity<String> deleteMaintenanceEvent(@PathVariable(name = "maintenance_event_id") Long mEventId) {
+        maintenanceEventService.deleteMaintenanceEvent(mEventId);
+        return new ResponseEntity<>("Row Deleted: " + mEventId, HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/")
+    public ResponseEntity<String> deleteAllMaintenanceEvent() {
+        Long rowsAffected = maintenanceEventService.deleteAllMaintenanceEvent();
+        return new ResponseEntity<>("Rows deleted: " + rowsAffected, HttpStatus.NO_CONTENT);
     }
 }
