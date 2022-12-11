@@ -3,7 +3,6 @@ package Wr40.cardiary.service;
 
 import Wr40.cardiary.exception.MaintenanceEventAlreadyExistsException;
 import Wr40.cardiary.exception.NoSuchMaintenanceEventFoundException;
-import Wr40.cardiary.model.dto.maintenance.MaintenanceEventDTO;
 import Wr40.cardiary.model.dto.maintenance.MaintenanceEventResponseDTO;
 import Wr40.cardiary.model.entity.MaintenanceEvent;
 import Wr40.cardiary.model.entity.MaintenanceHistory;
@@ -18,13 +17,14 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
-import static org.postgresql.hostchooser.HostRequirement.any;
 
 @ExtendWith(MockitoExtension.class)
 class MaintenanceEventServiceTest {
@@ -80,6 +80,7 @@ class MaintenanceEventServiceTest {
     @Test
     @DisplayName("Should Update Given Maintenance History When Update Maintenance History")
     void shouldUpdateGivenMaintenanceHistoryWhenUpdateMaintenanceHistory() {
+        //Given
         MaintenanceEvent mEvent1 = new MaintenanceEvent();
         MaintenanceEvent mEvent2 = new MaintenanceEvent();
         Long mEventId = 1L;
@@ -89,8 +90,12 @@ class MaintenanceEventServiceTest {
 
         Mockito.when(maintenanceEventRepository.existsById(any(Long.class))).thenReturn(true);
         Mockito.when(maintenanceEventRepository.save(any(MaintenanceEvent.class))).thenReturn(mEvent2);
-        Mockito.when(modelMapper.map(mEvent2,MaintenanceEventResponseDTO.class)).thenReturn(mERDTO);
+        Mockito.when(modelMapper.map(mEvent2, MaintenanceEventResponseDTO.class)).thenReturn(mERDTO);
+
+        // When
         MaintenanceEventResponseDTO updateMH = maintenanceEventService.updateMaintenanceEvent(mEventId, mEvent1);
+
+        // Then
         assertEquals("Technical maintenance", updateMH.getDescription());
     }
 
@@ -103,6 +108,57 @@ class MaintenanceEventServiceTest {
         Mockito.when(maintenanceEventRepository.existsById(any(Long.class))).thenReturn(false);
 
         // When & Then
-        assertThrows(NoSuchMaintenanceEventFoundException.class, () -> maintenanceEventService.updateMaintenanceEvent(mEventId,mEvent));
+        assertThrows(NoSuchMaintenanceEventFoundException.class, () -> maintenanceEventService.updateMaintenanceEvent(mEventId, mEvent));
+    }
+
+    @Test
+    @DisplayName("Should Throw Exception When Getting ME Which Is Not Present In Database")
+    void shouldThrowExceptionWhenGettingMeWhichIsNotPresentInDatabase() {
+        // Given
+        Long mEventId = 1L;
+        MaintenanceEvent mEvent = new MaintenanceEvent();
+        Mockito.when(maintenanceEventRepository.findById(any(Long.class))).thenReturn(Optional.empty());
+
+        // When & Then
+        assertThrows(NoSuchMaintenanceEventFoundException.class, () -> maintenanceEventService.getMaintenanceEvent(mEventId));
+    }
+
+    @Test
+    @DisplayName("Should Get Maintenance Event When Getting Maintenance Event By Id")
+    void shouldGetMaintenanceEventWhenGettingMeById() {
+        // Given
+        MaintenanceEvent mEvent = new MaintenanceEvent();
+        MaintenanceEventResponseDTO mERDTO = new MaintenanceEventResponseDTO();
+        Long mEventId = 1L;
+
+        Mockito.when(maintenanceEventRepository.findById(any(Long.class))).thenReturn(Optional.of(mEvent));
+        Mockito.when(modelMapper.map(mEvent, MaintenanceEventResponseDTO.class)).thenReturn(mERDTO);
+
+        // When
+        MaintenanceEventResponseDTO maintenanceEventActual = maintenanceEventService.getMaintenanceEvent(mEventId);
+
+        // Then
+        Assertions.assertEquals(mERDTO, maintenanceEventActual);
+        verify(maintenanceEventRepository).findById(mEventId);
+    }
+
+    @Test
+    @DisplayName("Should Provide All Maintenance Event When Getting All Maintenance Event")
+    void shouldProvideAllMaintenanceEventWhenGettingAllMaintenanceEvent() {
+        // Given
+        List<MaintenanceEvent> mELists = new ArrayList<>();
+        MaintenanceEvent mEvent = new MaintenanceEvent();
+        MaintenanceEventResponseDTO mERDTO = new MaintenanceEventResponseDTO();
+        List<MaintenanceEventResponseDTO> listMERDTO = new ArrayList<>();
+        listMERDTO.add(mERDTO);
+        mELists.add(mEvent);
+        Mockito.when(maintenanceEventRepository.findAll()).thenReturn(mELists);
+        Mockito.when(modelMapper.map(mEvent, MaintenanceEventResponseDTO.class)).thenReturn(mERDTO);
+        // Given
+        List<MaintenanceEventResponseDTO> mEventListsSaved = maintenanceEventService.getAllMaintenanceEvent();
+
+        // When
+        assertEquals(listMERDTO, mEventListsSaved);
+        verify(maintenanceEventRepository).findAll();
     }
 }

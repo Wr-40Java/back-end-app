@@ -11,6 +11,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static Wr40.cardiary.util.Calculations.calculateMaintenanceCost;
 
 @Service
@@ -33,7 +35,7 @@ public class MaintenanceEventService {
         calculateMaintenanceCost(maintenanceHistory);
         maintenanceHistoryService.updateMH(mHistoryId, maintenanceHistory);
 
-        return modelMapper.map(savedMaintenanceEvent,MaintenanceEventResponseDTO.class);
+        return modelMapper.map(savedMaintenanceEvent, MaintenanceEventResponseDTO.class);
     }
 
     public MaintenanceEventResponseDTO updateMaintenanceEvent(Long mEventId, MaintenanceEvent maintenanceEvent) {
@@ -43,7 +45,21 @@ public class MaintenanceEventService {
         maintenanceEvent.setId(mEventId);
         MaintenanceEvent savedMaintenanceEvent = maintenanceEventRepository.save(maintenanceEvent);
 
-        return modelMapper.map(savedMaintenanceEvent,MaintenanceEventResponseDTO.class);
+        return modelMapper.map(savedMaintenanceEvent, MaintenanceEventResponseDTO.class);
+    }
+
+    public MaintenanceEventResponseDTO getMaintenanceEvent(Long mEventId) {
+        MaintenanceEvent maintenanceEvent = maintenanceEventRepository.findById(mEventId)
+                .orElseThrow(NoSuchMaintenanceEventFoundException::new);
+
+        return modelMapper.map(maintenanceEvent, MaintenanceEventResponseDTO.class);
+    }
+
+    public List<MaintenanceEventResponseDTO> getAllMaintenanceEvent() {
+        return maintenanceEventRepository.findAll()
+                .stream()
+                .map(me -> modelMapper.map(me, MaintenanceEventResponseDTO.class))
+                .toList();
     }
 }
 

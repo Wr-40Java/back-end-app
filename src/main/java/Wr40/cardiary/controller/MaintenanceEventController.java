@@ -10,6 +10,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/maintenance_event")
 @AllArgsConstructor
@@ -33,5 +35,17 @@ public class MaintenanceEventController {
         MaintenanceEvent maintenanceEvent = modelMapper.map(maintenanceEventDTO, MaintenanceEvent.class);
         return maintenanceEventService.updateMaintenanceEvent(mEventId, maintenanceEvent);
 
+    }
+
+    @GetMapping("/{maintenance_event_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public MaintenanceEventResponseDTO getMaintenanceEvent(@PathVariable(name = "maintenance_event_id") Long mEventId) {
+        return maintenanceEventService.getMaintenanceEvent(mEventId);
+    }
+
+    @GetMapping("/")
+    @ResponseStatus(HttpStatus.OK)
+    public List<MaintenanceEventResponseDTO> getAllMaintenanceEvent() {
+        return maintenanceEventService.getAllMaintenanceEvent();
     }
 }
