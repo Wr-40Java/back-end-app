@@ -15,20 +15,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/cardiary/insurancetype")
+@RequestMapping("api/insurancetype")
 @AllArgsConstructor
 public class InsuranceTypeController {
 
     private ModelMapper modelMapper;
     private InsuranceTypeService insuranceTypeService;
 
-    @PostMapping("/save")
+    @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public InsuranceTypeDTO saveInsuranceType(@Valid @RequestBody InsuranceTypeDTO insuranceTypeDTO) {
         return insuranceTypeService.saveInsuranceType(insuranceTypeDTO);
     }
 
-    @PutMapping("/update")
+    @PutMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public String updateInsuranceType(@Valid @RequestBody InsuranceTypeDTO insuranceTypeDTO) {
         Integer rowsUpdated = insuranceTypeService.updateInsuranceType(insuranceTypeDTO);
@@ -41,7 +41,7 @@ public class InsuranceTypeController {
         return insuranceTypeService.getInsuranceTypes();
     }
 
-    @DeleteMapping("/delete/{type}")
+    @DeleteMapping("/{type}")
     @ResponseStatus(HttpStatus.OK)
     public String deleteInsuranceType(@PathVariable(name = "type") String type) {
         Integer deletedRows = insuranceTypeService.deleteInsuranceType(type);

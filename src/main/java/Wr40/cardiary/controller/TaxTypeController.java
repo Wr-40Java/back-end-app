@@ -11,34 +11,34 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/cardiary/taxtype")
+@RequestMapping("/api/taxtype")
 public class TaxTypeController {
 
     TaxTypeService taxTypeService;
 
     ModelMapper modelMapper;
 
-    @PostMapping("/save")
+    @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public TaxType saveTaxType(@Valid @RequestBody TaxTypeDTO dto) {
         TaxType mappedTaxType = modelMapper.map(dto, TaxType.class);
         return taxTypeService.saveTaxType(mappedTaxType);
     }
 
-    @PostMapping("/get/{id}")
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public TaxType getTaxType(@PathVariable Long id){
         return taxTypeService.getTaxTypeById(id);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping()
     @ResponseStatus(HttpStatus.OK)
-    public TaxType updateTaxType(@PathVariable Long id, @Valid @RequestBody TaxTypeDTO dto){
+    public TaxType updateTaxType(@Valid @RequestBody TaxTypeDTO dto){
         TaxType mappedTaxType = modelMapper.map(dto, TaxType.class);
-        return taxTypeService.updateTaxType(id, mappedTaxType);
+        return taxTypeService.updateTaxType(mappedTaxType);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteTaxType(@PathVariable Long id) {
         taxTypeService.deleteTaxType(id);

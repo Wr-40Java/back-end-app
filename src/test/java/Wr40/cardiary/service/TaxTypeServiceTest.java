@@ -64,7 +64,7 @@ public class TaxTypeServiceTest {
         taxType1.setDescription("Something");
         Mockito.when(taxTypeRepository.findById(taxType.getId())).thenReturn(Optional.of(taxType));
         Mockito.when(taxTypeRepository.save(taxType)).thenReturn(taxType1);
-        TaxType updatedTaxType = taxTypeService.updateTaxType(taxType.getId(), taxType1);
+        TaxType updatedTaxType = taxTypeService.updateTaxType(taxType1);
         Assertions.assertEquals("Something",updatedTaxType.getDescription());
     }
 

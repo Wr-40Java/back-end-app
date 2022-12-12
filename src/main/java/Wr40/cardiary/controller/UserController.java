@@ -15,45 +15,45 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/cardiary/user")
+@RequestMapping("/api/user")
 public class UserController {
 
     UserService userService;
     ModelMapper modelMapper;
 
-    @GetMapping("/get")
+    @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public List<User> getAllUsers(){
         return userService.getAllUsers();
     }
 
-    @PostMapping("/save")
+    @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public User saveUser(@Valid @RequestBody UserDTO dto) {
         User mappedUser = modelMapper.map(dto, User.class);
         return userService.saveUser(mappedUser);
     }
 
-    @DeleteMapping("/delete/{username}")
+    @DeleteMapping("/{username}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteUser(@PathVariable String username) {
         userService.deleteUser(username);
     }
 
-    @DeleteMapping("/delete/all")
+    @DeleteMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public void deleteAllUsers() {
         userService.deleteAllUsers();
     }
 
-    @GetMapping("/get/{username}")
+    @GetMapping("/{username}")
     @ResponseStatus(HttpStatus.OK)
     public User getUser(@PathVariable String username) {
         return userService.getUser(username);
 
     }
 
-    @PutMapping("/update")
+    @PutMapping()
     @ResponseStatus(HttpStatus.OK)
     public User updateUser(@Valid @RequestBody UserDTO userDTO) {
         User mappedUser = modelMapper.map(userDTO, User.class);
