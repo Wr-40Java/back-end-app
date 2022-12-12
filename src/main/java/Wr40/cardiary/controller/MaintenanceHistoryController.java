@@ -4,6 +4,7 @@ package Wr40.cardiary.controller;
 import Wr40.cardiary.model.dto.maintenance.MaintenanceHistoryDTO;
 import Wr40.cardiary.model.entity.MaintenanceEvent;
 import Wr40.cardiary.model.entity.MaintenanceHistory;
+import Wr40.cardiary.model.entity.TechnicalService;
 import Wr40.cardiary.service.MaintenanceHistoryService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -30,6 +31,10 @@ public class MaintenanceHistoryController {
             MaintenanceEvent me = modelMapper.map(maintenance.getMaintenanceEventDTO(), MaintenanceEvent.class);
             mh.setMaintenanceEvent(me);
         }
+        if (maintenance.getTechnicalServiceDTO() != null) {
+            TechnicalService ts = modelMapper.map(maintenance.getTechnicalServiceDTO(), TechnicalService.class);
+            mh.setTechnicalService(ts);
+        }
         return maintenanceHS.saveMH(vin, mh);
     }
 
@@ -38,6 +43,14 @@ public class MaintenanceHistoryController {
     public MaintenanceHistory updateMH(@Valid @RequestBody MaintenanceHistoryDTO maintenance,
                                        @PathVariable(name = "maintenance_id") Long id) {
         MaintenanceHistory mh = modelMapper.map(maintenance, MaintenanceHistory.class);
+        if (maintenance.getMaintenanceEventDTO() != null) {
+            MaintenanceEvent me = modelMapper.map(maintenance.getMaintenanceEventDTO(), MaintenanceEvent.class);
+            mh.setMaintenanceEvent(me);
+        }
+        if (maintenance.getTechnicalServiceDTO() != null) {
+            TechnicalService ts = modelMapper.map(maintenance.getTechnicalServiceDTO(), TechnicalService.class);
+            mh.setTechnicalService(ts);
+        }
         return maintenanceHS.updateMH(id, mh);
     }
 
