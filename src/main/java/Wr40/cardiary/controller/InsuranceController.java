@@ -13,27 +13,27 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/insurance")
+@RequestMapping("/api")
 @AllArgsConstructor
 public class InsuranceController {
 
     private ModelMapper modelMapper;
     private InsuranceService insuranceService;
 
-    @PostMapping("/{vin_number}")
+    @PostMapping("/cars/{vin_number}/insurances")
     @ResponseStatus(HttpStatus.CREATED)
-    public InsuranceCompanyWithTypeDTO saveInsuranceCompanyWithTypeAndCar(@PathVariable(name = "vin_number", required = false) String vinNumber,
+    public InsuranceCompanyWithTypeDTO saveInsuranceCompanyWithTypeAndCar(@PathVariable(name = "vin_number", required = true) String vinNumber,
                                                                           @Valid @RequestBody InsuranceCompanyWithTypeDTO insuranceCompanyWithTypeDTO) {
         return insuranceService.saveInsuranceWithTypeToTheCar(insuranceCompanyWithTypeDTO, vinNumber);
     }
 
-    @GetMapping("/{vin_number}")
+    @GetMapping("/cars/{vin_number}/insurances")
     @ResponseStatus(HttpStatus.OK)
     public List<InsuranceCompanyWithTypeDTO> getAllInsuranceCompanyWithTypeForCar(@PathVariable(name = "vin_number", required = true) String vinNumber) {
         return insuranceService.getInsuranceCompWithType(vinNumber);
     }
 
-    @PostMapping("/link")
+    @PostMapping("cars/insurances")
     @ResponseStatus(HttpStatus.CREATED)
     public InsuranceCompanyWithTypeDTO linkInsuranceCompanyWithTypeAndCar(@RequestParam(name = "vin_number", required = true) String vinNumber,
                                                                           @RequestParam(name = "ic_id", required = true) Integer InsCompId,
@@ -41,7 +41,7 @@ public class InsuranceController {
         return insuranceService.linkCarWithInsuranceCompanyAndInsuranceType(vinNumber, InsCompId, InsTypeId);
     }
 
-    @PutMapping
+    @PutMapping("cars/insurances")
     @ResponseStatus(HttpStatus.OK)
     public InsuranceCompanyWithTypeDTO updateLinkedInsuranceCompanyWithTypeAndCar(@RequestParam(name = "vin_number", required = true) String vinNumber,
 //                                                             @PathVariable(name = "old_ic_id", required = true) Integer OldInsCompId,
@@ -50,7 +50,7 @@ public class InsuranceController {
         return insuranceService.updateLinkInsuranceCompanyWithTypeAndCar(vinNumber, InsCompId, InsTypeId);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/cars/insurances")
     @ResponseStatus(HttpStatus.OK)
     public String deleteLinkedInsuranceCompanyWithTypeAndCar(@RequestParam(name = "vin_number", required = true) String vinNumber,
                                                                           @RequestParam(name = "ic_id", required = true) Integer InsCompId,
@@ -58,26 +58,26 @@ public class InsuranceController {
         return insuranceService.deleteLinkInsuranceCompanyWithTypeAndCar(vinNumber, InsCompId, InsTypeId);
     }
 
-    @PostMapping
+    @PostMapping("/insurances")
     @ResponseStatus(HttpStatus.CREATED)
     public InsuranceCompanyDTO saveInsuranceCompany(@Valid @RequestBody InsuranceCompanyDTO insuranceCompanyDTO) {
         return insuranceService.saveInsurenceCompany(insuranceCompanyDTO);
     }
 
-    @GetMapping
+    @GetMapping("/insurances")
     @ResponseStatus(HttpStatus.OK)
     public List<InsuranceCompanyDTO> getAllInsuranceCompany() {
         return insuranceService.getAllInsuranceCompanies();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/insurances/{id}")
     @ResponseStatus(HttpStatus.OK)
     public String deleteInsuranceCompany(@PathVariable Integer id) {
         insuranceService.deleteInsuranceCompById(id);
         return String.format("Company by given %d id was successfully deleted!", id);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/insurances/{id}")
     @ResponseStatus(HttpStatus.OK)
     public InsuranceCompanyDTO updateInsuranceCompany(@PathVariable Integer id, @Valid @RequestBody InsuranceCompanyDTO insuranceCompanyDTO) {
         return insuranceService.updateInsuranceCompany(insuranceCompanyDTO, id);
