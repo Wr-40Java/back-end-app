@@ -1,9 +1,6 @@
 package Wr40.cardiary.service;
 
-import Wr40.cardiary.exception.InsuranceCompanyAlreadyExistsException;
-import Wr40.cardiary.exception.NoSuchCarFoundException;
-import Wr40.cardiary.exception.NoSuchInsuranceCompanyException;
-import Wr40.cardiary.exception.NoSuchInsuranceTypeException;
+import Wr40.cardiary.exception.*;
 import Wr40.cardiary.model.dto.insurance.InsuranceCompanyDTO;
 import Wr40.cardiary.model.dto.insurance.InsuranceCompanyWithTypeDTO;
 import Wr40.cardiary.model.dto.insurance.InsuranceTypeDTO;
@@ -15,13 +12,13 @@ import Wr40.cardiary.repo.InsuranceRepository;
 import Wr40.cardiary.repo.InsuranceTypeRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.hibernate.exception.ConstraintViolationException;
 import org.modelmapper.ModelMapper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.sql.SQLException;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -32,10 +29,11 @@ public class InsuranceService {
     private InsuranceRepository insuranceRepository;
     private InsuranceTypeRepository insuranceTypeRepository;
     private ModelMapper modelMapper;
+
     public InsuranceCompanyWithTypeDTO saveInsuranceWithTypeToTheCar(InsuranceCompanyWithTypeDTO insuranceCompanyWithTypeDTO, String VINNumber) {
         Car car = carRepository.findByVINnumber(VINNumber).orElseThrow(NoSuchCarFoundException::new);
         Optional<InsuranceCompany> insuranceCompanyOptional = insuranceRepository.findByName(insuranceCompanyWithTypeDTO.getName());
-        if(insuranceCompanyOptional.isPresent()) {
+        if (insuranceCompanyOptional.isPresent()) {
             throw new InsuranceCompanyAlreadyExistsException();
         }
         InsuranceType insuranceType = modelMapper.map(insuranceCompanyWithTypeDTO.getInsuranceTypeDTO(), InsuranceType.class);
@@ -65,8 +63,8 @@ public class InsuranceService {
                 .map(obj -> modelMapper.map(obj, InsuranceCompanyWithTypeDTO.class)).toList();
         List<InsuranceCompanyWithTypeDTO> mappedInsCompanyWithTypeDTO = mappedInsCompanyDTO.stream()
                 .map(obj -> obj.setInsuranceTypeDTO(mapInsuranceTypeToDTO(allIncuranceCompaniesWithType.stream()
-                                .filter(obj2 -> obj.getPhoneNumber().equals(obj2.getPhoneNumber()))
-                                .map(obj1 -> obj1.getInsuranceType()).findFirst().get()))).toList();
+                        .filter(obj2 -> obj.getPhoneNumber().equals(obj2.getPhoneNumber()))
+                        .map(obj1 -> obj1.getInsuranceType()).findFirst().get()))).toList();
         return mappedInsCompanyWithTypeDTO;
     }
 
@@ -76,9 +74,9 @@ public class InsuranceService {
         InsuranceType insuranceType = insuranceTypeRepository.findById(Long.valueOf(InsTypeId)).orElseThrow(NoSuchInsuranceTypeException::new);
 
 /**
-        The aim of deep copy with InsuranceCompany table is to leave not related tables as base for next linking of data for user,
-        after adding linking between tables( composition of data with new Id ) save as new objects
-*/
+ The aim of deep copy with InsuranceCompany table is to leave not related tables as base for next linking of data for user,
+ after adding linking between tables( composition of data with new Id ) save as new objects
+ */
 
         InsuranceCompany insuranceCompanyDeepCopy = new InsuranceCompany();
         insuranceCompanyDeepCopy.setName(insuranceCompany.getName());
@@ -121,8 +119,16 @@ public class InsuranceService {
 
     public String deleteLinkInsuranceCompanyWithTypeAndCar(String VINNumber, Integer InsCompId, Integer InsTypeId) {
         Car car = carRepository.findByVINnumber(VINNumber).orElseThrow(NoSuchCarFoundException::new);
+        Iterator<InsuranceCompany> insuranceCompaniesIterator = car.getInsuranceCompanies().iterator();
+        while (insuranceCompaniesIterator.hasNext()) {
+            InsuranceCompany insuranceComp = insuranceCompaniesIterator.next();
+            if (insuranceComp.getId().equals(Long.valueOf(InsCompId))) {
+                insuranceCompaniesIterator.remove();
+            }
+        }
+
         for (InsuranceCompany insuranceCompany : car.getInsuranceCompanies()) {
-            if(insuranceCompany.getId().equals(Long.valueOf(InsCompId))) {
+            if (insuranceCompany.getId().equals(Long.valueOf(InsCompId))) {
                 car.removeInsuranceCompany(insuranceCompany);
             }
         }
@@ -139,7 +145,7 @@ public class InsuranceService {
 
     public InsuranceCompanyDTO saveInsurenceCompany(InsuranceCompanyDTO insuranceCompanyDTO) {
         Optional<InsuranceCompany> insuranceCompanyOptional = insuranceRepository.findByName(insuranceCompanyDTO.getName());
-        if(insuranceCompanyOptional.isPresent()) {
+        if (insuranceCompanyOptional.isPresent()) {
             throw new InsuranceCompanyAlreadyExistsException();
         }
         InsuranceCompany insuranceCompany = modelMapper.map(insuranceCompanyDTO, InsuranceCompany.class);
@@ -155,6 +161,9 @@ public class InsuranceService {
 
     public void deleteInsuranceCompById(Integer id) {
         InsuranceCompany insuranceCompany = insuranceRepository.findById(Long.valueOf(id)).orElseThrow(NoSuchInsuranceCompanyException::new);
+        if (insuranceCompany.getCars().size() > 0) {
+            throw new SQLExceptionCustomized("This insurance company is already connected with car, delete linked relationship first, then delete this position alone");
+        }
         insuranceRepository.deleteById(insuranceCompany.getId());
     }
 
