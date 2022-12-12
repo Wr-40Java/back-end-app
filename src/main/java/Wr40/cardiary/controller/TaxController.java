@@ -52,9 +52,8 @@ public class TaxController {
 
     @PutMapping()
     @ResponseStatus(HttpStatus.OK)
-    public Tax updateTax(@Valid @RequestBody TaxDTO dto){
-        Tax mappedTax = modelMapper.map(dto, Tax.class);
-        return taxService.updateTax(mappedTax);
+    public Tax updateTax(@Valid @RequestBody Tax tax){
+        return taxService.updateTax(tax);
     }
 
     @PostMapping("/link/{tax_id}/{tax_type_id}")
