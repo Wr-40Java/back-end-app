@@ -18,5 +18,4 @@ public class SumMaintenanceStatsDTO {
     private BigDecimal maintenanceCost;
     private String companyResponsibleForName;
     private String description;
-    //private LocalDateTime timestamp;
 }
