@@ -26,7 +26,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class TechnicalServiceServiceTest {
+class TechnicalServiceServiceTest {
 
     @Mock
     MaintenanceHistoryService maintenanceHistoryService;
