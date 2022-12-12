@@ -2,6 +2,7 @@ package Wr40.cardiary.service;
 
 import Wr40.cardiary.exception.NoSuchTechnicalServiceFoundException;
 import Wr40.cardiary.exception.TechnicalServiceAlreadyExistsException;
+import Wr40.cardiary.exception.UnableToDeleteTechnicalServiceException;
 import Wr40.cardiary.model.dto.technicalService.TechnicalServiceResponseDTO;
 import Wr40.cardiary.model.entity.MaintenanceHistory;
 import Wr40.cardiary.model.entity.TechnicalService;
@@ -62,5 +63,21 @@ public class TechnicalServiceService {
                 .stream()
                 .map(ts -> modelMapper.map(ts, TechnicalServiceResponseDTO.class))
                 .toList();
+    }
+
+    public void deleteTechnicalService(Long technicalServiceId) {
+        TechnicalService technicalService = technicalServiceRepository.findById(technicalServiceId)
+                .orElseThrow(NoSuchTechnicalServiceFoundException::new);
+        technicalServiceRepository.delete(technicalService);
+        if(technicalServiceRepository.existsById(technicalServiceId)) {
+            throw new UnableToDeleteTechnicalServiceException();
+        }
+    }
+
+    public void deleteAllTechnicalService() {
+        technicalServiceRepository.deleteAll();
+        if (!technicalServiceRepository.findAll().isEmpty()) {
+            throw new UnableToDeleteTechnicalServiceException();
+        }
     }
 }

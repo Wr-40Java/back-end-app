@@ -51,4 +51,16 @@ public class TechnicalServiceController {
         return technicalServiceService.getAllMaintenanceEvent();
     }
 
+    @DeleteMapping("/{technical_service_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteTechnicalService(@PathVariable(name = "technical_service_id") Long technicalServiceId) {
+        technicalServiceService.deleteTechnicalService(technicalServiceId);
+    }
+
+    @DeleteMapping("/")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteAllTechnicalService() {
+        technicalServiceService.deleteAllTechnicalService();
+    }
+
 }
