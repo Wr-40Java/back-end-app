@@ -72,13 +72,9 @@ public class MaintenanceEventService {
         }
     }
 
-    public Long deleteAllMaintenanceEvent() {
-        long sizeOfMaintenanceEventTable = maintenanceEventRepository.findAll().size();
+    public void deleteAllMaintenanceEvent() {
         maintenanceEventRepository.deleteAll();
-        long sizeAfterDelete = maintenanceEventRepository.findAll().size();
-        if (sizeAfterDelete == 0L) {
-            return sizeOfMaintenanceEventTable;
-        } else {
+        if (!maintenanceEventRepository.findAll().isEmpty()) {
             throw new UnableToDeleteMaintenanceEventException();
         }
     }

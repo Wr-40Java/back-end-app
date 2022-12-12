@@ -2,9 +2,7 @@ package Wr40.cardiary.service;
 
 import Wr40.cardiary.exception.NoSuchMaintenanceHistoryException;
 import Wr40.cardiary.model.entity.Car;
-import Wr40.cardiary.model.entity.MaintenanceEvent;
 import Wr40.cardiary.model.entity.MaintenanceHistory;
-import Wr40.cardiary.repo.MaintenanceEventRepository;
 import Wr40.cardiary.repo.MaintenanceHistoryRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,8 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
-import static Wr40.cardiary.util.Calculations.calculateMaintenanceCost;
 
 @Service
 @AllArgsConstructor
@@ -40,6 +36,7 @@ public class MaintenanceHistoryService {
         MaintenanceHistory savedMH = maintenanceHistRepo.findById(maintenanceId).orElseThrow(NoSuchMaintenanceHistoryException::new);
         savedMH.setDescription(mh.getDescription());
         savedMH.setMaintenanceEvent(mh.getMaintenanceEvent());
+        savedMH.setTechnicalService(mh.getTechnicalService());
         return maintenanceHistRepo.save(savedMH);
     }
 
