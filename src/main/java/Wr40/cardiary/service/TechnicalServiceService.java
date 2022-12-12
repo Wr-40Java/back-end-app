@@ -1,17 +1,15 @@
 package Wr40.cardiary.service;
 
+import Wr40.cardiary.exception.NoSuchTechnicalServiceFoundException;
 import Wr40.cardiary.exception.TechnicalServiceAlreadyExistsException;
-import Wr40.cardiary.model.dto.technicalService.TechnicalServiceDTO;
 import Wr40.cardiary.model.dto.technicalService.TechnicalServiceResponseDTO;
 import Wr40.cardiary.model.entity.MaintenanceHistory;
 import Wr40.cardiary.model.entity.TechnicalService;
 import Wr40.cardiary.repo.TechnicalServiceRepository;
-import org.springframework.transaction.annotation.Transactional;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import lombok.AllArgsConstructor;
-
-import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 import static Wr40.cardiary.util.Calculations.calculateTechnicalServiceCost;
 
@@ -38,4 +36,13 @@ public class TechnicalServiceService {
     }
 
 
+    public TechnicalServiceResponseDTO updateTechnicalService(Long technicalServiceId, TechnicalService technicalService) {
+        if (!technicalServiceRepository.existsById(technicalServiceId)) {
+            throw new NoSuchTechnicalServiceFoundException();
+        }
+        technicalService.setId(technicalServiceId);
+        TechnicalService technicalServiceSaved = technicalServiceRepository.save(technicalService);
+
+        return modelMapper.map(technicalServiceSaved, TechnicalServiceResponseDTO.class);
+    }
 }
