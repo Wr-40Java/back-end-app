@@ -217,7 +217,6 @@ class MaintenanceEventServiceTest {
     @DisplayName("Should Throw Exception When Unable To Delete All Maintenance Event From Database")
     void shouldThrowExceptionWhenUnableToDeleteAllMaintenanceEventFromDatabase() {
         // Given
-        Long size = 2L;
         List<MaintenanceEvent> listME = new ArrayList<>();
         MaintenanceEvent mEvent = new MaintenanceEvent();
         listME.add(mEvent);
