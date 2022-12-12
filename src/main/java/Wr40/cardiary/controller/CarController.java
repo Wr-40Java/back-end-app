@@ -14,20 +14,20 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/cardiary/car")
+@RequestMapping("/api/car")
 public class CarController {
 
     CarService carService;
     ModelMapper modelMapper;
 
-    @PostMapping("/save")
+    @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public Car saveCar(@Valid @RequestBody CarDTO dto) {
         Car mappedCar = modelMapper.map(dto, Car.class);
         return carService.saveCar(mappedCar);
     }
 
-    @GetMapping("/get/{vin}")
+    @GetMapping("/{vin}")
     @ResponseStatus(HttpStatus.OK)
     public Car getCar(@PathVariable String vin){
         return carService.getCar(vin);
@@ -39,19 +39,19 @@ public class CarController {
         return carService.getAllCars();
     }
 
-    @DeleteMapping("/delete/{vin}")
+    @DeleteMapping("/{vin}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteCar(@PathVariable String vin){
         carService.deleteCar(vin);
     }
 
-    @DeleteMapping("/delete/all")
+    @DeleteMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public void deleteAllCars(){
         carService.deleteAllCars();
     }
 
-    @PutMapping("/update")
+    @PutMapping()
     @ResponseStatus(HttpStatus.OK)
     public Car updateCar(@Valid @RequestBody CarDTO carDTO){
         Car mappedCar = modelMapper.map(carDTO, Car.class);

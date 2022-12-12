@@ -13,20 +13,20 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/cardiary/tax")
+@RequestMapping("/api/tax")
 public class TaxController {
 
     TaxService taxService;
     ModelMapper modelMapper;
 
-    @PostMapping("/save")
+    @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public Tax saveTax(@Valid @RequestBody TaxDTO dto) {
         Tax mappedTax = modelMapper.map(dto, Tax.class);
         return taxService.saveTax(mappedTax);
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Tax getTax(@PathVariable Long id) {
         return taxService.getTax(id);
@@ -38,23 +38,22 @@ public class TaxController {
         return taxService.getAllTaxes();
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteTax(@PathVariable Long id){
         taxService.deleteTax(id);
     }
 
-    @DeleteMapping("/delete/all")
+    @DeleteMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public void deleteAllTaxes(){
         taxService.deleteAllTaxes();
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping()
     @ResponseStatus(HttpStatus.OK)
-    public Tax updateTax(@PathVariable Long id, @Valid @RequestBody TaxDTO dto){
-        Tax mappedTax = modelMapper.map(dto, Tax.class);
-        return taxService.updateTax(id, mappedTax);
+    public Tax updateTax(@Valid @RequestBody Tax tax){
+        return taxService.updateTax(tax);
     }
 
     @PostMapping("/link/{tax_id}/{tax_type_id}")

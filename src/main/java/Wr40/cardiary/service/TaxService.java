@@ -41,8 +41,8 @@ public class TaxService {
         taxRepository.deleteAll();
     }
 
-    public Tax updateTax(Long id, Tax tax) {
-        Tax taxToUpdate = taxRepository.findById(id).orElseThrow(TaxNotFoundException::new);
+    public Tax updateTax(Tax tax) {
+        Tax taxToUpdate = taxRepository.findById(tax.getId()).orElseThrow(TaxNotFoundException::new);
         taxToUpdate.setCostOfTransaction(tax.getCostOfTransaction());
         return taxRepository.save(taxToUpdate);
     }

@@ -102,7 +102,7 @@ public class TaxServiceTest {
         tax2.setCostOfTransaction(BigDecimal.valueOf(50));
         Mockito.when(taxRepository.findById(tax.getId())).thenReturn(Optional.of(tax));
         Mockito.when(taxRepository.save(tax)).thenReturn(tax2);
-        Tax updatedCar = taxService.updateTax(tax.getId(), tax);
+        Tax updatedCar = taxService.updateTax(tax);
         Assertions.assertEquals(BigDecimal.valueOf(50),updatedCar.getCostOfTransaction());
     }
 

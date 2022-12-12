@@ -26,8 +26,8 @@ public class TaxTypeService {
         return taxTypeRepository.findById(id).orElseThrow(NoSuchEntityFound::new);
     }
 
-    public TaxType updateTaxType(Long id, TaxType mappedTaxType) {
-        TaxType foundTaxType = taxTypeRepository.findById(id).orElseThrow(NoSuchEntityFound::new);
+    public TaxType updateTaxType(TaxType mappedTaxType) {
+        TaxType foundTaxType = taxTypeRepository.findById(mappedTaxType.getId()).orElseThrow(NoSuchEntityFound::new);
         foundTaxType.setName(mappedTaxType.getName());
         foundTaxType.setDescription(mappedTaxType.getDescription());
         foundTaxType.setInstitutionToPayFor(mappedTaxType.getInstitutionToPayFor());
