@@ -15,6 +15,10 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -79,8 +83,8 @@ class TechnicalServiceServiceTest {
     }
 
     @Test
-    @DisplayName("Should Throw Exception When Maintenance Event Is Not Present In Database")
-    void shouldThrowExceptionWhenMaintenanceEventIsNotPresentInDatabase() {
+    @DisplayName("Should Throw Exception When Technical Service Is Not Present In Database")
+    void shouldThrowExceptionWhenTechnicalServiceIsNotPresentInDatabase() {
         // Given
         Long tServiceId = 1L;
         TechnicalService technicalService = new TechnicalService();
@@ -88,5 +92,55 @@ class TechnicalServiceServiceTest {
 
         // When & Then
         assertThrows(NoSuchTechnicalServiceFoundException.class, () -> technicalServiceService.updateTechnicalService(tServiceId, technicalService));
+    }
+
+    @Test
+    @DisplayName("Should Throw Exception When Getting Technical Service Which Is Not Present In Database")
+    void shouldThrowExceptionWhenGettingTechnicalServiceWhichIsNotPresentInDatabase() {
+        // Given
+        Long mEventId = 1L;
+        Mockito.when(technicalServiceRepository.findById(any(Long.class))).thenReturn(Optional.empty());
+
+        // When & Then
+        assertThrows(NoSuchTechnicalServiceFoundException.class, () -> technicalServiceService.getTechnicalService(mEventId));
+    }
+
+    @Test
+    @DisplayName("Should Get Technical Service When It Is Present In Database")
+    void shouldGetTechnicalServiceWhenItIsPresentInDatabase() {
+        // Given
+        TechnicalService tService = new TechnicalService();
+        TechnicalServiceResponseDTO sTRDTO = new TechnicalServiceResponseDTO();
+        Long mEventId = 1L;
+
+        Mockito.when(technicalServiceRepository.findById(any(Long.class))).thenReturn(Optional.of(tService));
+        Mockito.when(modelMapper.map(tService, TechnicalServiceResponseDTO.class)).thenReturn(sTRDTO);
+
+        // When
+        TechnicalServiceResponseDTO technicalServiceSaved = technicalServiceService.getTechnicalService(mEventId);
+
+        // Then
+        Assertions.assertEquals(sTRDTO, technicalServiceSaved);
+        verify(technicalServiceRepository).findById(mEventId);
+    }
+
+    @Test
+    @DisplayName("Should Provide All Technical Service When Getting All Technical Service")
+    void shouldProvideAllTechnicalServiceWhenGettingAllTechnicalService() {
+        // Given
+        List<TechnicalService> tServiceList = new ArrayList<>();
+        TechnicalService mEvent = new TechnicalService();
+        TechnicalServiceResponseDTO sTRDTO = new TechnicalServiceResponseDTO();
+        List<TechnicalServiceResponseDTO> listTSRDTO = new ArrayList<>();
+        listTSRDTO.add(sTRDTO);
+        tServiceList.add(mEvent);
+        Mockito.when(technicalServiceRepository.findAll()).thenReturn(tServiceList);
+        Mockito.when(modelMapper.map(mEvent, TechnicalServiceResponseDTO.class)).thenReturn(sTRDTO);
+        // Given
+        List<TechnicalServiceResponseDTO> mEventListsSaved = technicalServiceService.getAllMaintenanceEvent();
+
+        // When
+        assertEquals(listTSRDTO, mEventListsSaved);
+        verify(technicalServiceRepository).findAll();
     }
 }

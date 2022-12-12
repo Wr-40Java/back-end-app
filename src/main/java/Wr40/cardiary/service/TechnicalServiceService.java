@@ -11,6 +11,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static Wr40.cardiary.util.Calculations.calculateTechnicalServiceCost;
 
 @Service
@@ -44,5 +46,21 @@ public class TechnicalServiceService {
         TechnicalService technicalServiceSaved = technicalServiceRepository.save(technicalService);
 
         return modelMapper.map(technicalServiceSaved, TechnicalServiceResponseDTO.class);
+    }
+
+    public TechnicalServiceResponseDTO getTechnicalService(Long technicalServiceId) {
+
+        TechnicalService technicalService = technicalServiceRepository.findById(technicalServiceId)
+                .orElseThrow(NoSuchTechnicalServiceFoundException::new);
+
+        return modelMapper.map(technicalService, TechnicalServiceResponseDTO.class);
+
+    }
+
+    public List<TechnicalServiceResponseDTO> getAllMaintenanceEvent() {
+        return technicalServiceRepository.findAll()
+                .stream()
+                .map(ts -> modelMapper.map(ts, TechnicalServiceResponseDTO.class))
+                .toList();
     }
 }

@@ -117,7 +117,6 @@ class MaintenanceEventServiceTest {
     void shouldThrowExceptionWhenGettingMeWhichIsNotPresentInDatabase() {
         // Given
         Long mEventId = 1L;
-        MaintenanceEvent mEvent = new MaintenanceEvent();
         Mockito.when(maintenanceEventRepository.findById(any(Long.class))).thenReturn(Optional.empty());
 
         // When & Then
@@ -218,7 +217,6 @@ class MaintenanceEventServiceTest {
     @DisplayName("Should Throw Exception When Unable To Delete All Maintenance Event From Database")
     void shouldThrowExceptionWhenUnableToDeleteAllMaintenanceEventFromDatabase() {
         // Given
-        Long size = 2L;
         List<MaintenanceEvent> listME = new ArrayList<>();
         MaintenanceEvent mEvent = new MaintenanceEvent();
         listME.add(mEvent);
