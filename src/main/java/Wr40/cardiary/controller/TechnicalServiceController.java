@@ -10,6 +10,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/technical_service")
 @AllArgsConstructor
@@ -35,6 +37,18 @@ public class TechnicalServiceController {
         TechnicalService technicalService = modelMapper.map(technicalServiceDTO, TechnicalService.class);
         return technicalServiceService.updateTechnicalService(technicalServiceId, technicalService);
 
+    }
+
+    @GetMapping("/{technical_service_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public TechnicalServiceResponseDTO getTechnicalService(@PathVariable(name = "technical_service_id") Long technicalServiceId) {
+        return technicalServiceService.getTechnicalService(technicalServiceId);
+    }
+
+    @GetMapping("/")
+    @ResponseStatus(HttpStatus.OK)
+    public List<TechnicalServiceResponseDTO> getAllMaintenanceEvent() {
+        return technicalServiceService.getAllMaintenanceEvent();
     }
 
 }
