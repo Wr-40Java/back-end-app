@@ -1,10 +1,9 @@
 package Wr40.cardiary.service;
 
-import Wr40.cardiary.exception.TechnicalServiceAlreadyExistsException;
+import Wr40.cardiary.exception.NoSuchTechnicalServiceFoundException;
 import Wr40.cardiary.model.dto.technicalService.TechnicalServiceResponseDTO;
-import Wr40.cardiary.model.dto.technicalService.TechnicalServiceDTO;
-import Wr40.cardiary.model.entity.TechnicalService;
 import Wr40.cardiary.model.entity.MaintenanceHistory;
+import Wr40.cardiary.model.entity.TechnicalService;
 import Wr40.cardiary.repo.TechnicalServiceRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -15,10 +14,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -59,6 +54,39 @@ class TechnicalServiceServiceTest {
         // Then
         Assertions.assertEquals(technicalServiceResponseDTO, technicalServiceResponseDTO1);
         verify(technicalServiceRepository).save(technicalService);
+    }
 
+    @Test
+    @DisplayName("Should Update Given Technical Service When Given Id Is Correct")
+    void shouldUpdateGivenTechnicalServiceWhenGivenIdIsCorrect() {
+        //Given
+        TechnicalService tService1 = new TechnicalService();
+        TechnicalService tService2 = new TechnicalService();
+        Long mEventId = 1L;
+        tService2.setDescription("Technical maintenance");
+        TechnicalServiceResponseDTO tSRDTO = new TechnicalServiceResponseDTO();
+        tSRDTO.setDescription(tService2.getDescription());
+
+        Mockito.when(technicalServiceRepository.existsById(any(Long.class))).thenReturn(true);
+        Mockito.when(technicalServiceRepository.save(any(TechnicalService.class))).thenReturn(tService2);
+        Mockito.when(modelMapper.map(tService2, TechnicalServiceResponseDTO.class)).thenReturn(tSRDTO);
+
+        // When
+        TechnicalServiceResponseDTO updateTS = technicalServiceService.updateTechnicalService(mEventId, tService1);
+
+        // Then
+        assertEquals("Technical maintenance", updateTS.getDescription());
+    }
+
+    @Test
+    @DisplayName("Should Throw Exception When Maintenance Event Is Not Present In Database")
+    void shouldThrowExceptionWhenMaintenanceEventIsNotPresentInDatabase() {
+        // Given
+        Long tServiceId = 1L;
+        TechnicalService technicalService = new TechnicalService();
+        Mockito.when(technicalServiceRepository.existsById(any(Long.class))).thenReturn(false);
+
+        // When & Then
+        assertThrows(NoSuchTechnicalServiceFoundException.class, () -> technicalServiceService.updateTechnicalService(tServiceId, technicalService));
     }
 }

@@ -27,4 +27,14 @@ public class TechnicalServiceController {
         return technicalServiceService.saveTechnicalService(mHistoryId, technicalService);
     }
 
+    @PutMapping("/{technical_service_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public TechnicalServiceResponseDTO updateTechnicalService(@Valid @RequestBody TechnicalServiceDTO technicalServiceDTO,
+                                                              @PathVariable(name = "technical_service_id")
+                                                              Long technicalServiceId) {
+        TechnicalService technicalService = modelMapper.map(technicalServiceDTO, TechnicalService.class);
+        return technicalServiceService.updateTechnicalService(technicalServiceId, technicalService);
+
+    }
+
 }
