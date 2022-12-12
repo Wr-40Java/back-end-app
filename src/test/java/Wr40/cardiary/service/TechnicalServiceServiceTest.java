@@ -1,7 +1,11 @@
 package Wr40.cardiary.service;
 
+import Wr40.cardiary.exception.NoSuchMaintenanceEventFoundException;
 import Wr40.cardiary.exception.NoSuchTechnicalServiceFoundException;
+import Wr40.cardiary.exception.UnableToDeleteMaintenanceEventException;
+import Wr40.cardiary.exception.UnableToDeleteTechnicalServiceException;
 import Wr40.cardiary.model.dto.technicalService.TechnicalServiceResponseDTO;
+import Wr40.cardiary.model.entity.MaintenanceEvent;
 import Wr40.cardiary.model.entity.MaintenanceHistory;
 import Wr40.cardiary.model.entity.TechnicalService;
 import Wr40.cardiary.repo.TechnicalServiceRepository;
@@ -142,5 +146,69 @@ class TechnicalServiceServiceTest {
         // When
         assertEquals(listTSRDTO, mEventListsSaved);
         verify(technicalServiceRepository).findAll();
+    }
+
+    @Test
+    @DisplayName("Should Delete Technical Service When Given Id Is Present In Database")
+    void shouldDeleteMaintenanceEventWhenGivenIdIsPresentInDatabase() {
+        // Given
+        TechnicalService technicalService = new TechnicalService();
+        Long technicalServiceId = 1L;
+
+        Mockito.when(technicalServiceRepository.findById(any(Long.class))).thenReturn(Optional.of(technicalService));
+        Mockito.when(technicalServiceRepository.existsById(any(Long.class))).thenReturn(false);
+
+        // When
+        technicalServiceService.deleteTechnicalService(technicalServiceId);
+
+        // Then
+        verify(technicalServiceRepository).delete(technicalService);
+        verify(technicalServiceRepository).existsById(technicalServiceId);
+    }
+
+    @Test
+    @DisplayName("Should Delete All Technical Service When Requested")
+    void shouldDeleteAllTechnicalServiceWhenRequested() {
+        // Given
+        technicalServiceService.deleteAllTechnicalService();
+
+        // When
+        verify(technicalServiceRepository).deleteAll();
+    }
+
+    @Test
+    @DisplayName("Should Throw Exception When Unable To Delete From Database")
+    void shouldThrowExceptionWhenUnableToDeleteFromDatabase() {
+        // Given
+        TechnicalService technicalService = new TechnicalService();
+        Long technicalServiceId = 1L;
+        Mockito.when(technicalServiceRepository.findById(any(Long.class))).thenReturn(Optional.of(technicalService));
+        Mockito.when(technicalServiceRepository.existsById(any(Long.class))).thenReturn(true);
+
+        // When
+        assertThrows(UnableToDeleteTechnicalServiceException.class, () -> technicalServiceService.deleteTechnicalService(technicalServiceId));
+    }
+
+    @Test
+    @DisplayName("Should Throw Exception When Unable To Delete All Technical Service From Database")
+    void shouldThrowExceptionWhenUnableToDeleteAllTechnicalServiceFromDatabase() {
+        // Given
+        List<TechnicalService> technicalServiceList = new ArrayList<>();
+        TechnicalService technicalService = new TechnicalService();
+        technicalServiceList.add(technicalService);
+        Mockito.when(technicalServiceRepository.findAll()).thenReturn(technicalServiceList);
+
+        // When
+        assertThrows(UnableToDeleteTechnicalServiceException.class, () -> technicalServiceService.deleteAllTechnicalService());
+    }
+
+    @Test
+    @DisplayName("Should Throw Exception When Deleting Technical Service With Wrong Id")
+    void shouldThrowExceptionWhenDeletingTechnicalServiceWithWrongId() {
+        // Given
+        Long technicalServiceId = 1L;
+
+        // When
+        assertThrows(NoSuchTechnicalServiceFoundException.class, () -> technicalServiceService.deleteTechnicalService(technicalServiceId));
     }
 }
