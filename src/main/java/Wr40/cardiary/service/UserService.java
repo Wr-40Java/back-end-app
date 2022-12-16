@@ -38,7 +38,12 @@ public class UserService implements UserDetailsService {
 
     public User saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(List.of(new Role(UserRole.USER)));
+
+        if(userRepository.findAll().isEmpty()){
+            user.setRoles(List.of(new Role(UserRole.ADMIN)));
+        } else {
+            user.setRoles(List.of(new Role(UserRole.USER)));
+        }
         if (userRepository.existsByUsername(user.getUsername())) {
             throw new UserAlreadyExistedException();
         }
