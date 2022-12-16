@@ -20,6 +20,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(new ErrorDetails(LocalDateTime.now(), e.getMessage(), HttpStatus.BAD_REQUEST));
     }
 
+    @ExceptionHandler(UserAlreadyExistedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public final ResponseEntity<ErrorDetails> handleUserAlreadyExistedException(UserAlreadyExistedException e) {
+        return ResponseEntity.badRequest().body(new ErrorDetails(LocalDateTime.now(), e.getMessage(), HttpStatus.BAD_REQUEST));
+    }
+
     @ExceptionHandler(NoSuchCarFoundException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public final ResponseEntity<ErrorDetails> handleNoSuchCarFoundException(NoSuchCarFoundException e) {

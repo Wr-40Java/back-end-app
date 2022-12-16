@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class MaintenanceHistoryController {
 
     private MaintenanceHistoryService maintenanceHS;
     private ModelMapper modelMapper;
-
+    @PreAuthorize("hasAnyRole('USER')")
     @PostMapping("/{vin}")
     @ResponseStatus(HttpStatus.CREATED)
     public MaintenanceHistory saveMH(@Valid @RequestBody MaintenanceHistoryDTO maintenance,
@@ -37,7 +38,7 @@ public class MaintenanceHistoryController {
         }
         return maintenanceHS.saveMH(vin, mh);
     }
-
+    @PreAuthorize("hasAnyRole('USER')")
     @PutMapping("/{maintenance_id}")
     @ResponseStatus(HttpStatus.OK)
     public MaintenanceHistory updateMH(@Valid @RequestBody MaintenanceHistoryDTO maintenance,
@@ -53,27 +54,27 @@ public class MaintenanceHistoryController {
         }
         return maintenanceHS.updateMH(id, mh);
     }
-
+    @PreAuthorize("hasAnyRole('USER')")
     @GetMapping("/{maintenance_id}")
     @ResponseStatus(HttpStatus.OK)
     public MaintenanceHistory getMaintenanceHistory(
             @PathVariable(name = "maintenance_id") Long maintenanceId) {
         return maintenanceHS.getMaintenanceHistory(maintenanceId);
     }
-
+    @PreAuthorize("hasAnyRole('USER')")
     @GetMapping("/")
     @ResponseStatus(HttpStatus.OK)
     public List<MaintenanceHistory> getAllMaintenanceHistory() {
         return maintenanceHS.getAllMaintenanceHistory();
     }
-
+    @PreAuthorize("hasAnyRole('USER')")
     @DeleteMapping("/{maintenance_id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteMaintenanceHistory(
             @PathVariable(name = "maintenance_id") Long maintenanceId) {
         maintenanceHS.deleteMaintenanceHistory(maintenanceId);
     }
-
+    @PreAuthorize("hasAnyRole('USER')")
     @DeleteMapping("/delete")
     @ResponseStatus(HttpStatus.OK)
     public void deleteMaintenanceHistory() {

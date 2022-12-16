@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class MaintenanceEventController {
     private MaintenanceEventService maintenanceEventService;
     private ModelMapper modelMapper;
 
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PostMapping("/maintenance_history/{maintenance_history_id}")
     @ResponseStatus(HttpStatus.CREATED)
     public MaintenanceEventResponseDTO saveMaintenanceEvent(@Valid @RequestBody MaintenanceEventDTO maintenanaceEventDTO,
@@ -27,7 +29,7 @@ public class MaintenanceEventController {
         MaintenanceEvent maintenanceEvent = modelMapper.map(maintenanaceEventDTO, MaintenanceEvent.class);
         return maintenanceEventService.saveMaintenanceEvent(mHistoryId, maintenanceEvent);
     }
-
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PutMapping("/{maintenance_event_id}")
     @ResponseStatus(HttpStatus.OK)
     public MaintenanceEventResponseDTO updateMaintenanceEvent(@Valid @RequestBody MaintenanceEventDTO maintenanceEventDTO,
@@ -36,25 +38,25 @@ public class MaintenanceEventController {
         return maintenanceEventService.updateMaintenanceEvent(mEventId, maintenanceEvent);
 
     }
-
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/{maintenance_event_id}")
     @ResponseStatus(HttpStatus.OK)
     public MaintenanceEventResponseDTO getMaintenanceEvent(@PathVariable(name = "maintenance_event_id") Long mEventId) {
         return maintenanceEventService.getMaintenanceEvent(mEventId);
     }
-
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/")
     @ResponseStatus(HttpStatus.OK)
     public List<MaintenanceEventResponseDTO> getAllMaintenanceEvent() {
         return maintenanceEventService.getAllMaintenanceEvent();
     }
-
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @DeleteMapping("/{maintenance_event_id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteMaintenanceEvent(@PathVariable(name = "maintenance_event_id") Long mEventId) {
         maintenanceEventService.deleteMaintenanceEvent(mEventId);
     }
-
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @DeleteMapping("/")
     @ResponseStatus(HttpStatus.OK)
     public void deleteAllMaintenanceEvent() {
