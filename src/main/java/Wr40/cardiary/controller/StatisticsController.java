@@ -1,5 +1,6 @@
 package Wr40.cardiary.controller;
 
+import Wr40.cardiary.model.dto.statistics.MaintenanceStatisticsDTO;
 import Wr40.cardiary.model.dto.statistics.TaxStatisticsDTO;
 import Wr40.cardiary.service.StatisticsService;
 import lombok.AllArgsConstructor;
@@ -13,10 +14,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/cardiary/statistics")
 @AllArgsConstructor
 public class StatisticsController {
-    private StatisticsService statisticsService;
+    private StatisticsService statisticsSercvice;
+
+    @GetMapping("/maintenance")
+    @ResponseStatus(HttpStatus.OK)
+    public MaintenanceStatisticsDTO getInsuranceTypes() {
+        return statisticsSercvice.getMaintenanceStatistics();
+    }
+
     @GetMapping("/tax")
     @ResponseStatus(HttpStatus.OK)
-    public TaxStatisticsDTO getInsuranceTypes() {
-        return statisticsService.getTaxStatistics();
+    public TaxStatisticsDTO getMaintenanceTypes() {
+        return statisticsSercvice.getTaxStatistics();
     }
 }
