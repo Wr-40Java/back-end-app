@@ -224,6 +224,8 @@ public class InsuranceServiceTest {
         Assertions.assertThrows(NoSuchInsuranceCompanyException.class, () -> insuranceService.updateInsuranceCompany(insuranceCompanyDTO, id));
 
     }
+    
+    
 
     @Test
     public void whenGetAllInsuranceCompaniesWithTypeForCarInvoked_shouldReturnListOfThose() {
@@ -255,6 +257,7 @@ public class InsuranceServiceTest {
         Assertions.assertEquals(insuranceCompanyList, insuranceRepository.getAllInsuranceCompanies());
         Assertions.assertEquals(insuranceRepository.getAllInsuranceCompanies().size(), 2);
     }
+
 
 //    @Test
 //    public void whenLinkingCarInsuranceCompanyAndType_shouldLinkEntitesAndSave() {
