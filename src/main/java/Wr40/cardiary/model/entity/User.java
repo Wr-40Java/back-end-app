@@ -24,14 +24,14 @@ public class User {
     private String surname;
     @Column(unique = true, length = 45)
     private String username;
-    @Column(length = 45)
+    @Column(length = 90)
     private String password;
     @Column(length = 45)
     private String email;
     private Long phoneNumber;
     @CreationTimestamp
     private LocalDateTime creationDate;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private List<Role> roles;
     @OneToMany
