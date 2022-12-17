@@ -1,1 +1,0 @@
-web: java -jar ./target/carservice-0.0.1-SNAPSHOT.jar Wr40.cardiary.CarserviceApplication
