@@ -1,7 +1,9 @@
 package Wr40.cardiary.exception;
 
-public class NoSuchInsuranceCompanyException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class NoSuchInsuranceCompanyException extends GlobalException {
     public NoSuchInsuranceCompanyException() {
-        super("There is no company with given id");
+        super(HttpStatus.NOT_FOUND,"There is no company with given id");
     }
 }

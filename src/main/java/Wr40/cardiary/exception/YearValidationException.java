@@ -1,7 +1,9 @@
 package Wr40.cardiary.exception;
 
-public class YearValidationException extends RuntimeException{
+import org.springframework.http.HttpStatus;
+
+public class YearValidationException extends GlobalException{
     public YearValidationException() {
-        super("Wrong year value");
+        super(HttpStatus.NOT_ACCEPTABLE,"Given year is not correct");
     }
 }

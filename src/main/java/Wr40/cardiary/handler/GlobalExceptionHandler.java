@@ -11,93 +11,79 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
-    @ExceptionHandler(CarAlreadyExistsException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(GlobalException.class)
     public final ProblemDetail handleCarAlreadyExistException(CarAlreadyExistsException e) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,e.getMessage());
+        return ProblemDetail.forStatusAndDetail(e.getStatus(), e.getMessage());
     }
 
-    @ExceptionHandler(UserAlreadyExistedException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(GlobalException.class)
     public final ProblemDetail handleUserAlreadyExistedException(UserAlreadyExistedException e) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,e.getMessage());
+        return ProblemDetail.forStatusAndDetail(e.getStatus(), e.getMessage());
     }
 
-    @ExceptionHandler(NoSuchCarFoundException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(GlobalException.class)
     public final ProblemDetail handleNoSuchCarFoundException(NoSuchCarFoundException e) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,e.getMessage());
+        return ProblemDetail.forStatusAndDetail(e.getStatus(), e.getMessage());
     }
 
-    @ExceptionHandler(YearValidationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(GlobalException.class)
     public final ProblemDetail handleYearValidationException(YearValidationException e) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,e.getMessage());
+        return ProblemDetail.forStatusAndDetail(e.getStatus(), e.getMessage());
     }
 
-    @ExceptionHandler(WrongEmailAddressException.class)
-            public final ProblemDetail handleWrongEmailAddressException(WrongEmailAddressException e){
-        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,e.getMessage());
+    @ExceptionHandler(GlobalException.class)
+    public final ProblemDetail handleWrongEmailAddressException(WrongEmailAddressException e) {
+        return ProblemDetail.forStatusAndDetail(e.getStatus(), e.getMessage());
     }
 
-    @ExceptionHandler(TaxTypeAlreadyExistsException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(GlobalException.class)
     public final ProblemDetail handleTaxTypeAlreadyExistsException(TaxTypeAlreadyExistsException e) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,e.getMessage());
+        return ProblemDetail.forStatusAndDetail(e.getStatus(),e.getMessage());
     }
 
-    @ExceptionHandler(NoSuchEntityFound.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(GlobalException.class)
     public final ProblemDetail handleNoSuchEntityFound(NoSuchEntityFound e) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,e.getMessage());
+        return ProblemDetail.forStatusAndDetail(e.getStatus(),e.getMessage());
     }
 
-    @ExceptionHandler(InsuranceCompanyAlreadyExistsException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(GlobalException.class)
     public final ProblemDetail handleExistingInsCompanyNameException(InsuranceCompanyAlreadyExistsException e) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,e.getMessage());
+        return ProblemDetail.forStatusAndDetail(e.getStatus(),e.getMessage());
     }
 
-    @ExceptionHandler(NoSuchInsuranceCompanyException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(GlobalException.class)
     public final ProblemDetail handleNoSuchInsCompanyException(NoSuchInsuranceCompanyException e) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,e.getMessage());
+        return ProblemDetail.forStatusAndDetail(e.getStatus(),e.getMessage());
     }
 
-    @ExceptionHandler(NoSuchInsuranceTypeException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(GlobalException.class)
     public final ProblemDetail handleNotExistingInsCompanyTypeException(NoSuchInsuranceTypeException e) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,e.getMessage());
+        return ProblemDetail.forStatusAndDetail(e.getStatus(),e.getMessage());
     }
 
-    @ExceptionHandler(NoSuchMaintenanceHistoryException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(GlobalException.class)
     public final ProblemDetail handleNoSuchMaintenanceHistoryException(NoSuchMaintenanceHistoryException e) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,e.getMessage());
+        return ProblemDetail.forStatusAndDetail(e.getStatus(),e.getMessage());
     }
 
-    @ExceptionHandler(MaintenanceEventAlreadyExistsException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(GlobalException.class)
     public final ProblemDetail handleMaintenanceEventAlreadyExistsException(MaintenanceEventAlreadyExistsException e) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,e.getMessage());
+        return ProblemDetail.forStatusAndDetail(e.getStatus(),e.getMessage());
     }
 
-    @ExceptionHandler(NoSuchMaintenanceEventFoundException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(GlobalException.class)
     public final ProblemDetail handleNoSuchMaintenanceEventException(NoSuchMaintenanceEventFoundException e) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,e.getMessage());
+        return ProblemDetail.forStatusAndDetail(e.getStatus(),e.getMessage());
     }
 
-    @ExceptionHandler(UnableToDeleteMaintenanceEventException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(GlobalException.class)
     public final ProblemDetail handleUnableToDeleteMaintenanceEventException(UnableToDeleteMaintenanceEventException e) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,e.getMessage());
+        return ProblemDetail.forStatusAndDetail(e.getStatus(),e.getMessage());
     }
 
-    @ExceptionHandler(SQLExceptionCustomized.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(GlobalException.class)
     public final ProblemDetail handleUnableToDeleteInsuranceCompanyAloneException(SQLExceptionCustomized e) {
-        return  ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,e.getMessage());
+        return ProblemDetail.forStatusAndDetail(e.getStatus(),e.getMessage());
     }
 
 
