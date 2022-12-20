@@ -1,15 +1,15 @@
 package Wr40.cardiary.validation;
 
-import Wr40.cardiary.exception.WrongEmailAddressException;
 import Wr40.cardiary.exception.WrongPhoneNumberException;
-import Wr40.cardiary.model.entity.User;
 import Wr40.cardiary.validation.constraint.PhoneConstraint;
-import Wr40.cardiary.validation.validator.EmailValidator;
 import Wr40.cardiary.validation.validator.PhoneNumberValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
+
+import java.util.stream.Stream;
 
 public class PhoneNumberValidationTest {
 
@@ -19,22 +19,37 @@ public class PhoneNumberValidationTest {
     @Mock
     ConstraintValidatorContext constraintValidatorContext;
 
-    @Test
-    public void givenWrongPhoneNumber_whenPhoneValidator_throwsException(){
+    @ParameterizedTest(name = "Invalid Phone Numbers")
+    @MethodSource("invalidPhoneNumbersProvider")
+    public void givenWrongPhoneNumber_whenPhoneValidator_throwsException(Long phoneNumber){
         PhoneNumberValidator phoneNumberValidator = new PhoneNumberValidator();
         phoneNumberValidator.initialize(phoneConstraint);
-        User user = new User();
-        user.setPhoneNumber(2134L);
-        Assertions.assertThrows(WrongPhoneNumberException.class, () -> phoneNumberValidator.isValid(user.getPhoneNumber(), constraintValidatorContext));
+        Assertions.assertThrows(WrongPhoneNumberException.class, () -> phoneNumberValidator.isValid(phoneNumber, constraintValidatorContext));
     }
 
-    @Test
-    public void givenGoodCredentials_whenEmailValidator_returnTrue(){
+    @ParameterizedTest(name = "valid Phone numbers")
+    @MethodSource("validPhoneNumbersProvider")
+    public void givenGoodCredentials_whenPhoneValidator_returnTrue(Long phoneNumber){
         PhoneNumberValidator phoneNumberValidator = new PhoneNumberValidator();
         phoneNumberValidator.initialize(phoneConstraint);
-        User user = new User();
-        user.setPhoneNumber(12345678L);
-        boolean result = phoneNumberValidator.isValid(user.getPhoneNumber(), constraintValidatorContext);
+        boolean result = phoneNumberValidator.isValid(phoneNumber, constraintValidatorContext);
         Assertions.assertTrue(result);
+    }
+
+    static Stream<Long> validPhoneNumbersProvider() {
+        return Stream.of(
+                12345678L,
+                +4812345678L,
+                +237648392L
+        );
+    }
+
+    static Stream<Long> invalidPhoneNumbersProvider() {
+        return Stream.of(
+                123L,
+                +48-123-123L,
+                1232131243253454L,
+                +2312412-23L
+        );
     }
 }
