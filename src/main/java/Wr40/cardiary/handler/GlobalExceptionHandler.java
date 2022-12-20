@@ -86,5 +86,15 @@ public class GlobalExceptionHandler {
         return ProblemDetail.forStatusAndDetail(e.getStatus(),e.getMessage());
     }
 
+    @ExceptionHandler(WrongPhoneNumberException.class)
+    public final ProblemDetail handleWrongPhoneNumberExceptionException(WrongPhoneNumberException e) {
+        return ProblemDetail.forStatusAndDetail(e.getStatus(),e.getMessage());
+    }
+    @ExceptionHandler(InvalidPasswordException.class)
+    public final ProblemDetail handleInvalidPasswordException(InvalidPasswordException e) {
+        return ProblemDetail.forStatusAndDetail(e.getStatus(),e.getMessage());
+    }
+
+
 
 }

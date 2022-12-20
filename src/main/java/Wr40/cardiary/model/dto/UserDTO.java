@@ -1,6 +1,7 @@
 package Wr40.cardiary.model.dto;
 
 import Wr40.cardiary.validation.constraint.EmailConstraint;
+import Wr40.cardiary.validation.constraint.PasswordConstraint;
 import Wr40.cardiary.validation.constraint.PhoneConstraint;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotEmpty;
@@ -17,6 +18,7 @@ public class UserDTO {
     @NotEmpty
     private String username;
     @NotEmpty
+    @PasswordConstraint
     private String password;
     @NotEmpty
     @EmailConstraint
