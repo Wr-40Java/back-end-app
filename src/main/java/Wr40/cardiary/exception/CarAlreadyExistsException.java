@@ -1,7 +1,10 @@
 package Wr40.cardiary.exception;
 
-public class CarAlreadyExistsException extends RuntimeException  {
+import org.springframework.http.HttpStatus;
+
+public class CarAlreadyExistsException extends GlobalException  {
+
     public CarAlreadyExistsException() {
-        super("This car already exist in repository");
+        super(HttpStatus.NOT_ACCEPTABLE, "Car with given VIN number already exists");
     }
 }

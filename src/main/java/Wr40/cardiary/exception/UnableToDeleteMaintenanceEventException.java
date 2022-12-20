@@ -1,7 +1,9 @@
 package Wr40.cardiary.exception;
 
-public class UnableToDeleteMaintenanceEventException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class UnableToDeleteMaintenanceEventException extends GlobalException {
     public UnableToDeleteMaintenanceEventException() {
-        super("Unable to delete maintenance event!");
+        super(HttpStatus.BAD_REQUEST,"Unable to delete maintenance event!");
     }
 }

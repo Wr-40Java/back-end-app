@@ -1,7 +1,9 @@
 package Wr40.cardiary.exception;
 
-public class NoSuchInsuranceTypeException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class NoSuchInsuranceTypeException extends GlobalException {
     public NoSuchInsuranceTypeException() {
-        super("No such insurance type found!");
+        super(HttpStatus.NOT_FOUND,"No such insurance type found!");
     }
 }

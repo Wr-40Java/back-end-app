@@ -1,7 +1,9 @@
 package Wr40.cardiary.exception;
 
-public class TechnicalServiceAlreadyExistsException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class TechnicalServiceAlreadyExistsException extends GlobalException {
     public TechnicalServiceAlreadyExistsException(){
-        super("Technical service for maintenance history by this name already exists");
+        super(HttpStatus.NOT_ACCEPTABLE,"Technical service for maintenance history by this name already exists");
     }
 }

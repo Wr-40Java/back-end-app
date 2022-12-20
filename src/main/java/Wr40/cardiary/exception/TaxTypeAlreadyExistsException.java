@@ -1,7 +1,9 @@
 package Wr40.cardiary.exception;
 
-public class TaxTypeAlreadyExistsException extends RuntimeException{
+import org.springframework.http.HttpStatus;
+
+public class TaxTypeAlreadyExistsException extends GlobalException{
     public TaxTypeAlreadyExistsException() {
-        super("This Tax Type already exists");
+        super(HttpStatus.NOT_ACCEPTABLE,"This Tax Type already exists");
     }
 }
