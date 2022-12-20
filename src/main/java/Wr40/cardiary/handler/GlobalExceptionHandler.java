@@ -16,72 +16,72 @@ public class GlobalExceptionHandler {
         return ProblemDetail.forStatusAndDetail(e.getStatus(), e.getMessage());
     }
 
-    @ExceptionHandler(GlobalException.class)
+    @ExceptionHandler(UserAlreadyExistedException.class)
     public final ProblemDetail handleUserAlreadyExistedException(UserAlreadyExistedException e) {
         return ProblemDetail.forStatusAndDetail(e.getStatus(), e.getMessage());
     }
 
-    @ExceptionHandler(GlobalException.class)
+    @ExceptionHandler(NoSuchCarFoundException.class)
     public final ProblemDetail handleNoSuchCarFoundException(NoSuchCarFoundException e) {
         return ProblemDetail.forStatusAndDetail(e.getStatus(), e.getMessage());
     }
 
-    @ExceptionHandler(GlobalException.class)
+    @ExceptionHandler(YearValidationException.class)
     public final ProblemDetail handleYearValidationException(YearValidationException e) {
         return ProblemDetail.forStatusAndDetail(e.getStatus(), e.getMessage());
     }
 
-    @ExceptionHandler(GlobalException.class)
+    @ExceptionHandler(WrongEmailAddressException.class)
     public final ProblemDetail handleWrongEmailAddressException(WrongEmailAddressException e) {
         return ProblemDetail.forStatusAndDetail(e.getStatus(), e.getMessage());
     }
 
-    @ExceptionHandler(GlobalException.class)
+    @ExceptionHandler(TaxTypeAlreadyExistsException.class)
     public final ProblemDetail handleTaxTypeAlreadyExistsException(TaxTypeAlreadyExistsException e) {
         return ProblemDetail.forStatusAndDetail(e.getStatus(),e.getMessage());
     }
 
-    @ExceptionHandler(GlobalException.class)
+    @ExceptionHandler(NoSuchEntityFound.class)
     public final ProblemDetail handleNoSuchEntityFound(NoSuchEntityFound e) {
         return ProblemDetail.forStatusAndDetail(e.getStatus(),e.getMessage());
     }
 
-    @ExceptionHandler(GlobalException.class)
+    @ExceptionHandler(InsuranceCompanyAlreadyExistsException.class)
     public final ProblemDetail handleExistingInsCompanyNameException(InsuranceCompanyAlreadyExistsException e) {
         return ProblemDetail.forStatusAndDetail(e.getStatus(),e.getMessage());
     }
 
-    @ExceptionHandler(GlobalException.class)
+    @ExceptionHandler(NoSuchInsuranceCompanyException.class)
     public final ProblemDetail handleNoSuchInsCompanyException(NoSuchInsuranceCompanyException e) {
         return ProblemDetail.forStatusAndDetail(e.getStatus(),e.getMessage());
     }
 
-    @ExceptionHandler(GlobalException.class)
+    @ExceptionHandler(NoSuchInsuranceTypeException.class)
     public final ProblemDetail handleNotExistingInsCompanyTypeException(NoSuchInsuranceTypeException e) {
         return ProblemDetail.forStatusAndDetail(e.getStatus(),e.getMessage());
     }
 
-    @ExceptionHandler(GlobalException.class)
+    @ExceptionHandler(NoSuchMaintenanceHistoryException.class)
     public final ProblemDetail handleNoSuchMaintenanceHistoryException(NoSuchMaintenanceHistoryException e) {
         return ProblemDetail.forStatusAndDetail(e.getStatus(),e.getMessage());
     }
 
-    @ExceptionHandler(GlobalException.class)
+    @ExceptionHandler(MaintenanceEventAlreadyExistsException.class)
     public final ProblemDetail handleMaintenanceEventAlreadyExistsException(MaintenanceEventAlreadyExistsException e) {
         return ProblemDetail.forStatusAndDetail(e.getStatus(),e.getMessage());
     }
 
-    @ExceptionHandler(GlobalException.class)
+    @ExceptionHandler(NoSuchMaintenanceEventFoundException.class)
     public final ProblemDetail handleNoSuchMaintenanceEventException(NoSuchMaintenanceEventFoundException e) {
         return ProblemDetail.forStatusAndDetail(e.getStatus(),e.getMessage());
     }
 
-    @ExceptionHandler(GlobalException.class)
+    @ExceptionHandler(UnableToDeleteMaintenanceEventException.class)
     public final ProblemDetail handleUnableToDeleteMaintenanceEventException(UnableToDeleteMaintenanceEventException e) {
         return ProblemDetail.forStatusAndDetail(e.getStatus(),e.getMessage());
     }
 
-    @ExceptionHandler(GlobalException.class)
+    @ExceptionHandler(SQLExceptionCustomized.class)
     public final ProblemDetail handleUnableToDeleteInsuranceCompanyAloneException(SQLExceptionCustomized e) {
         return ProblemDetail.forStatusAndDetail(e.getStatus(),e.getMessage());
     }
