@@ -1,16 +1,12 @@
 package Wr40.cardiary.handler;
 
 import Wr40.cardiary.exception.*;
-import Wr40.cardiary.model.ErrorDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-import java.time.LocalDateTime;
 
 @ControllerAdvice
 @Slf4j
@@ -23,8 +19,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserAlreadyExistedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public final ResponseEntity<ErrorDetails> handleUserAlreadyExistedException(UserAlreadyExistedException e) {
-        return ResponseEntity.badRequest().body(new ErrorDetails(LocalDateTime.now(), e.getMessage(), HttpStatus.BAD_REQUEST));
+    public final ProblemDetail handleUserAlreadyExistedException(UserAlreadyExistedException e) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,e.getMessage());
     }
 
     @ExceptionHandler(NoSuchCarFoundException.class)
