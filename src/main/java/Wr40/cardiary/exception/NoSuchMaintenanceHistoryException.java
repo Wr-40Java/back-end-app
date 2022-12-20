@@ -1,7 +1,9 @@
 package Wr40.cardiary.exception;
 
-public class NoSuchMaintenanceHistoryException extends RuntimeException{
+import org.springframework.http.HttpStatus;
+
+public class NoSuchMaintenanceHistoryException extends GlobalException{
     public NoSuchMaintenanceHistoryException() {
-        super("No such maintenance history found for given id!");
+        super(HttpStatus.NOT_FOUND,"No such maintenance history found for given id!");
     }
 }

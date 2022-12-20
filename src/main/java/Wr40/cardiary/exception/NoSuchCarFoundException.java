@@ -1,7 +1,9 @@
 package Wr40.cardiary.exception;
 
-public class NoSuchCarFoundException extends RuntimeException{
+import org.springframework.http.HttpStatus;
+
+public class NoSuchCarFoundException extends GlobalException{
     public NoSuchCarFoundException() {
-        super("No such car with given VIN number has been found");
+        super(HttpStatus.NOT_FOUND,"No such car with given VIN number has been found");
     }
 }

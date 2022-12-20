@@ -1,7 +1,9 @@
 package Wr40.cardiary.exception;
 
-public class UserNotFoundException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class UserNotFoundException extends GlobalException {
     public UserNotFoundException() {
-        super("This user is not found");
+        super(HttpStatus.NOT_FOUND,"This user is not found");
     }
 }

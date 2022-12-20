@@ -1,7 +1,9 @@
 package Wr40.cardiary.exception;
 
-public class UnableToDeleteTechnicalServiceException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class UnableToDeleteTechnicalServiceException extends GlobalException {
     public UnableToDeleteTechnicalServiceException() {
-        super("Unable to delete technical service.");
+        super(HttpStatus.BAD_REQUEST,"Unable to delete technical service.");
     }
 }
