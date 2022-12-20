@@ -1,7 +1,9 @@
 package Wr40.cardiary.exception;
 
-public class NoSuchTechnicalServiceFoundException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class NoSuchTechnicalServiceFoundException extends GlobalException {
     public NoSuchTechnicalServiceFoundException() {
-        super("No such maintenance event found for given id!");
+        super(HttpStatus.NOT_FOUND,"No such maintenance event found for given id!");
     }
 }

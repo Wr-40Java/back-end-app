@@ -1,7 +1,9 @@
 package Wr40.cardiary.exception;
 
-public class InsuranceCompanyAlreadyExistsException extends RuntimeException{
+import org.springframework.http.HttpStatus;
+
+public class InsuranceCompanyAlreadyExistsException extends GlobalException{
     public InsuranceCompanyAlreadyExistsException() {
-        super("Insurance company by this name already exists!");
+        super(HttpStatus.NOT_ACCEPTABLE,"Insurance company by this name already exists!");
     }
 }

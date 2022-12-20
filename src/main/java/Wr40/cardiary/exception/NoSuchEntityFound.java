@@ -1,7 +1,9 @@
 package Wr40.cardiary.exception;
 
-public class NoSuchEntityFound extends RuntimeException{
+import org.springframework.http.HttpStatus;
+
+public class NoSuchEntityFound extends GlobalException{
     public NoSuchEntityFound() {
-        super("No such entity found");
+        super(HttpStatus.NOT_FOUND,"No such entity found");
     }
 }

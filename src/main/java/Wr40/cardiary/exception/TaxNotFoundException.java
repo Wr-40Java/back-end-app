@@ -1,7 +1,9 @@
 package Wr40.cardiary.exception;
 
-public class TaxNotFoundException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class TaxNotFoundException extends GlobalException {
     public TaxNotFoundException() {
-        super("No such tax with given id has been found");
+        super(HttpStatus.NOT_FOUND,"No such tax with given id has been found");
     }
 }
