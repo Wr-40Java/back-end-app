@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -61,5 +62,23 @@ public class UserService {
 
         userRepository.save(userToUpdateWithNewCar);
     }
+    public List<Car> getUserCars(String username){
+        List<Car> cars;
+        try{
+            User user = userRepository.findUserByUsername(username).orElseThrow(UserNotFoundException::new);
+            cars = user.getCars();
+            return cars;
+        }catch (UserNotFoundException exception){
+            return null;
+        }
+    }
+    public User deleteFromUserByVin(String userName,String vin){
+        User userFromDeleteTheCar = userRepository.findUserByUsername(userName).orElseThrow(UserNotFoundException::new);
+        Car car = carService.getCar(vin);
 
+        int indexOfCarToDelete = userFromDeleteTheCar.getCars().indexOf(car);
+        userFromDeleteTheCar.getCars().remove(indexOfCarToDelete);
+
+        return userRepository.save(userFromDeleteTheCar);
+    }
 }

@@ -1,6 +1,7 @@
 package Wr40.cardiary.controller;
 
 import Wr40.cardiary.model.dto.UserDTO;
+import Wr40.cardiary.model.entity.Car;
 import Wr40.cardiary.model.entity.User;
 import Wr40.cardiary.service.UserService;
 import jakarta.validation.Valid;
@@ -64,5 +65,16 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public void addCarToUserByVinNumber(@PathVariable String userName, @PathVariable String vin) {
         userService.addCarToUserByVin(userName, vin);
+    }
+    @GetMapping("/{username}/cars")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Car> getCars(@PathVariable String username){
+        return userService.getUserCars(username);
+    }
+
+    @PutMapping("/deleteCar/{userName}/{vin}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteCarFromUserByVinNumber(@PathVariable String userName, @PathVariable String vin){
+        userService.deleteFromUserByVin(userName,vin);
     }
 }
