@@ -58,7 +58,7 @@ public class SecurityConfig {
         http.cors();
         http
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 .and()
                 .authorizeHttpRequests()
                     .requestMatchers("/swagger-ui/index.html").hasRole("ADMIN")
