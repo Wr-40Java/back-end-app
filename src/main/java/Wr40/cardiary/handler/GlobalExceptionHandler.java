@@ -21,5 +21,4 @@ public class GlobalExceptionHandler {
         return ProblemDetail.forStatusAndDetail(e.getStatus(), e.getMessage());
     }
 
-
 }
