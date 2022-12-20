@@ -7,12 +7,14 @@ import Wr40.cardiary.exception.CarAlreadyExistsException;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 
 @Service
+@Slf4j
 @AllArgsConstructor
 @Transactional
 public class CarService {
@@ -23,6 +25,7 @@ public class CarService {
         if (carRepository.findByVINnumber(car.getVINnumber()).isPresent()) {
             throw new CarAlreadyExistsException();
         }
+        log.info("Car saved: {}", car);
         return carRepository.save(car);
     }
 
@@ -37,6 +40,7 @@ public class CarService {
     public void deleteCar(String vin) {
         Car car = carRepository.findByVINnumber(vin).orElseThrow(NoSuchCarFoundException::new);
         carRepository.delete(car);
+        log.info("Car deleted: {}", car);
 
     }
 
