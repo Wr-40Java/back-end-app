@@ -43,9 +43,7 @@ public class InsuranceTypeService {
     public List<InsuranceTypeDTO> getInsuranceTypes() {
         List<InsuranceTypeDTO> allInsTypeDTOs = new ArrayList<>();
         List<InsuranceType> allInsTypes = insuranceTypeRepository.findAll();
-        for (InsuranceType insType : allInsTypes) {
-            allInsTypeDTOs.add(modelMapper.map(insType, InsuranceTypeDTO.class));
-        }
+        allInsTypes.stream().map(obj -> modelMapper.map(obj, InsuranceTypeDTO.class)).forEach(allInsTypeDTOs::add);
         return allInsTypeDTOs;
     }
 
