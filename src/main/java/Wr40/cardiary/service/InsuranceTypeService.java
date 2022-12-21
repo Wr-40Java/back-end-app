@@ -21,7 +21,10 @@ public class InsuranceTypeService {
     private InsuranceTypeRepository insuranceTypeRepository;
     private ModelMapper modelMapper;
     public InsuranceTypeDTO saveInsuranceType(InsuranceTypeDTO insuranceTypeDTO) {
-        InsuranceType insuranceType = modelMapper.map(insuranceTypeDTO, InsuranceType.class);
+        TypeMap<InsuranceTypeDTO, InsuranceType> mapDTOtoObjectWithoutId = modelMapper.typeMap(InsuranceTypeDTO.class, InsuranceType.class)
+                .addMappings(mapper -> mapper.skip(InsuranceType::setId));
+
+        InsuranceType insuranceType = mapDTOtoObjectWithoutId.map(insuranceTypeDTO);
         InsuranceType savedInsuranceType = insuranceTypeRepository.save(insuranceType);
         InsuranceTypeDTO savedInsuranceTypeDTO = modelMapper.map(savedInsuranceType, InsuranceTypeDTO.class);
         return savedInsuranceTypeDTO;
