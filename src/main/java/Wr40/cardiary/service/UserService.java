@@ -10,6 +10,7 @@ import Wr40.cardiary.model.security.SecurityUser;
 import Wr40.cardiary.repo.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,13 +21,13 @@ import java.util.List;
 
 
 @Service
+@Slf4j
 @Transactional
 @AllArgsConstructor
 public class UserService implements UserDetailsService {
     UserRepository userRepository;
     CarService carService;
     PasswordEncoder passwordEncoder;
-
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -39,7 +40,7 @@ public class UserService implements UserDetailsService {
     public User saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        if(userRepository.findAll().isEmpty()){
+        if (userRepository.findAll().isEmpty()) {
             user.setRoles(List.of(new Role(UserRole.ADMIN)));
         } else {
             user.setRoles(List.of(new Role(UserRole.USER)));
@@ -47,12 +48,14 @@ public class UserService implements UserDetailsService {
         if (userRepository.existsByUsername(user.getUsername())) {
             throw new UserAlreadyExistedException();
         }
+        log.info("User registrated: {}", user);
         return userRepository.save(user);
     }
 
     public void deleteUser(String username) {
         User user = userRepository.findUserByUsername(username).orElseThrow(UserNotFoundException::new);
         userRepository.delete(user);
+        log.info("User deleted: {}", user);
     }
 
     public void deleteAllUsers() {

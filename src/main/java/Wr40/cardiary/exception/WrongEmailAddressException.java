@@ -1,7 +1,9 @@
 package Wr40.cardiary.exception;
 
-public class WrongEmailAddressException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class WrongEmailAddressException extends GlobalException {
     public WrongEmailAddressException() {
-        super("Wrong email addres");
+        super(HttpStatus.BAD_REQUEST,"Wrong email addres");
     }
 }
