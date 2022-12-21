@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/taxtype")
@@ -18,7 +20,7 @@ public class TaxTypeController {
     TaxTypeService taxTypeService;
 
     ModelMapper modelMapper;
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public TaxType saveTaxType(@Valid @RequestBody TaxTypeDTO dto) {
@@ -31,17 +33,23 @@ public class TaxTypeController {
     public TaxType getTaxType(@PathVariable Long id){
         return taxTypeService.getTaxTypeById(id);
     }
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @PutMapping()
     @ResponseStatus(HttpStatus.OK)
-    public TaxType updateTaxType(@Valid @RequestBody TaxTypeDTO dto){
-        TaxType mappedTaxType = modelMapper.map(dto, TaxType.class);
-        return taxTypeService.updateTaxType(mappedTaxType);
+    public TaxType updateTaxType(@Valid @RequestBody TaxType taxType){
+        return taxTypeService.updateTaxType(taxType);
     }
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteTaxType(@PathVariable Long id) {
         taxTypeService.deleteTaxType(id);
+    }
+
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @GetMapping("/list")
+    @ResponseStatus(HttpStatus.OK)
+    public List<TaxType> getAllTaxTypes() {
+        return taxTypeService.getAllTaxTypes();
     }
 }
