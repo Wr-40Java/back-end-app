@@ -49,10 +49,12 @@ public class InsuranceTypeServiceTest {
 //        Mockito.when(insuranceTypeRepository.save(insuranceType)).thenReturn(insuranceType);
 //        Mockito.when(modelMapper.map(insuranceType, InsuranceTypeDTO.class)).thenReturn(insuranceTypeDTO);
 //        Mockito.when(modelMapper.map(insuranceTypeDTO, InsuranceType.class)).thenReturn(insuranceType);
-//
+
 //        TypeMap<InsuranceTypeDTO, InsuranceType> mapDTOtoObjectWithoutId = modelMapper.typeMap(InsuranceTypeDTO.class, InsuranceType.class)
 //                .addMappings(mapper -> mapper.skip(InsuranceType::setId));
 //        Mockito.when(mapDTOtoObjectWithoutId.map(insuranceTypeDTO)).thenReturn(insuranceType);
+//        Mockito.when(modelMapper.typeMap(InsuranceTypeDTO.class, InsuranceType.class)
+//                .addMappings(mapper -> mapper.skip(InsuranceType::setId)).map(insuranceTypeDTO)).thenReturn(insuranceType);
 //
 //        //when
 //        //then
