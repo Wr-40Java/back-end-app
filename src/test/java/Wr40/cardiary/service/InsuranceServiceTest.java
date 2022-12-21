@@ -51,12 +51,6 @@ public class InsuranceServiceTest {
     @InjectMocks
     private InsuranceService insuranceService;
 
-    @BeforeEach
-    public void initSecurityContext() {
-        when(auth.getPrincipal()).thenReturn("tomeee121");
-        SecurityContextHolder.getContext().setAuthentication(auth);
-    }
-
     @Test
     public void whenSavingInsuranceCompanyAndType_shouldAddRelationshipsBetweenEntitesAndSave() {
 
@@ -323,8 +317,8 @@ public class InsuranceServiceTest {
         when(carRepository.findByVINnumber(VINNumber)).thenReturn(Optional.empty());
 
         when(securityContext.getAuthentication()).thenReturn(auth);
-        securityContext.setAuthentication(auth);
         when(auth.getPrincipal()).thenReturn("tomeee121");
+        securityContext.setAuthentication(auth);
         SecurityContextHolder.setContext(securityContext);
 
         User user = new User();
