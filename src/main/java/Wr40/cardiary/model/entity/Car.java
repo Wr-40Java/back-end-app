@@ -38,6 +38,10 @@ public class Car {
     @JoinColumn(name = "car_id")
     List<MaintenanceHistory> maintenanceHistories;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User users;
+
     @ManyToMany
     @JoinTable(
             name = "car_company",

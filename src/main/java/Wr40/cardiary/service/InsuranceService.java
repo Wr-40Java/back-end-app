@@ -7,6 +7,7 @@ import Wr40.cardiary.model.dto.insurance.InsuranceTypeDTO;
 import Wr40.cardiary.model.entity.Car;
 import Wr40.cardiary.model.entity.InsuranceCompany;
 import Wr40.cardiary.model.entity.InsuranceType;
+import Wr40.cardiary.model.entity.User;
 import Wr40.cardiary.repo.CarRepository;
 import Wr40.cardiary.repo.InsuranceRepository;
 import Wr40.cardiary.repo.InsuranceTypeRepository;
@@ -15,6 +16,8 @@ import lombok.AllArgsConstructor;
 import org.hibernate.exception.ConstraintViolationException;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -69,30 +72,38 @@ public class InsuranceService {
     }
 
     public InsuranceCompanyWithTypeDTO linkCarWithInsuranceCompanyAndInsuranceType(String VINNumber, Integer InsCompId, Integer InsTypeId) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        String usernameFromSecurityContext = null;
+        if (principal instanceof UserDetails) {
+            usernameFromSecurityContext = ((UserDetails) principal).getUsername();
+        } else {
+            usernameFromSecurityContext = principal.toString();
+        }
+
         Car car = carRepository.findByVINnumber(VINNumber).orElseThrow(NoSuchCarFoundException::new);
-        InsuranceCompany insuranceCompany = insuranceRepository.findById(Long.valueOf(InsCompId)).orElseThrow(NoSuchInsuranceCompanyException::new);
-        InsuranceType insuranceType = insuranceTypeRepository.findById(Long.valueOf(InsTypeId)).orElseThrow(NoSuchInsuranceTypeException::new);
+        User userPosessingCar = car.getUsers();
+
+        if (usernameFromSecurityContext.equals(userPosessingCar.getUsername())) {
+            InsuranceCompany insuranceCompany = insuranceRepository.findById(Long.valueOf(InsCompId)).orElseThrow(NoSuchInsuranceCompanyException::new);
+            InsuranceType insuranceType = insuranceTypeRepository.findById(Long.valueOf(InsTypeId)).orElseThrow(NoSuchInsuranceTypeException::new);
 
 /**
- The aim of deep copy with InsuranceCompany table is to leave not related tables as base for next linking of data for user,
- after adding linking between tables( composition of data with new Id ) save as new objects
+ * After checking if linking is going on for valid username (check database with security Principal object)
+ * just save foreign key wothout adding new Insurance type etc as it is only a parent to which we want to link new children instead of creating new copy of entities
  */
 
-        InsuranceCompany insuranceCompanyDeepCopy = new InsuranceCompany();
-        insuranceCompanyDeepCopy.setName(insuranceCompany.getName());
-        insuranceCompanyDeepCopy.setDescription(insuranceType.getDescription());
-        insuranceCompanyDeepCopy.setPhoneNumber(insuranceCompany.getPhoneNumber());
+            insuranceCompany.setInsuranceType(insuranceType);
+            insuranceRepository.save(insuranceCompany);
+            car.addInsuranceCompany(insuranceCompany);
+            Car savedCar = carRepository.save(car);
+            InsuranceCompanyWithTypeDTO savedInsuranceCompany = modelMapper.map(savedCar.getInsuranceCompanies().stream().findFirst().get(), InsuranceCompanyWithTypeDTO.class);
 
-        insuranceCompanyDeepCopy.setInsuranceType(insuranceType);
-        insuranceRepository.save(insuranceCompanyDeepCopy);
-
-        car.addInsuranceCompany(insuranceCompanyDeepCopy);
-        Car savedCar = carRepository.save(car);
-        InsuranceCompanyWithTypeDTO savedInsuranceCompany = modelMapper.map(savedCar.getInsuranceCompanies().stream().findFirst().get(), InsuranceCompanyWithTypeDTO.class);
-
-        savedInsuranceCompany.setInsuranceTypeDTO(
-                modelMapper.map(savedCar.getInsuranceCompanies().stream().map(obj -> obj.getInsuranceType()).findFirst().get(), InsuranceTypeDTO.class));
-        return savedInsuranceCompany;
+            savedInsuranceCompany.setInsuranceTypeDTO(
+                    modelMapper.map(savedCar.getInsuranceCompanies().stream().map(obj -> obj.getInsuranceType()).findFirst().get(), InsuranceTypeDTO.class));
+            return savedInsuranceCompany;
+        }
+        throw new NotYourCarException("You can not link this car with other data because it is posessed by another user");
     }
 
     public InsuranceCompanyWithTypeDTO updateLinkInsuranceCompanyWithTypeAndCar(String VINNumber, Integer InsCompId, Integer InsTypeId) {

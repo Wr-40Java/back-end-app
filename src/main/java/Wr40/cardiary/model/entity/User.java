@@ -34,7 +34,7 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private List<Role> roles;
-    @OneToMany
-    @JoinColumn(name = "user_id")
+    @OneToMany(mappedBy = "users")
+//    @JoinColumn(name = "user_id")
     private List<Car> cars;
 }
