@@ -8,6 +8,8 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 @Transactional
@@ -16,9 +18,6 @@ public class TaxTypeService {
     TaxTypeRepository taxTypeRepository;
 
     public TaxType saveTaxType(TaxType mappedTaxType) {
-        if(taxTypeRepository.existsById(mappedTaxType.getId())){
-            throw new TaxTypeAlreadyExistsException();
-        }
         return taxTypeRepository.save(mappedTaxType);
     }
 
@@ -38,5 +37,9 @@ public class TaxTypeService {
     public void deleteTaxType(Long id) {
         TaxType taxType = taxTypeRepository.findById(id).orElseThrow(NoSuchEntityFound::new);
         taxTypeRepository.delete(taxType);
+    }
+
+    public List<TaxType> getAllTaxTypes() {
+        return taxTypeRepository.findAll();
     }
 }
