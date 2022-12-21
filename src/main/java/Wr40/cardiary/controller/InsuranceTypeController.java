@@ -28,9 +28,9 @@ public class InsuranceTypeController {
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public String updateInsuranceType(@Valid @RequestBody InsuranceTypeDTO insuranceTypeDTO) {
-        Integer rowsUpdated = insuranceTypeService.updateInsuranceType(insuranceTypeDTO);
-        return String.format("Congratulations, you updated %d row(s)", rowsUpdated);
+    public InsuranceTypeDTO updateInsuranceType(@Valid @RequestBody InsuranceTypeDTO insuranceTypeDTO) {
+        return insuranceTypeService.updateInsuranceType(insuranceTypeDTO);
+//        return String.format("Congratulations, you updated %d row(s)", rowsUpdated);
     }
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/list")
