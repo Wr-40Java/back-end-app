@@ -1,5 +1,6 @@
 package Wr40.cardiary.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,7 +24,9 @@ public class MaintenanceHistory {
     @CreationTimestamp
     private LocalDateTime timestamp;
     @OneToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
     private TechnicalService technicalService;
     @OneToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
     private MaintenanceEvent maintenanceEvent;
 }

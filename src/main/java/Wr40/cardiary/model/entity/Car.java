@@ -1,5 +1,6 @@
 package Wr40.cardiary.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -32,17 +33,21 @@ public class Car {
     private Year productionYear;
     private short horsePower;
     @OneToMany
+    @JsonIgnore
     @JoinColumn(name = "car_id")
     List<Tax> tax;
     @OneToMany(cascade = CascadeType.ALL)
+    @JsonIgnore
     @JoinColumn(name = "car_id")
     List<MaintenanceHistory> maintenanceHistories;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "user_id")
     private User users;
 
     @ManyToMany
+    @JsonIgnore
     @JoinTable(
             name = "car_company",
             joinColumns = @JoinColumn(name = "car_id"),
