@@ -13,7 +13,7 @@ public class DatabaseConfig {
 
     @Container
     private static PostgreSQLContainer<?> postgreSQLContainer =
-            new PostgreSQLContainer<>("postgres:14.2").withDatabaseName("postgres").withPassword("postgres").
+            new PostgreSQLContainer<>("postgres:13.4-buster").withDatabaseName("postgres").withPassword("postgres").
                     withUsername("postgres");
 
     @DynamicPropertySource

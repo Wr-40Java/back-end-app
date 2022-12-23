@@ -1,5 +1,6 @@
 package Wr40.cardiary.model.entity;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,7 +13,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor @EqualsAndHashCode
 @Table(name = "user_table")
 public class User {
     @Id
