@@ -19,15 +19,10 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(length = 45)
     private String name;
-    @Column(length = 45)
     private String surname;
-    @Column(unique = true, length = 45)
     private String username;
-    @Column(length = 90)
     private String password;
-    @Column(length = 45)
     private String email;
     private Long phoneNumber;
     @CreationTimestamp
