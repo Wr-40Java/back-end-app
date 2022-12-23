@@ -472,4 +472,5 @@ databaseChangeLog:
       file: db/changelog/changesets/005-change-maintenance-event-technical-service-phone-nr-datatype.yaml
   - include:
       file: db/changelog/changesets/006-change-user_table-password-type.yaml
-
+  - include:
+      file: db/changelog/changesets/007-change-maintenance-history-fk.yaml
