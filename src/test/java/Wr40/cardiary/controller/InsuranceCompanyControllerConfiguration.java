@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Import;
 import java.util.List;
 
 @Import(SecurityTestConfig.class)
-public class InsuranceCompanyControllerConfiguration implements InsuranceCompanySamples {
+class InsuranceCompanyControllerConfiguration implements InsuranceCompanySamples {
 
     @Bean
     GlobalExceptionHandler globalExceptionHandler() {

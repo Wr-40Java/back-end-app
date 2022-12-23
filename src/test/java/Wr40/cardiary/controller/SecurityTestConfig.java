@@ -35,29 +35,21 @@ public class SecurityTestConfig {
 //    public AuthenticationEntryPointHandler authenticationEntryPointHandler() {
 //        return new AuthenticationEntryPointHandler();
 //    };
-
-    @Configuration
-    public class AppConfig {
-        @Bean(name = "mvcHandlerMappingIntrospector")
-        public HandlerMappingIntrospector mvcHandlerMappingIntrospector() {
-            return new HandlerMappingIntrospector();
-        }
-    }
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
 
-//    @Bean
-//    public AuthenticationManager authenticationManager(HttpSecurity http)
-//            throws Exception {
-//        return http.getSharedObject(AuthenticationManagerBuilder.class)
-//                .userDetailsService(userDetailsService())
-//                .passwordEncoder(passwordEncoder())
-//                .and()
-//                .build();
-//    }
+    @Bean
+    public AuthenticationManager authenticationManager(HttpSecurity http)
+            throws Exception {
+        return http.getSharedObject(AuthenticationManagerBuilder.class)
+                .userDetailsService(userDetailsService())
+                .passwordEncoder(passwordEncoder())
+                .and()
+                .build();
+    }
 
     @Bean
     public UserDetailsService userDetailsService() {

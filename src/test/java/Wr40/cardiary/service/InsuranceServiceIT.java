@@ -2,7 +2,6 @@ package Wr40.cardiary.service;
 
 import Wr40.cardiary.CarserviceApplication;
 import Wr40.cardiary.DatabaseConfig;
-import Wr40.cardiary.controller.InsuranceCompanyControllerConfiguration;
 import Wr40.cardiary.model.dto.UserDTO;
 import Wr40.cardiary.model.dto.insurance.InsuranceCompanyDTO;
 import Wr40.cardiary.model.entity.User;
@@ -36,30 +35,30 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("container")
 @AutoConfigureMockMvc
 public class InsuranceServiceIT {
-    @Autowired
-    MockMvc mockMvc;
-    @Autowired
-    ObjectMapper objectMapper;
-    @Container
-    private static final PostgreSQLContainer POSTGRE_SQL_CONTAINER = new PostgreSQLContainer("postgres:11.18-alpine3.17");
-
-    static {
-        POSTGRE_SQL_CONTAINER.start();
-
-        Integer port = POSTGRE_SQL_CONTAINER.getFirstMappedPort();
-        String password = POSTGRE_SQL_CONTAINER.getPassword();
-        String databaseName = POSTGRE_SQL_CONTAINER.getDatabaseName();
-        String username = POSTGRE_SQL_CONTAINER.getUsername();
-        String host = POSTGRE_SQL_CONTAINER.getHost();
-        System.setProperty("DB_PORT", String.valueOf(port));
-        System.setProperty("DB_NAME", databaseName);
-        System.setProperty("password", password);
-        System.setProperty("username", username);
-        System.setProperty("host", host);
-    }
-
-    private static final String AUTH_HEADER_NAME = "Authorization";
-    private static final String AUTH_HEADER_VALUE = "Basic VG9tZWVlMTIxITphYmNkRUZHSDEh";
+//    @Autowired
+//    MockMvc mockMvc;
+//    @Autowired
+//    ObjectMapper objectMapper;
+//    @Container
+//    private static final PostgreSQLContainer POSTGRE_SQL_CONTAINER = new PostgreSQLContainer("postgres:11.18-alpine3.17");
+//
+//    static {
+//        POSTGRE_SQL_CONTAINER.start();
+//
+//        Integer port = POSTGRE_SQL_CONTAINER.getFirstMappedPort();
+//        String password = POSTGRE_SQL_CONTAINER.getPassword();
+//        String databaseName = POSTGRE_SQL_CONTAINER.getDatabaseName();
+//        String username = POSTGRE_SQL_CONTAINER.getUsername();
+//        String host = POSTGRE_SQL_CONTAINER.getHost();
+//        System.setProperty("DB_PORT", String.valueOf(port));
+//        System.setProperty("DB_NAME", databaseName);
+//        System.setProperty("password", password);
+//        System.setProperty("username", username);
+//        System.setProperty("host", host);
+//    }
+//
+//    private static final String AUTH_HEADER_NAME = "Authorization";
+//    private static final String AUTH_HEADER_VALUE = "Basic VG9tZWVlMTIxITphYmNkRUZHSDEh";
 //    @Test
 //    public void whenPassingDataToInsurancesEndpointOfController_shouldSaveProperDataIntoDB() throws Exception {
 //        //given
@@ -87,7 +86,7 @@ public class InsuranceServiceIT {
 //                        .header(AUTH_HEADER_NAME, AUTH_HEADER_VALUE))
 //                .andExpect(status().is2xxSuccessful())
 //                .andReturn();
-//        String actualResponseBody2 = mvcResult.getResponse().getContentAsString();
+//        String actualResponseBody2 = mvcResult2.getResponse().getContentAsString();
 //
 //        //then
 //        Assertions.assertThat(actualResponseBody).contains(user.getUsername());
