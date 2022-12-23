@@ -34,24 +34,39 @@ public class InsuranceService {
     private ModelMapper modelMapper;
 
     public InsuranceCompanyWithTypeDTO saveInsuranceWithTypeToTheCar(InsuranceCompanyWithTypeDTO insuranceCompanyWithTypeDTO, String VINNumber) {
-        Car car = carRepository.findByVINnumber(VINNumber).orElseThrow(NoSuchCarFoundException::new);
-        Optional<InsuranceCompany> insuranceCompanyOptional = insuranceRepository.findByName(insuranceCompanyWithTypeDTO.getName());
-        if (insuranceCompanyOptional.isPresent()) {
-            throw new InsuranceCompanyAlreadyExistsException();
-        }
-        InsuranceType insuranceType = modelMapper.map(insuranceCompanyWithTypeDTO.getInsuranceTypeDTO(), InsuranceType.class);
-        InsuranceType savedInsuranceType = insuranceTypeRepository.save(insuranceType);
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        InsuranceCompany insuranceCompany = modelMapper.map(insuranceCompanyWithTypeDTO, InsuranceCompany.class);
+        String usernameFromSecurityContext = null;
+        if (principal instanceof UserDetails) {
+            usernameFromSecurityContext = ((UserDetails) principal).getUsername();
+        } else {
+            usernameFromSecurityContext = principal.toString();
+        }
+
+        Car car = carRepository.findByVINnumber(VINNumber).orElseThrow(NoSuchCarFoundException::new);
+        User userPosessingCar = car.getUsers();
+
+        if (usernameFromSecurityContext.equals(userPosessingCar.getUsername())) {
+            Optional<InsuranceCompany> insuranceCompanyOptional = insuranceRepository.findByName(insuranceCompanyWithTypeDTO.getName());
+            if (insuranceCompanyOptional.isPresent()) {
+                throw new InsuranceCompanyAlreadyExistsException();
+            }
+            InsuranceType insuranceType = modelMapper.map(insuranceCompanyWithTypeDTO.getInsuranceTypeDTO(), InsuranceType.class);
+            InsuranceType savedInsuranceType = insuranceTypeRepository.save(insuranceType);
+
+            InsuranceCompany insuranceCompany = modelMapper.map(insuranceCompanyWithTypeDTO, InsuranceCompany.class);
 //        insuranceCompany.setInsuranceType(modelMapper.map(insuranceCompanyWithTypeDTO.getInsuranceTypeDTO(), InsuranceType.class));
 
-        insuranceCompany.setInsuranceType(savedInsuranceType);
-        car.addInsuranceCompany(insuranceCompany);
-        InsuranceCompany savedInsuranceCompany = insuranceRepository.save(insuranceCompany);
-        carRepository.save(car);
-        InsuranceCompanyWithTypeDTO mappedInsCompanyDTO = modelMapper.map(savedInsuranceCompany, InsuranceCompanyWithTypeDTO.class);
-        mappedInsCompanyDTO.setInsuranceTypeDTO(modelMapper.map(savedInsuranceCompany.getInsuranceType(), InsuranceTypeDTO.class));
-        return mappedInsCompanyDTO;
+            insuranceCompany.setInsuranceType(savedInsuranceType);
+            car.addInsuranceCompany(insuranceCompany);
+            InsuranceCompany savedInsuranceCompany = insuranceRepository.save(insuranceCompany);
+            carRepository.save(car);
+            InsuranceCompanyWithTypeDTO mappedInsCompanyDTO = modelMapper.map(savedInsuranceCompany, InsuranceCompanyWithTypeDTO.class);
+            mappedInsCompanyDTO.setInsuranceTypeDTO(modelMapper.map(savedInsuranceCompany.getInsuranceType(), InsuranceTypeDTO.class));
+            return mappedInsCompanyDTO;
+        } else {
+            throw new NotYourCarException("Can not save this isnurance under other user's car");
+        }
     }
 
     public List<InsuranceCompanyWithTypeDTO> getInsuranceCompWithType(String VINNumber) {
@@ -129,22 +144,37 @@ public class InsuranceService {
     }
 
     public String deleteLinkInsuranceCompanyWithTypeAndCar(String VINNumber, Integer InsCompId, Integer InsTypeId) {
-        Car car = carRepository.findByVINnumber(VINNumber).orElseThrow(NoSuchCarFoundException::new);
-        Iterator<InsuranceCompany> insuranceCompaniesIterator = car.getInsuranceCompanies().iterator();
-        while (insuranceCompaniesIterator.hasNext()) {
-            InsuranceCompany insuranceComp = insuranceCompaniesIterator.next();
-            if (insuranceComp.getId().equals(Long.valueOf(InsCompId))) {
-                insuranceCompaniesIterator.remove();
-            }
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        String usernameFromSecurityContext = null;
+        if (principal instanceof UserDetails) {
+            usernameFromSecurityContext = ((UserDetails) principal).getUsername();
+        } else {
+            usernameFromSecurityContext = principal.toString();
         }
 
-        for (InsuranceCompany insuranceCompany : car.getInsuranceCompanies()) {
-            if (insuranceCompany.getId().equals(Long.valueOf(InsCompId))) {
-                car.removeInsuranceCompany(insuranceCompany);
+        Car car = carRepository.findByVINnumber(VINNumber).orElseThrow(NoSuchCarFoundException::new);
+        User userPosessingCar = car.getUsers();
+
+        if (usernameFromSecurityContext.equals(userPosessingCar.getUsername())) {
+            Iterator<InsuranceCompany> insuranceCompaniesIterator = car.getInsuranceCompanies().iterator();
+            while (insuranceCompaniesIterator.hasNext()) {
+                InsuranceCompany insuranceComp = insuranceCompaniesIterator.next();
+                if (insuranceComp.getId().equals(Long.valueOf(InsCompId))) {
+                    insuranceCompaniesIterator.remove();
+                }
             }
+
+            for (InsuranceCompany insuranceCompany : car.getInsuranceCompanies()) {
+                if (insuranceCompany.getId().equals(Long.valueOf(InsCompId))) {
+                    car.removeInsuranceCompany(insuranceCompany);
+                }
+            }
+            insuranceRepository.deleteById(Long.valueOf(InsCompId));
+            return "Successfully deleted insurance! You can still pick this company for different type of it.";
+        } else {
+            throw new NotYourCarException("Can not delete other user's property!");
         }
-        insuranceRepository.deleteById(Long.valueOf(InsCompId));
-        return "Successfully deleted insurance! You can still pick this company for different type of it.";
     }
 
     private InsuranceTypeDTO mapInsuranceTypeToDTO(InsuranceType insuranceType) {

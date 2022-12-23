@@ -21,6 +21,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import java.util.Arrays;
 
@@ -30,26 +31,33 @@ import java.util.Arrays;
 @AllArgsConstructor
 public class SecurityTestConfig {
 
-    @Bean
-    AuthenticationEntryPointHandler authenticationEntryPointHandler() {
-        return new AuthenticationEntryPointHandler();
-    };
+//    @Bean
+//    public AuthenticationEntryPointHandler authenticationEntryPointHandler() {
+//        return new AuthenticationEntryPointHandler();
+//    };
 
+    @Configuration
+    public class AppConfig {
+        @Bean(name = "mvcHandlerMappingIntrospector")
+        public HandlerMappingIntrospector mvcHandlerMappingIntrospector() {
+            return new HandlerMappingIntrospector();
+        }
+    }
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
 
-    @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http)
-            throws Exception {
-        return http.getSharedObject(AuthenticationManagerBuilder.class)
-                .userDetailsService(userDetailsService())
-                .passwordEncoder(passwordEncoder())
-                .and()
-                .build();
-    }
+//    @Bean
+//    public AuthenticationManager authenticationManager(HttpSecurity http)
+//            throws Exception {
+//        return http.getSharedObject(AuthenticationManagerBuilder.class)
+//                .userDetailsService(userDetailsService())
+//                .passwordEncoder(passwordEncoder())
+//                .and()
+//                .build();
+//    }
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -82,8 +90,8 @@ public class SecurityTestConfig {
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .and()
-                .httpBasic()
-                .authenticationEntryPoint(authenticationEntryPointHandler());
+                .httpBasic();
+//                .authenticationEntryPoint(authenticationEntryPointHandler());
         return http.build();
     }
 }

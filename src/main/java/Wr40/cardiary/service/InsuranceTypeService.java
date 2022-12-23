@@ -6,6 +6,7 @@ import Wr40.cardiary.model.entity.InsuranceType;
 import Wr40.cardiary.repo.InsuranceTypeRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import org.springframework.stereotype.Service;

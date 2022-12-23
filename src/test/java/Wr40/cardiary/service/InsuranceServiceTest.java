@@ -11,6 +11,7 @@ import Wr40.cardiary.model.entity.User;
 import Wr40.cardiary.repo.CarRepository;
 import Wr40.cardiary.repo.InsuranceRepository;
 import Wr40.cardiary.repo.InsuranceTypeRepository;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,6 +52,14 @@ public class InsuranceServiceTest {
     @InjectMocks
     private InsuranceService insuranceService;
 
+    @Before
+    public void setUp() {
+        when(securityContext.getAuthentication()).thenReturn(auth);
+        when(auth.getPrincipal()).thenReturn("tomeee121");
+        securityContext.setAuthentication(auth);
+        SecurityContextHolder.setContext(securityContext);
+    }
+
     @Test
     public void whenSavingInsuranceCompanyAndType_shouldAddRelationshipsBetweenEntitesAndSave() {
 
@@ -73,6 +82,11 @@ public class InsuranceServiceTest {
         objects.add(new InsuranceCompany());
         car.setInsuranceCompanies(objects);
 
+        User user = new User();
+        user.setUsername("tomeee121");
+
+        car.setUsers(user);
+
         when(carRepository.findByVINnumber(VINNumber)).thenReturn(Optional.of(car));
         when(insuranceRepository.findByName(insuranceCompanyWithTypeDTO.getName())).thenReturn((Optional.empty()));
         when(insuranceRepository.save(insuranceCompany)).thenReturn(insuranceCompany);
@@ -80,8 +94,6 @@ public class InsuranceServiceTest {
 
         when(modelMapper.map(insuranceCompanyWithTypeDTO, InsuranceCompany.class)).thenReturn(insuranceCompany);
         when(modelMapper.map(insuranceCompany, InsuranceCompanyWithTypeDTO.class)).thenReturn(insuranceCompanyWithTypeDTO);
-//        Mockito.when(modelMapper.map(insuranceTypeDTO, InsuranceType.class)).thenReturn(insuranceType);
-//        Mockito.when(modelMapper.map(insuranceType, InsuranceTypeDTO.class)).thenReturn(insuranceTypeDTO);
 
         //when
         InsuranceCompanyWithTypeDTO savedInsuranceCompanyWithTypeDTO = insuranceService.saveInsuranceWithTypeToTheCar(insuranceCompanyWithTypeDTO, VINNumber);
@@ -114,6 +126,11 @@ public class InsuranceServiceTest {
         HashSet<InsuranceCompany> objects = new HashSet<>();
         objects.add(new InsuranceCompany());
         car.setInsuranceCompanies(objects);
+
+        User user = new User();
+        user.setUsername("tomeee121");
+
+        car.setUsers(user);
 
         when(carRepository.findByVINnumber(VINNumber)).thenReturn(Optional.of(car));
         when(insuranceRepository.findByName(insuranceCompanyWithTypeDTO.getName())).thenReturn((Optional.of(insuranceCompany)));
@@ -316,11 +333,6 @@ public class InsuranceServiceTest {
         String VINNumber = "SRC1000";
         when(carRepository.findByVINnumber(VINNumber)).thenReturn(Optional.empty());
 
-        when(securityContext.getAuthentication()).thenReturn(auth);
-        when(auth.getPrincipal()).thenReturn("tomeee121");
-        securityContext.setAuthentication(auth);
-        SecurityContextHolder.setContext(securityContext);
-
         User user = new User();
         user.setUsername("FAKE USER");
         Car car = new Car();
@@ -390,6 +402,11 @@ public class InsuranceServiceTest {
         Car car = new Car();
         car.setInsuranceCompanies(new HashSet<>());
         car.addInsuranceCompany(insuranceCompany);
+
+        User user = new User();
+        user.setUsername("tomeee121");
+
+        car.setUsers(user);
 
         when(carRepository.findByVINnumber(VINNumber)).thenReturn((Optional.of(car)));
 
