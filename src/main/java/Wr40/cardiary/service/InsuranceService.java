@@ -55,7 +55,6 @@ public class InsuranceService {
             InsuranceType savedInsuranceType = insuranceTypeRepository.save(insuranceType);
 
             InsuranceCompany insuranceCompany = modelMapper.map(insuranceCompanyWithTypeDTO, InsuranceCompany.class);
-//        insuranceCompany.setInsuranceType(modelMapper.map(insuranceCompanyWithTypeDTO.getInsuranceTypeDTO(), InsuranceType.class));
 
             insuranceCompany.setInsuranceType(savedInsuranceType);
             car.addInsuranceCompany(insuranceCompany);
@@ -76,7 +75,6 @@ public class InsuranceService {
         for (InsuranceCompany insuranceCompany : insuranceCompanies) {
             allIncuranceCompaniesWithType.add(insuranceCompany);
         }
-//        List<InsuranceCompany> allIncuranceCompaniesWithType = insuranceRepository.getAllIncuranceCompaniesWithType(VINNumber);
         List<InsuranceCompanyWithTypeDTO> mappedInsCompanyDTO = allIncuranceCompaniesWithType.stream()
                 .map(obj -> modelMapper.map(obj, InsuranceCompanyWithTypeDTO.class)).toList();
         List<InsuranceCompanyWithTypeDTO> mappedInsCompanyWithTypeDTO = mappedInsCompanyDTO.stream()

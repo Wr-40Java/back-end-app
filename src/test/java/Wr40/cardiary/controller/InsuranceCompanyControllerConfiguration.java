@@ -11,10 +11,12 @@ import org.mockito.Mockito;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Profile;
 
 import java.util.List;
 
 @Import(SecurityTestConfig.class)
+@Profile("!container")
 class InsuranceCompanyControllerConfiguration implements InsuranceCompanySamples {
 
     @Bean

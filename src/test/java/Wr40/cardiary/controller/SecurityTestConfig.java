@@ -4,6 +4,7 @@ import Wr40.cardiary.handler.AuthenticationEntryPointHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -29,6 +30,7 @@ import java.util.Arrays;
 @EnableWebSecurity
 @EnableMethodSecurity
 @AllArgsConstructor
+@Profile("!container")
 public class SecurityTestConfig {
 
 //    @Bean

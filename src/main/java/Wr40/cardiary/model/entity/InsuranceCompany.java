@@ -16,7 +16,6 @@ public class InsuranceCompany {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(length = 45)
     private String name;
     private Long phoneNumber;
     private String description;
