@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static Wr40.cardiary.util.Calculations.calculateMaintenanceCost;
+import static Wr40.cardiary.util.Calculations.calculateOverallMaintenanceCost;
 
 @Service
 @AllArgsConstructor
@@ -33,7 +33,8 @@ public class MaintenanceEventService {
 
         MaintenanceEvent savedMaintenanceEvent = maintenanceEventRepository.save(maintenanceEvent);
         maintenanceHistory.setMaintenanceEvent(savedMaintenanceEvent);
-        calculateMaintenanceCost(maintenanceHistory);
+
+        calculateOverallMaintenanceCost(maintenanceHistory);
         maintenanceHistoryService.updateMH(mHistoryId, maintenanceHistory);
 
         return modelMapper.map(savedMaintenanceEvent, MaintenanceEventResponseDTO.class);

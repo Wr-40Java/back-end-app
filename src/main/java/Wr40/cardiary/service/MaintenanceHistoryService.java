@@ -1,11 +1,16 @@
 package Wr40.cardiary.service;
 
 import Wr40.cardiary.exception.NoSuchMaintenanceHistoryException;
+import Wr40.cardiary.model.dto.maintenance.MaintenanceEventDTO;
+import Wr40.cardiary.model.dto.technicalService.TechnicalServiceDTO;
 import Wr40.cardiary.model.entity.Car;
+import Wr40.cardiary.model.entity.MaintenanceEvent;
 import Wr40.cardiary.model.entity.MaintenanceHistory;
+import Wr40.cardiary.model.entity.TechnicalService;
 import Wr40.cardiary.repo.MaintenanceHistoryRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +22,7 @@ import java.util.List;
 public class MaintenanceHistoryService {
     private MaintenanceHistoryRepository maintenanceHistRepo;
     private CarService carService;
+    private ModelMapper modelMapper;
 
     @Transactional
     public MaintenanceHistory saveMH(String carVin, MaintenanceHistory maintenanceHistory) {
@@ -60,5 +66,23 @@ public class MaintenanceHistoryService {
 
     public void deleteAllMaintenanceHistory() {
         maintenanceHistRepo.deleteAll();
+    }
+
+    public List<MaintenanceHistory> getAllMaintenanceHistoryForGivenCar(String carVin) {
+        Car car = carService.getCar(carVin);
+        return car.getMaintenanceHistories();
+    }
+
+    public void persistMaintenanceEventAndTechnicalService(MaintenanceHistory maintenanceHistory,
+                                                           MaintenanceEventDTO maintenanceEventDTO,
+                                                           TechnicalServiceDTO technicalServiceDTO) {
+        if (maintenanceEventDTO != null) {
+            MaintenanceEvent me = modelMapper.map(maintenanceEventDTO, MaintenanceEvent.class);
+            maintenanceHistory.setMaintenanceEvent(me);
+        }
+        if (technicalServiceDTO != null) {
+            TechnicalService ts = modelMapper.map(technicalServiceDTO, TechnicalService.class);
+            maintenanceHistory.setTechnicalService(ts);
+        }
     }
 }
