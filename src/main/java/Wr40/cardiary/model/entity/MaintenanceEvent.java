@@ -3,6 +3,7 @@ package Wr40.cardiary.model.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.*;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
+@Accessors(chain = true)
 public class MaintenanceEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
