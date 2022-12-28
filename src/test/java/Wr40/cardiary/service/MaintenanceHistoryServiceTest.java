@@ -50,7 +50,7 @@ class MaintenanceHistoryServiceTest {
     @DisplayName("Should Save Maintenance History When Saving")
     void shouldSaveMaintenanceHistoryWhenSaving() {
         // Given
-        String vinNumber = "VinTest";
+        String vinNumber = "14526450";
         Car car = new Car();
         car.setVINnumber(vinNumber);
         car.setMaintenanceHistories(new ArrayList<>());
@@ -61,7 +61,7 @@ class MaintenanceHistoryServiceTest {
         when(carService.updateCar(car)).thenReturn(car);
 
         // When
-        MaintenanceHistory mhSaved = maintenanceHistoryService.saveMH("VinTest", mh);
+        MaintenanceHistory mhSaved = maintenanceHistoryService.saveMH(vinNumber, mh);
 
         // Then
         Assertions.assertEquals(mh, mhSaved);

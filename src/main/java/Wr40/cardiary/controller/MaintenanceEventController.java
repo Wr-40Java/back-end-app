@@ -24,8 +24,10 @@ public class MaintenanceEventController {
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PostMapping("/maintenance_history/{maintenance_history_id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public MaintenanceEventResponseDTO saveMaintenanceEvent(@Valid @RequestBody MaintenanceEventDTO maintenanaceEventDTO,
-                                                            @PathVariable(name = "maintenance_history_id") Long mHistoryId) {
+    public MaintenanceEventResponseDTO saveMaintenanceEvent(
+            @Valid @RequestBody MaintenanceEventDTO maintenanaceEventDTO,
+            @PathVariable(name = "maintenance_history_id") Long mHistoryId) {
+
         MaintenanceEvent maintenanceEvent = modelMapper.map(maintenanaceEventDTO, MaintenanceEvent.class);
         return maintenanceEventService.saveMaintenanceEvent(mHistoryId, maintenanceEvent);
     }
@@ -41,7 +43,8 @@ public class MaintenanceEventController {
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/{maintenance_event_id}")
     @ResponseStatus(HttpStatus.OK)
-    public MaintenanceEventResponseDTO getMaintenanceEvent(@PathVariable(name = "maintenance_event_id") Long mEventId) {
+    public MaintenanceEventResponseDTO getMaintenanceEvent(
+            @PathVariable(name = "maintenance_event_id") Long mEventId) {
         return maintenanceEventService.getMaintenanceEvent(mEventId);
     }
     @PreAuthorize("hasAnyRole('ADMIN','USER')")

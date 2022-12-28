@@ -40,7 +40,8 @@ public class TechnicalServiceService {
     }
 
 
-    public TechnicalServiceResponseDTO updateTechnicalService(Long technicalServiceId, TechnicalService technicalService) {
+    public TechnicalServiceResponseDTO updateTechnicalService(Long technicalServiceId,
+                                                              TechnicalService technicalService) {
         if (!technicalServiceRepository.existsById(technicalServiceId)) {
             throw new NoSuchTechnicalServiceFoundException();
         }

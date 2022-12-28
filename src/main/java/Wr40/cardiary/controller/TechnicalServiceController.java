@@ -31,12 +31,13 @@ public class TechnicalServiceController {
 
     @PutMapping("/{technical_service_id}")
     @ResponseStatus(HttpStatus.OK)
-    public TechnicalServiceResponseDTO updateTechnicalService(@Valid @RequestBody TechnicalServiceDTO technicalServiceDTO,
-                                                              @PathVariable(name = "technical_service_id")
-                                                              Long technicalServiceId) {
+    public TechnicalServiceResponseDTO updateTechnicalService(
+            @Valid @RequestBody TechnicalServiceDTO technicalServiceDTO,
+            @PathVariable(name = "technical_service_id")
+            Long technicalServiceId) {
+
         TechnicalService technicalService = modelMapper.map(technicalServiceDTO, TechnicalService.class);
         return technicalServiceService.updateTechnicalService(technicalServiceId, technicalService);
-
     }
 
     @GetMapping("/{technical_service_id}")
