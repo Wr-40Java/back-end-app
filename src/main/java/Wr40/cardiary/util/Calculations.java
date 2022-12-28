@@ -12,20 +12,16 @@ public class Calculations {
         throw new IllegalAccessException();
     }
 
-    public static void calculateMaintenanceCost(MaintenanceHistory maintenanceHistory) {
+    public static void calculateOverallMaintenanceCost(MaintenanceHistory maintenanceHistory) {
         MaintenanceEvent event = maintenanceHistory.getMaintenanceEvent();
+        TechnicalService technicalService = maintenanceHistory.getTechnicalService();
         BigDecimal overallCost = new BigDecimal(0);
+
         if (event != null) {
             if (event.getCost() != null) {
                 overallCost = overallCost.add(event.getCost());
             }
         }
-        maintenanceHistory.setOverallCost(overallCost);
-    }
-
-    public static void calculateTechnicalServiceCost(MaintenanceHistory maintenanceHistory) {
-        TechnicalService technicalService = maintenanceHistory.getTechnicalService();
-        BigDecimal overallCost = new BigDecimal(0);
         if (technicalService != null) {
             if (technicalService.getCost() != null) {
                 overallCost = overallCost.add(technicalService.getCost());

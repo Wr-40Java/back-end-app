@@ -42,7 +42,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "https://frontend-container-service.81dth4io9qo96.us-east-1.cs.amazonlightsail.com"));
         corsConfiguration.setAllowedHeaders(Arrays.asList("*"));
         corsConfiguration.setExposedHeaders(Arrays.asList("Origin", "Content-Type", "Accept",
                 "Authorization", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"));
@@ -63,6 +63,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                     .requestMatchers("/swagger-ui/index.html").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.POST,"/api/user").permitAll()
+                    .requestMatchers("/actuator/**").permitAll()
                     .anyRequest().authenticated()
                 .and()
                 .csrf().disable()
