@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static Wr40.cardiary.util.Calculations.calculateTechnicalServiceCost;
+import static Wr40.cardiary.util.Calculations.calculateOverallMaintenanceCost;
 
 @Service
 @AllArgsConstructor
@@ -32,7 +32,8 @@ public class TechnicalServiceService {
 
         TechnicalService savedTechnicalService = technicalServiceRepository.save(technicalService);
         maintenanceHistory.setTechnicalService(savedTechnicalService);
-        calculateTechnicalServiceCost(maintenanceHistory);
+
+        calculateOverallMaintenanceCost(maintenanceHistory);
         maintenanceHistoryService.updateMH(technicalServiceId, maintenanceHistory);
 
         return modelMapper.map(savedTechnicalService, TechnicalServiceResponseDTO.class);
@@ -69,7 +70,7 @@ public class TechnicalServiceService {
         TechnicalService technicalService = technicalServiceRepository.findById(technicalServiceId)
                 .orElseThrow(NoSuchTechnicalServiceFoundException::new);
         technicalServiceRepository.delete(technicalService);
-        if(technicalServiceRepository.existsById(technicalServiceId)) {
+        if (technicalServiceRepository.existsById(technicalServiceId)) {
             throw new UnableToDeleteTechnicalServiceException();
         }
     }

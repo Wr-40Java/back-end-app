@@ -1,13 +1,11 @@
 package Wr40.cardiary.model.dto.insurance;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Entity;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-import lombok.Generated;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;
 
@@ -15,7 +13,7 @@ import java.math.BigDecimal;
 
 import static org.hibernate.annotations.QueryHints.READ_ONLY;
 
-@Data
+@Data @EqualsAndHashCode
 @Accessors(chain = true)
 public class InsuranceTypeDTO {
     private Long id;

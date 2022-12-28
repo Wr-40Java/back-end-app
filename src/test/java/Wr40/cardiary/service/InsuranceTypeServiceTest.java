@@ -7,11 +7,10 @@ import Wr40.cardiary.repo.InsuranceTypeRepository;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -19,13 +18,15 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyMap;
 
 @RunWith(MockitoJUnitRunner.class)
 public class InsuranceTypeServiceTest {
 
     @Mock
     private InsuranceTypeRepository insuranceTypeRepository;
-    @Mock
+    @Spy
     private ModelMapper modelMapper;
     @InjectMocks
     private InsuranceTypeService insuranceTypeService;
@@ -42,9 +43,7 @@ public class InsuranceTypeServiceTest {
         insuranceType.setType("personal").setDescription("for hospital eventual costs")
                 .setCoveredCompensation(BigDecimal.valueOf(40000)).setCostsPerYear(BigDecimal.valueOf(3000));
 
-        Mockito.when(insuranceTypeRepository.save(insuranceType)).thenReturn(insuranceType);
-        Mockito.when(modelMapper.map(insuranceType, InsuranceTypeDTO.class)).thenReturn(insuranceTypeDTO);
-        Mockito.when(modelMapper.map(insuranceTypeDTO, InsuranceType.class)).thenReturn(insuranceType);
+        Mockito.when(insuranceTypeRepository.save(any())).then(AdditionalAnswers.returnsFirstArg());
 
         //when
         //then
@@ -57,7 +56,6 @@ public class InsuranceTypeServiceTest {
     public void whenUpdatingInsuranceType_shouldReturnSavedObjectDTO() {
 
         //given
-        Integer rowsToBeAffected = 1;
         InsuranceTypeDTO newInsuranceTypeDTO = new InsuranceTypeDTO();
         newInsuranceTypeDTO.setType("new - personal").setDescription("NEW - for family - hospital eventual costs")
                 .setCoveredCompensation(BigDecimal.valueOf(40000)).setCostsPerYear(BigDecimal.valueOf(3000));
@@ -71,16 +69,14 @@ public class InsuranceTypeServiceTest {
                 .setCoveredCompensation(BigDecimal.valueOf(40000)).setCostsPerYear(BigDecimal.valueOf(3000));
 
         Mockito.when(insuranceTypeRepository.findByType(newInsuranceTypeDTO.getType())).thenReturn(Optional.of(insuranceType));
-        Mockito.when(modelMapper.map(newInsuranceTypeDTO, InsuranceType.class)).thenReturn(newInsuranceType);
-        Mockito.when(insuranceTypeRepository.UpdateInsuranceTypeTuple(newInsuranceType.getDescription(), newInsuranceType.getCostsPerYear(),
-                newInsuranceType.getCoveredCompensation(), insuranceType.getType())).thenReturn(rowsToBeAffected);
+        Mockito.when(insuranceTypeRepository.save(newInsuranceType)).thenReturn(newInsuranceType);
 
         //when
         //then
-        Integer rowsAffected = insuranceTypeService.updateInsuranceType(newInsuranceTypeDTO);
-        Mockito.verify(insuranceTypeRepository).UpdateInsuranceTypeTuple(newInsuranceType.getDescription(), newInsuranceType.getCostsPerYear(),
-                newInsuranceType.getCoveredCompensation(), insuranceType.getType());
-        Assertions.assertEquals(rowsToBeAffected, rowsAffected);
+        InsuranceTypeDTO actual = insuranceTypeService.updateInsuranceType(newInsuranceTypeDTO);
+        Assertions.assertEquals(newInsuranceType.getDescription(), actual.getDescription());
+        Assertions.assertEquals(newInsuranceType.getCoveredCompensation(), actual.getCoveredCompensation());
+        Assertions.assertEquals(newInsuranceType.getType(), actual.getType());
     }
 
     @Test

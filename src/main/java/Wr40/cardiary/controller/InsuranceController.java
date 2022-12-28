@@ -45,7 +45,7 @@ public class InsuranceController {
         return insuranceService.linkCarWithInsuranceCompanyAndInsuranceType(vinNumber, InsCompId, InsTypeId);
     }
 
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("cars/insurances")
     @ResponseStatus(HttpStatus.OK)
     public InsuranceCompanyWithTypeDTO updateLinkedInsuranceCompanyWithTypeAndCar(@RequestParam(name = "vin_number", required = true) String vinNumber,

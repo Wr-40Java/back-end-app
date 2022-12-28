@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class StatisticsController {
     private StatisticsService statisticsSercvice;
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/maintenance")
     @ResponseStatus(HttpStatus.OK)
     public MaintenanceStatisticsDTO getInsuranceTypes() {
         return statisticsSercvice.getMaintenanceStatistics();
     }
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("/tax")
     @ResponseStatus(HttpStatus.OK)
     public TaxStatisticsDTO getMaintenanceTypes() {

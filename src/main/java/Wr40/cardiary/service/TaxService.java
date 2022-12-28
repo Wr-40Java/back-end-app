@@ -54,6 +54,7 @@ public class TaxService {
         Tax updatedTax = new Tax();
         updatedTax.setCostOfTransaction(tax.getCostOfTransaction());
         updatedTax.setTaxType(taxType);
+        taxRepository.delete(tax);
         return taxRepository.save(updatedTax);
     }
 }

@@ -56,9 +56,8 @@ public class UserController {
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PutMapping()
     @ResponseStatus(HttpStatus.OK)
-    public User updateUser(@Valid @RequestBody UserDTO userDTO) {
-        User mappedUser = modelMapper.map(userDTO, User.class);
-        return userService.updateUser(mappedUser);
+    public User updateUser(@Valid @RequestBody User user) {
+        return userService.updateUser(user);
     }
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @PutMapping("/addCar/{userName}/{vin}")

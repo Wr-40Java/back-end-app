@@ -1,5 +1,8 @@
 package Wr40.cardiary;
 
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -10,7 +13,7 @@ public class DatabaseConfig {
 
     @Container
     private static PostgreSQLContainer<?> postgreSQLContainer =
-            new PostgreSQLContainer<>("postgres:14.2").withDatabaseName("postgres").withPassword("postgres").
+            new PostgreSQLContainer<>("postgres:13.4-buster").withDatabaseName("postgres").withPassword("postgres").
                     withUsername("postgres");
 
     @DynamicPropertySource

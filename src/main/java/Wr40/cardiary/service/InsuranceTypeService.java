@@ -6,7 +6,9 @@ import Wr40.cardiary.model.entity.InsuranceType;
 import Wr40.cardiary.repo.InsuranceTypeRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,32 +22,35 @@ public class InsuranceTypeService {
     private InsuranceTypeRepository insuranceTypeRepository;
     private ModelMapper modelMapper;
     public InsuranceTypeDTO saveInsuranceType(InsuranceTypeDTO insuranceTypeDTO) {
-        InsuranceType insuranceType = modelMapper.map(insuranceTypeDTO, InsuranceType.class);
+        TypeMap<InsuranceTypeDTO, InsuranceType> mapDTOtoObjectWithoutId = modelMapper.typeMap(InsuranceTypeDTO.class, InsuranceType.class)
+                .addMappings(mapper -> mapper.skip(InsuranceType::setId));
+
+        InsuranceType insuranceType = mapDTOtoObjectWithoutId.map(insuranceTypeDTO);
         InsuranceType savedInsuranceType = insuranceTypeRepository.save(insuranceType);
         InsuranceTypeDTO savedInsuranceTypeDTO = modelMapper.map(savedInsuranceType, InsuranceTypeDTO.class);
         return savedInsuranceTypeDTO;
     }
 
-    public Integer updateInsuranceType(InsuranceTypeDTO insuranceTypeDTO) {
+    public InsuranceTypeDTO updateInsuranceType(InsuranceTypeDTO insuranceTypeDTO) {
         InsuranceType oldInsuranceType = insuranceTypeRepository.findByType(insuranceTypeDTO.getType()).orElseThrow(NoSuchInsuranceTypeException::new);
-        InsuranceType insuranceTypeToSave = mapOldInsuranceTypeToNewOne(oldInsuranceType, modelMapper.map(insuranceTypeDTO, InsuranceType.class));
-        int nrOfRowsUpdated = insuranceTypeRepository.UpdateInsuranceTypeTuple(insuranceTypeToSave.getDescription(), insuranceTypeToSave.getCostsPerYear(),
-                insuranceTypeToSave.getCoveredCompensation(), insuranceTypeToSave.getType());
-        return nrOfRowsUpdated;
-    }
 
-    private InsuranceType mapOldInsuranceTypeToNewOne(InsuranceType oldInsuranceType, InsuranceType insuranceType) {
-        oldInsuranceType.setDescription(insuranceType.getDescription())
-                .setCostsPerYear(insuranceType.getCostsPerYear()).setCoveredCompensation(insuranceType.getCoveredCompensation());
-        return oldInsuranceType;
+        TypeMap<InsuranceTypeDTO, InsuranceType> mapDTOtoObjectWithoutId = modelMapper.typeMap(InsuranceTypeDTO.class, InsuranceType.class)
+                .addMappings(mapper -> mapper.skip(InsuranceType::setId));
+        InsuranceType insuranceType = mapDTOtoObjectWithoutId.map(insuranceTypeDTO);
+
+        InsuranceType insuranceTypeToUpdate = oldInsuranceType.setType(insuranceType.getType()).setDescription(insuranceType.getDescription())
+                .setCostsPerYear(insuranceType.getCostsPerYear())
+                .setCoveredCompensation(insuranceType.getCoveredCompensation());
+
+        InsuranceType savedObject = insuranceTypeRepository.save(insuranceTypeToUpdate);
+
+        return modelMapper.map(savedObject, InsuranceTypeDTO.class);
     }
 
     public List<InsuranceTypeDTO> getInsuranceTypes() {
         List<InsuranceTypeDTO> allInsTypeDTOs = new ArrayList<>();
         List<InsuranceType> allInsTypes = insuranceTypeRepository.findAll();
-        for (InsuranceType insType : allInsTypes) {
-            allInsTypeDTOs.add(modelMapper.map(insType, InsuranceTypeDTO.class));
-        }
+        allInsTypes.stream().map(obj -> modelMapper.map(obj, InsuranceTypeDTO.class)).forEach(allInsTypeDTOs::add);
         return allInsTypeDTOs;
     }
 
