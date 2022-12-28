@@ -45,7 +45,7 @@ public class TechnicalServiceController {
         return technicalServiceService.getTechnicalService(technicalServiceId);
     }
 
-    @GetMapping("/")
+    @GetMapping("/list")
     @ResponseStatus(HttpStatus.OK)
     public List<TechnicalServiceResponseDTO> getAllMaintenanceEvent() {
         return technicalServiceService.getAllMaintenanceEvent();
