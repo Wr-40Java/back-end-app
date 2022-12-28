@@ -18,13 +18,13 @@ import static Wr40.cardiary.util.Calculations.calculateOverallMaintenanceCost;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class MaintenanceEventService {
 
     private MaintenanceEventRepository maintenanceEventRepository;
     private MaintenanceHistoryService maintenanceHistoryService;
     private ModelMapper modelMapper;
 
-    @Transactional
     public MaintenanceEventResponseDTO saveMaintenanceEvent(Long mHistoryId, MaintenanceEvent maintenanceEvent) {
         MaintenanceHistory maintenanceHistory = maintenanceHistoryService.getMaintenanceHistory(mHistoryId);
         if (maintenanceHistory.getMaintenanceEvent() != null) {

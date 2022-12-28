@@ -19,12 +19,12 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 @Slf4j
+@Transactional
 public class MaintenanceHistoryService {
     private MaintenanceHistoryRepository maintenanceHistRepo;
     private CarService carService;
     private ModelMapper modelMapper;
 
-    @Transactional
     public MaintenanceHistory saveMH(String carVin, MaintenanceHistory maintenanceHistory) {
         Car car = carService.getCar(carVin);
 
