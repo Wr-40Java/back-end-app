@@ -1,3 +1,4 @@
+
 package Wr40.cardiary.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,7 +40,7 @@ public class InsuranceControllerTest implements InsuranceCompanySamples {
                 .andExpect(status().is2xxSuccessful())
                 .andReturn();
         String actualResponseBody = controllerResult.getResponse().getContentAsString();
-        
+
         //then
         Assertions.assertEquals(insCompList, actualResponseBody);
         log.info("Actual response body: {}", actualResponseBody);
