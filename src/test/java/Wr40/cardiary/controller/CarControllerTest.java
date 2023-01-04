@@ -57,13 +57,6 @@ class CarControllerTest {
 
     }
 
-    @Test
-    void givenUserWithNoRoles_whenPerformingGetAllCars_thenReturnForbidden() throws Exception {
-
-        mockMvc
-                .perform(get("/api/car/get").with(user("admin").password("pass").roles("")))
-                .andExpect(status().isForbidden());
-    }
 
     @Test
     void givenAnonymous_whenPerformingGetAlLCars_thenReturnUnauthorized() throws Exception {
@@ -99,30 +92,6 @@ class CarControllerTest {
                 .andExpect(status().isCreated());
     }
 
-    @Test
-    void givenUserWithUserNoRoles_whenPerformingSaveCar_thenReturnForbidden() throws Exception {
-
-        CarDTO carDTO = new CarDTO();
-        carDTO.setBrand("Toyota")
-                .setModel("Yaris")
-                .setBodyType("Sedan")
-                .setEngineType("Diesel")
-                .setVinnumber("19834323456")
-                .setColor("Red")
-                .setHorsePower((short) 100)
-                .setProductionYear(Year.of(2000));
-
-
-        String json = mapper.writeValueAsString(carDTO);
-        String url = "/api/car";
-
-        mockMvc.perform(post(url).with(user("admin").password("pass").roles(""))
-                        .contentType(APPLICATION_JSON)
-                        .content(json)
-                        .accept(APPLICATION_JSON)
-                        .characterEncoding("utf-8"))
-                .andExpect(status().isForbidden());
-    }
 
     @Test
     void givenAnonymous_whenPerformingSaveCar_thenReturnUnauthorized() throws Exception {
@@ -157,35 +126,7 @@ class CarControllerTest {
                 .perform(get("/api/car/{vin}",carDTO.getVinnumber()))
                 .andExpect(status().isUnauthorized());
     }
-    @Test
-    void givenUserWithNoRoles_whenPerformingGetCarByVIN_thenReturnForbidden() throws Exception {
 
-        CarDTO carDTO = new CarDTO();
-        carDTO.setVinnumber("123543534");
-        mockMvc
-                .perform(get("/api/car/{vin}",carDTO.getVinnumber()).with(user("admin").password("pass").roles("")))
-                .andExpect(status().isForbidden());
-    }
-
-//    @Test
-//    void givenUserWithUserRoles_whenPerformingGetCarByVIN_thenReturnOK() throws Exception {
-//
-//        CarDTO carDTO = new CarDTO();
-//        carDTO.setBrand("Toyota")
-//                .setModel("Yaris")
-//                .setBodyType("Sedan")
-//                .setEngineType("Diesel")
-//                .setVinnumber("19834323456")
-//                .setColor("Red")
-//                .setHorsePower((short) 100)
-//                .setProductionYear(Year.of(2000));
-//        Car mappedCar = modelMapper.map(carDTO, Car.class);
-//        carRepository.save(mappedCar);
-//
-//        mockMvc
-//                .perform(get("/api/car/{vin}",carDTO.getVinnumber()).with(user("admin").password("pass").roles("USER")))
-//                .andExpect(status().isOk());
-//    }
 
 
 

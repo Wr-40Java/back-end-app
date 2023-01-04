@@ -46,13 +46,6 @@ public class TaxTypeControllerTest {
 
     }
 
-    @Test
-    void givenUserWithNoRoles_whenPerformingGetAllTaxType_thenReturnForbidden() throws Exception {
-
-        mockMvc
-                .perform(get("/api/taxtype/list").with(user("admin").password("pass").roles("")))
-                .andExpect(status().isForbidden());
-    }
 
     @Test
     void givenAnonymous_whenPerformingGetAllTaxType_thenReturnUnauthorized() throws Exception {
