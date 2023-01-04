@@ -1,9 +1,7 @@
 package Wr40.cardiary.service;
 
 import Wr40.cardiary.model.dto.statistics.*;
-import Wr40.cardiary.repo.MaintenanceEventRepository;
-import Wr40.cardiary.repo.TaxTypeRepository;
-import Wr40.cardiary.repo.TechnicalServiceRepository;
+import Wr40.cardiary.repo.*;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +18,7 @@ public class StatisticsService {
     private TechnicalServiceRepository technicalServiceRepository;
     private MaintenanceEventRepository maintenanceEventRepository;
     private TaxTypeRepository taxTypeRepository;
+    private TaxRepository taxRepository;
 
     public TechnicalServiceStatisticsDTO getTechnicalServiceStats() {
         List<SumTechnicalServiceStatsDTO> technicalServiceStatsWithSumOfExpensesDTO = new ArrayList<>();
@@ -69,24 +68,41 @@ public class StatisticsService {
         }
 
         public TaxStatisticsDTO getTaxStatistics () {
+            List<StatsDTO> taxStatsWithAVGOfTransactions = taxRepository.getTaxStatsWithAVGOfTransactions();
+            List<StatsDTO> taxStatsWithSumOfTransactions = taxRepository.getTaxStatsWithAVGOfTransactions();
+
             List<SumTaxStatsDTO> taxStatsWithSumOfTransactionsDTO = new ArrayList<>();
             List<AvgTaxStatsDTO> taxStatsWithAVGOfTransactionsDTO = new ArrayList<>();
-            List<String> taxStatsWithSumOfTransactions = taxTypeRepository.getTaxStatsWithSumOfTransactions();
-            List<String> taxStatsWithAVGOfTransactions = taxTypeRepository.getTaxStatsWithAVGOfTransactions();
 
-            for (String object : taxStatsWithSumOfTransactions) {
-                String[] objectStatArray = object.split(";");
-                SumTaxStatsDTO sumTaxStatsDTO = new SumTaxStatsDTO(
-                        BigDecimal.valueOf(Double.parseDouble(objectStatArray[0])), objectStatArray[1], objectStatArray[2], objectStatArray[3]);
+            for (StatsDTO object : taxStatsWithAVGOfTransactions) {
+                SumTaxStatsDTO sumTaxStatsDTO = new SumTaxStatsDTO(object.getRound(), object.getName(),
+                        object.getDescription(), object.getInstitutionToPayFor());
                 taxStatsWithSumOfTransactionsDTO.add(sumTaxStatsDTO);
             }
 
-            for (String object : taxStatsWithAVGOfTransactions) {
-                String[] objectStatArray = object.split(";");
-                AvgTaxStatsDTO sumTaxStatsDTO = new AvgTaxStatsDTO(
-                        BigDecimal.valueOf(Double.parseDouble(objectStatArray[0])), objectStatArray[1], objectStatArray[2], objectStatArray[3]);
-                taxStatsWithAVGOfTransactionsDTO.add(sumTaxStatsDTO);
+            for (StatsDTO object : taxStatsWithSumOfTransactions) {
+                AvgTaxStatsDTO avgTaxStatsDTO = new AvgTaxStatsDTO(object.getRound(), object.getName(),
+                        object.getDescription(), object.getInstitutionToPayFor());
+                taxStatsWithAVGOfTransactionsDTO.add(avgTaxStatsDTO);
             }
             return new TaxStatisticsDTO(taxStatsWithAVGOfTransactionsDTO, taxStatsWithSumOfTransactionsDTO);
+
+//            List<String> taxStatsWithSumOfTransactions = taxTypeRepository.getTaxStatsWithSumOfTransactions();
+//            List<String> taxStatsWithAVGOfTransactions = taxTypeRepository.getTaxStatsWithAVGOfTransactions();
+//
+//            for (String object : taxStatsWithSumOfTransactions) {
+//                String[] objectStatArray = object.split(";");
+//                SumTaxStatsDTO sumTaxStatsDTO = new SumTaxStatsDTO(
+//                        BigDecimal.valueOf(Double.parseDouble(objectStatArray[0])), objectStatArray[1], objectStatArray[2], objectStatArray[3]);
+//                taxStatsWithSumOfTransactionsDTO.add(sumTaxStatsDTO);
+//            }
+//
+//            for (String object : taxStatsWithAVGOfTransactions) {
+//                String[] objectStatArray = object.split(";");
+//                AvgTaxStatsDTO sumTaxStatsDTO = new AvgTaxStatsDTO(
+//                        BigDecimal.valueOf(Double.parseDouble(objectStatArray[0])), objectStatArray[1], objectStatArray[2], objectStatArray[3]);
+//                taxStatsWithAVGOfTransactionsDTO.add(sumTaxStatsDTO);
+//            }
+//            return new TaxStatisticsDTO(taxStatsWithAVGOfTransactionsDTO, taxStatsWithSumOfTransactionsDTO);
         }
     }

@@ -18,7 +18,6 @@ public class MaintenanceHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(precision = 14, scale = 2)
     private BigDecimal overallCost;
     private String description;
     @CreationTimestamp

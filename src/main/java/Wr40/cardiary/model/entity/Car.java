@@ -18,17 +18,12 @@ public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(length = 45)
     private String brand;
-    @Column(length = 45)
     private String model;
-    @Column(name = "vin_number", unique = true, length = 45)
+    @Column(name = "vin_number")
     private String VINnumber;
-    @Column(length = 45)
     private String engineType;
-    @Column(length = 45)
     private String bodyType;
-    @Column(length = 45)
     private String color;
     private Year productionYear;
     private short horsePower;

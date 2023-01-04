@@ -1,5 +1,6 @@
 package Wr40.cardiary.model.entity;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,21 +13,16 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor @EqualsAndHashCode
 @Table(name = "user_table")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(length = 45)
     private String name;
-    @Column(length = 45)
     private String surname;
-    @Column(unique = true, length = 45)
     private String username;
-    @Column(length = 90)
     private String password;
-    @Column(length = 45)
     private String email;
     private Long phoneNumber;
     @CreationTimestamp
