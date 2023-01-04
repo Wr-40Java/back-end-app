@@ -6,10 +6,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Lazy;
 
 @SpringBootTest/*(classes = DatabaseConfig.class)*/
-public class CarserviceApplicationTests extends DatabaseConfig {
+public class CarserviceApplicationTests {
 
 	@Test
-	@PostConstruct
 	public void contextLoads() {
 	}
 }

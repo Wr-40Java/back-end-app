@@ -1,6 +1,6 @@
 package Wr40.cardiary.controller;
 
-import Wr40.cardiary.model.dto.TaxDTO;
+import Wr40.cardiary.model.dto.tax.TaxDTO;
 import Wr40.cardiary.model.entity.Tax;
 import Wr40.cardiary.service.TaxService;
 import jakarta.validation.Valid;
