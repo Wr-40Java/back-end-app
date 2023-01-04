@@ -1,0 +1,476 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Tomasz Borowski
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_car
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: brand
+                  type: VARCHAR(45)
+              - column:
+                  name: model
+                  type: VARCHAR(45)
+              - column:
+                  name: vin_number
+                  type: VARCHAR(45)
+              - column:
+                  name: engine_type
+                  type: VARCHAR(45)
+              - column:
+                  name: body_type
+                  type: VARCHAR(45)
+              - column:
+                  name: color
+                  type: VARCHAR(45)
+              - column:
+                  name: production_year
+                  type: SMALLINT
+              - column:
+                  name: horse_power
+                  type: SMALLINT
+              - column:
+                  name: user_id
+                  type: BIGINT
+            tableName: car
+  - changeSet:
+      id: 2
+      author: Tomasz Borowski
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_car_company
+                  name: car_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_car_company
+                  name: insurance_company_id
+                  type: BIGINT
+            tableName: car_company
+  - changeSet:
+      id: 3
+      author: Tomasz Borowski
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_insurancecompany
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR(45)
+              - column:
+                  name: phone_number
+                  type: SMALLINT
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+              - column:
+                  name: insurance_type_id
+                  type: BIGINT
+            tableName: insurance_company
+  - changeSet:
+      id: 4
+      author: Tomasz Borowski
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_insurancetype
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: type
+                  type: VARCHAR(45)
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+              - column:
+                  name: costs_per_year
+                  type: DECIMAL(10, 2)
+              - column:
+                  name: covered_compensation
+                  type: DECIMAL(14, 2)
+            tableName: insurance_type
+  - changeSet:
+      id: 5
+      author: Tomasz Borowski
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_maintenanaceevent
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: cost
+                  type: DECIMAL(12, 2)
+              - column:
+                  name: company_responsible_for_name
+                  type: VARCHAR(45)
+              - column:
+                  name: company_responsible_for_phone_number
+                  type: SMALLINT
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+              - column:
+                  name: next_visit_schedule
+                  type: DATETIME
+              - column:
+                  name: timestamp
+                  type: DATETIME
+            tableName: maintenanace_event
+  - changeSet:
+      id: 6
+      author: Tomasz Borowski
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_maintenancehistory
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: overall_cost
+                  type: DECIMAL(14, 2)
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+              - column:
+                  name: timestamp
+                  type: DATETIME
+              - column:
+                  name: technical_service_id
+                  type: BIGINT
+              - column:
+                  name: maintenanace_event_id
+                  type: BIGINT
+              - column:
+                  name: car_id
+                  type: BIGINT
+            tableName: maintenance_history
+  - changeSet:
+      id: 7
+      author: Tomasz Borowski
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_role
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: role_name
+                  type: VARCHAR(255)
+              - column:
+                  name: user_id
+                  type: BIGINT
+            tableName: role
+  - changeSet:
+      id: 8
+      author: Tomasz Borowski
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_tax
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: cost_of_transaction
+                  type: DECIMAL(12, 2)
+              - column:
+                  name: tax_type_id
+                  type: BIGINT
+              - column:
+                  name: car_id
+                  type: BIGINT
+            tableName: tax
+  - changeSet:
+      id: 9
+      author: Tomasz Borowski
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_taxtype
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR(45)
+              - column:
+                  name: institution_to_pay_for
+                  type: VARCHAR(45)
+              - column:
+                  name: institution_to_pay_for_phone_number
+                  type: SMALLINT
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+            tableName: tax_type
+  - changeSet:
+      id: 10
+      author: Tomasz Borowski
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_technicalservice
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: cost
+                  type: DECIMAL(12, 2)
+              - column:
+                  name: company_responsible_for_name
+                  type: VARCHAR(45)
+              - column:
+                  name: company_responsible_for_phone_number
+                  type: SMALLINT
+              - column:
+                  name: reason
+                  type: VARCHAR(255)
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+              - column:
+                  name: timestamp
+                  type: DATETIME
+            tableName: technical_service
+  - changeSet:
+      id: 11
+      author: Tomasz Borowski
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_user
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR(45)
+              - column:
+                  name: surname
+                  type: VARCHAR(45)
+              - column:
+                  name: username
+                  type: VARCHAR(45)
+              - column:
+                  name: password
+                  type: VARCHAR(45)
+              - column:
+                  name: email
+                  type: VARCHAR(45)
+              - column:
+                  name: phone_number
+                  type: SMALLINT
+              - column:
+                  name: creation_date
+                  type: DATETIME
+            tableName: user_table
+  - changeSet:
+      id: 12
+      author: Tomasz Borowski
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: vin_number
+            constraintName: uc_car_vin_number
+            tableName: car
+  - changeSet:
+      id: 13
+      author: Tomasz Borowski
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: username
+            constraintName: uc_user_username
+            tableName: user_table
+  - changeSet:
+      id: 14
+      author: Tomasz Borowski
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: car
+            constraintName: FK_CAR_ON_USER
+            referencedColumnNames: id
+            referencedTableName: user_table
+  - changeSet:
+      id: 15
+      author: Tomasz Borowski
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: insurance_type_id
+            baseTableName: insurance_company
+            constraintName: FK_INSURANCECOMPANY_ON_INSURANCETYPE
+            referencedColumnNames: id
+            referencedTableName: insurance_type
+  - changeSet:
+      id: 16
+      author: Tomasz Borowski
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: car_id
+            baseTableName: maintenance_history
+            constraintName: FK_MAINTENANCEHISTORY_ON_CAR
+            referencedColumnNames: id
+            referencedTableName: car
+  - changeSet:
+      id: 17
+      author: Tomasz Borowski
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: maintenanace_event_id
+            baseTableName: maintenance_history
+            constraintName: FK_MAINTENANCEHISTORY_ON_MAINTENANACEEVENT
+            referencedColumnNames: id
+            referencedTableName: maintenanace_event
+  - changeSet:
+      id: 18
+      author: Tomasz Borowski
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: technical_service_id
+            baseTableName: maintenance_history
+            constraintName: FK_MAINTENANCEHISTORY_ON_TECHNICALSERVICE
+            referencedColumnNames: id
+            referencedTableName: technical_service
+  - changeSet:
+      id: 19
+      author: Tomasz Borowski
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: role
+            constraintName: FK_ROLE_ON_USER
+            referencedColumnNames: id
+            referencedTableName: user_table
+  - changeSet:
+      id: 20
+      author: Tomasz Borowski
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: car_id
+            baseTableName: tax
+            constraintName: FK_TAX_ON_CAR
+            referencedColumnNames: id
+            referencedTableName: car
+  - changeSet:
+      id: 21
+      author: Tomasz Borowski
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: tax_type_id
+            baseTableName: tax
+            constraintName: FK_TAX_ON_TAXTYPE
+            referencedColumnNames: id
+            referencedTableName: tax_type
+  - changeSet:
+      id: 22
+      author: Tomasz Borowski
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: car_id
+            baseTableName: car_company
+            constraintName: fk_carcom_on_car
+            referencedColumnNames: id
+            referencedTableName: car
+  - changeSet:
+      id: 23
+      author: Tomasz Borowski
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: insurance_company_id
+            baseTableName: car_company
+            constraintName: fk_carcom_on_insurance_company
+            referencedColumnNames: id
+            referencedTableName: insurance_company
+  - include:
+      file: db/changelog/changesets/001-change-phone-nr-datatype.yaml
+  - include:
+      file: db/changelog/changesets/002-change-insurance-phone-nr-datatype.yaml
+  - include:
+      file: db/changelog/changesets/004-add-unique-constraint-to-ins-type-type.yaml
+  - include:
+      file: db/changelog/changesets/005-change-maintenance-event-technical-service-phone-nr-datatype.yaml
+  - include:
+      file: db/changelog/changesets/006-change-user_table-password-type.yaml
+  - include:
+      file: db/changelog/changesets/007-change-maintenance-history-fk.yaml

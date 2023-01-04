@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+      id:  18
+      author:  Damian Grudzien
+      changes:
+        -  dropForeignKeyConstraint:
+             baseTableName:  maintenance_history
+             constraintName:  FK_MAINTENANCEHISTORY_ON_MAINTENANCEEVENT
+
+
+  - changeSet:
+      id: 19
+      author: Damian Grudzien
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: maintenance_event_id
+            baseTableName: maintenance_history
+            constraintName: FK_MAINTENANCEHISTORY_ON_MAINTENANCEEVENT
+            referencedColumnNames: id
+            referencedTableName: maintenance_event
+            onDelete: SET NULL
+
+  - changeSet:
+      id:  20
+      author:  Damian Grudzien
+      changes:
+        -  dropForeignKeyConstraint:
+             baseTableName:  maintenance_history
+             constraintName:  FK_MAINTENANCEHISTORY_ON_TECHNICALSERVICE
+
+  - changeSet:
+      id: 21
+      author: Damian Grudzien
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: technical_service_id
+            baseTableName: maintenance_history
+            constraintName: FK_MAINTENANCEHISTORY_ON_TECHNICALSERVICE
+            referencedColumnNames: id
+            referencedTableName: technical_service
+            onDelete: SET NULL
