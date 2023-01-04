@@ -1,4 +1,4 @@
-package Wr40.cardiary.model.dto;
+package Wr40.cardiary.model.dto.tax;
 
 
 import jakarta.validation.constraints.NotEmpty;

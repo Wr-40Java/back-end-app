@@ -1,7 +1,6 @@
 package Wr40.cardiary.validation.validator;
 
 import Wr40.cardiary.exception.InvalidPasswordException;
-import Wr40.cardiary.exception.WrongEmailAddressException;
 import Wr40.cardiary.validation.constraint.PasswordConstraint;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

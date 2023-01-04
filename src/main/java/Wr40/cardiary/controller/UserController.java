@@ -24,7 +24,7 @@ public class UserController {
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public List<User> getAllUsers(){
+    public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
 
@@ -34,18 +34,21 @@ public class UserController {
         User mappedUser = modelMapper.map(dto, User.class);
         return userService.saveUser(mappedUser);
     }
+
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @DeleteMapping("/{username}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteUser(@PathVariable String username) {
         userService.deleteUser(username);
     }
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public void deleteAllUsers() {
         userService.deleteAllUsers();
     }
+
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/{username}")
     @ResponseStatus(HttpStatus.OK)
@@ -53,13 +56,15 @@ public class UserController {
         return userService.getUser(username);
 
     }
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+
+    @PreAuthorize("hasAnyRole('USER')")
     @PutMapping()
     @ResponseStatus(HttpStatus.OK)
     public User updateUser(@Valid @RequestBody User user) {
         return userService.updateUser(user);
     }
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+
+    @PreAuthorize("hasAnyRole('USER')")
     @PutMapping("/addCar/{userName}/{vin}")
     @ResponseStatus(HttpStatus.OK)
     public void addCarToUserByVinNumber(@PathVariable String userName, @PathVariable String vin) {

@@ -22,6 +22,10 @@ public class CarController {
     ModelMapper modelMapper;
 
     @PreAuthorize("hasRole('USER')")
+    /**
+    FOR LOGGING WITH JWT TOKEN
+     */
+//    @PreAuthorize("hasAuthority('SCOPE_ROLE_USER')")
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public Car saveCar(@Valid @RequestBody CarDTO dto) {
@@ -34,29 +38,34 @@ public class CarController {
     public Car getCar(@PathVariable String vin){
         return carService.getCar(vin);
     }
+
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/get")
     @ResponseStatus(HttpStatus.OK)
     public List<Car> getAllCars(){
         return carService.getAllCars();
     }
+
     @PreAuthorize("hasRole('USER')")
     @DeleteMapping("/{vin}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteCar(@PathVariable String vin){
         carService.deleteCar(vin);
     }
+
     @PreAuthorize("hasRole('USER')")
     @DeleteMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public void deleteAllCars(){
         carService.deleteAllCars();
     }
+
     @PreAuthorize("hasRole('USER')")
     @PutMapping()
     @ResponseStatus(HttpStatus.OK)
     public Car updateCar(@Valid @RequestBody CarDTO carDTO){
         Car mappedCar = modelMapper.map(carDTO, Car.class);
+
         return carService.updateCar(mappedCar);
     }
 
